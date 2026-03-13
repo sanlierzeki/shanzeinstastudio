@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Shanze · Post Stüdyosu</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#c9a07a;--krem:#f5e6d0;--bordo:#7a1515;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0e0202;color:#f5e6d0;font-family:'Montserrat',sans-serif;overflow-x:hidden;}
+
+.topbar{background:#1a0404;border-bottom:1px solid rgba(201,160,122,.15);padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.tb-logo{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--gold);letter-spacing:.2em;white-space:nowrap;}
+.tb-tabs{display:flex;gap:3px;flex-wrap:wrap;}
+.tbt{background:rgba(201,160,122,.06);border:1px solid rgba(201,160,122,.14);color:rgba(245,230,208,.55);font-size:.58rem;letter-spacing:.09em;padding:6px 11px;cursor:pointer;transition:all .2s;font-family:'Montserrat',sans-serif;}
+.tbt.on{background:rgba(120,20,20,.7);border-color:rgba(201,160,122,.4);color:var(--gold);}
+
+.wrap{display:flex;min-height:calc(100vh - 47px);}
+.preview{flex:1;display:flex;flex-direction:column;align-items:center;padding:18px 14px;gap:10px;overflow-y:auto;}
+.pinfo{font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(201,160,122,.36);}
+#cv{width:360px;height:450px;position:relative;overflow:hidden;flex-shrink:0;box-shadow:0 16px 60px rgba(0,0,0,.7);}
+#cv.story{width:253px;height:450px;}
+#cv.info{width:360px;height:450px;overflow-y:auto;}
+
+.panel{width:290px;flex-shrink:0;background:#170404;border-left:1px solid rgba(201,160,122,.1);padding:14px 12px;overflow-y:auto;}
+.sec{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid rgba(201,160,122,.07);}
+.sl{font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(201,160,122,.5);display:block;margin-bottom:7px;}
+.brow{display:flex;flex-wrap:wrap;gap:3px;}
+.b{background:rgba(201,160,122,.05);border:1px solid rgba(201,160,122,.12);color:rgba(245,230,208,.55);font-size:.54rem;letter-spacing:.05em;padding:5px 9px;cursor:pointer;transition:all .2s;font-family:'Montserrat',sans-serif;}
+.b:hover{background:rgba(201,160,122,.13);color:#f5e6d0;}
+.b.on{background:rgba(120,20,20,.6);border-color:rgba(201,160,122,.4);color:var(--gold);}
+.dbtn{width:100%;background:linear-gradient(135deg,#7a1515,#4a0808);border:none;color:#f5e6d0;font-family:'Montserrat',sans-serif;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;padding:12px;cursor:pointer;margin-bottom:5px;transition:all .3s;}
+.dbtn:hover{background:linear-gradient(135deg,#8a1818,#5a1010);}
+.tip{font-size:.5rem;color:rgba(201,160,122,.4);line-height:1.65;margin-top:5px;}
+.cbox{background:rgba(201,160,122,.05);border:1px solid rgba(201,160,122,.18);padding:11px;margin-top:4px;}
+.ctxt{font-size:.6rem;line-height:1.7;color:rgba(245,230,208,.8);white-space:pre-wrap;word-break:break-word;}
+.ccopy{width:100%;background:rgba(201,160,122,.1);border:1px solid rgba(201,160,122,.2);color:var(--gold);font-family:'Montserrat',sans-serif;font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;padding:7px;cursor:pointer;margin-top:7px;transition:all .2s;}
+.ccopy:hover{background:rgba(201,160,122,.2);}
+.ccopy.ok{background:rgba(20,100,20,.3);color:#6fdd6f;border-color:rgba(111,221,111,.3);}
+
+/* INFO CARD */
+.ic{background:rgba(201,160,122,.06);border:1px solid rgba(201,160,122,.15);padding:13px;margin-bottom:10px;}
+.ic h4{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--gold);margin-bottom:7px;font-weight:400;}
+.ic p{font-size:.58rem;line-height:1.75;color:rgba(245,230,208,.72);margin-bottom:5px;}
+.ic ul{padding-left:13px;}
+.ic li{font-size:.56rem;line-height:1.75;color:rgba(245,230,208,.68);margin-bottom:3px;}
+.ic .tag{display:inline-block;background:rgba(122,21,21,.4);border:1px solid rgba(201,160,122,.25);color:var(--gold);font-size:.48rem;letter-spacing:.1em;padding:2px 7px;margin:2px;}
+
+/* CORNER */
+.cr{position:absolute;width:28px;height:28px;border-style:solid;border-width:0;z-index:3;}
+.cr.tl{top:16px;left:16px;border-top-width:1px;border-left-width:1px;}
+.cr.tr{top:16px;right:16px;border-top-width:1px;border-right-width:1px;}
+.cr.bl{bottom:16px;left:16px;border-bottom-width:1px;border-left-width:1px;}
+.cr.br{bottom:16px;right:16px;border-bottom-width:1px;border-right-width:1px;}
+
+/* ANİMASYON */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes glowPulse{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes floatBottle{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes rotateSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+
+.anim-fadein{animation:fadeUp .8s ease forwards;}
+.anim-fadein2{animation:fadeUp .8s .2s ease both;}
+.anim-fadein3{animation:fadeUp .8s .4s ease both;}
+.anim-fadein4{animation:fadeUp .8s .6s ease both;}
+.anim-float{animation:floatBottle 3s ease-in-out infinite;}
+.anim-glow{animation:glowPulse 2.5s ease-in-out infinite;}
+.anim-scale{animation:scaleIn .6s ease forwards;}
+
+@media(max-width:680px){
+  .wrap{flex-direction:column;}
+  .panel{width:100%;border-left:none;border-top:1px solid rgba(201,160,122,.1);}
+  #cv{width:min(88vw,360px);height:calc(min(88vw,360px)*1.25);}
+  #cv.story{width:min(88vw,253px);height:calc(min(88vw,253px)*1.78);}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-logo">Shanze</div>
+  <div class="tb-tabs">
+    <button class="tbt on"  onclick="ST('parfum',this)">🖤 Parfüm</button>
+    <button class="tbt"     onclick="ST('alinti',this)">✦ Alıntı</button>
+    <button class="tbt"     onclick="ST('tanitim',this)">🌟 Tanıtım</button>
+    <button class="tbt"     onclick="ST('acilis',this)">🎉 Açılış</button>
+    <button class="tbt"     onclick="ST('story',this)">📱 Story</button>
+    <button class="tbt"     onclick="ST('kombin',this)">👔 Kombin</button>
+    <button class="tbt"     onclick="ST('strateji',this)">📊 Strateji</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="preview">
+    <div class="pinfo" id="pinfo">4:5 · 1080×1350 · Profilde kırpılmaz</div>
+    <div id="cv"></div>
+    <div class="pinfo">📱 Safari: İndir → uzun bas → Fotoğrafa Kaydet</div>
+  </div>
+
+  <div class="panel">
+    <!-- RENK -->
+    <div class="sec">
+      <span class="sl">Renk Teması</span>
+      <div class="brow">
+        <button class="b on" onclick="ST_tema('koyu',this)">🖤 Koyu</button>
+        <button class="b"    onclick="ST_tema('krem',this)">🤍 Krem</button>
+        <button class="b"    onclick="ST_tema('siyah',this)">⬛ Siyah</button>
+      </div>
+    </div>
+    <!-- PARFÜM -->
+    <div class="sec" id="sp">
+      <span class="sl">Parfüm</span>
+      <div class="brow" id="bp"></div>
+    </div>
+    <!-- ALINTI -->
+    <div class="sec" id="sa" style="display:none">
+      <span class="sl">Alıntı Seç</span>
+      <div class="brow" id="ba"></div>
+    </div>
+    <!-- TANITIM -->
+    <div class="sec" id="stn" style="display:none">
+      <span class="sl">Metin Seç</span>
+      <div class="brow" id="btn"></div>
+    </div>
+    <!-- AÇILIŞ -->
+    <div class="sec" id="sac" style="display:none">
+      <span class="sl">Seçenek</span>
+      <div class="brow" id="bac"></div>
+    </div>
+    <!-- STORY -->
+    <div class="sec" id="sst" style="display:none">
+      <span class="sl">Story Türü</span>
+      <div class="brow" id="bst"></div>
+      <div id="story-parfum-sec" style="display:none;margin-top:10px;">
+        <span class="sl">Parfüm</span>
+        <div class="brow" id="bstp"></div>
+      </div>
+    </div>
+    <!-- KOMBİN -->
+    <div class="sec" id="sko" style="display:none">
+      <span class="sl">Stil Seç</span>
+      <div class="brow" id="bko"></div>
+    </div>
+    <!-- STRATEJİ -->
+    <div class="sec" id="sstr" style="display:none">
+      <span class="sl">Konu</span>
+      <div class="brow" id="bstr"></div>
+    </div>
+    <!-- CAPTION -->
+    <div class="sec" id="sec-caption">
+      <span class="sl">📋 Post Altı Yazısı</span>
+      <div class="cbox"><div class="ctxt" id="ctxt">—</div></div>
+      <button class="ccopy" id="cbtn" onclick="kopyala()">📋 Kopyala</button>
+    </div>
+    <!-- İNDİR -->
+    <div class="sec">
+      <span class="sl">Kaydet</span>
+      <button class="dbtn" onclick="indir()">⬇ PNG İndir</button>
+      <p class="tip">📱 iPhone: Yeni sekmede açılır → görsele uzun bas</p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+// ══════════════════════════════
+//  VERİLER
+// ══════════════════════════════
+
+const T = {
+  koyu:{bg:'linear-gradient(160deg,#2d0a0a 0%,#1a0404 45%,#0d0202 100%)',rad:'rgba(122,21,21,0.4)',txt:'#fff',gold:'#c9a07a',brd:'rgba(201,160,122,0.28)',sub:'rgba(245,230,208,0.65)',aTop:'linear-gradient(135deg,#5a0a0a,#2d0a0a)',aBot:'#150303'},
+  krem: {bg:'linear-gradient(160deg,#f5e6d0 0%,#ede0cc 45%,#e8d8c4 100%)',rad:'rgba(122,21,21,0.07)',txt:'#2d0a0a',gold:'#8a5020',brd:'rgba(122,21,21,0.2)',sub:'rgba(45,10,10,0.6)',aTop:'linear-gradient(135deg,#e0cdb8,#d4bfa8)',aBot:'#ddd0bc'},
+  siyah:{bg:'linear-gradient(160deg,#0a0a0a 0%,#111 45%,#080808 100%)',rad:'rgba(180,130,60,0.22)',txt:'#fff',gold:'#d4a96a',brd:'rgba(212,169,106,0.28)',sub:'rgba(220,190,150,0.65)',aTop:'linear-gradient(135deg,#1a1a1a,#0d0d0d)',aBot:'#0a0a0a'},
+};
+
+const PARFUMLER=[
+  {id:0,num:'No.01',name:'Gold Fire',  type:'EDP · Oryantal & Meyveli · Erkek',  notes:['Mango','Oud','Amber','Misk','Yasemin'],
+   caption:'Aztek ateşinden doğan bir koku 🔥\n\nMango, oud ve amber\'in mistik dansı — tene vurulduğunda sadece sen hissediyorsun, ama herkes fark ediyor.\n\n✦ Gold Fire · 800 ₺\n📩 Sipariş için DM\n\n#shanze #parfum #luksparfum',
+   svg:`<svg width="92" height="162" viewBox="0 0 92 162" fill="none"><rect x="33" y="4" width="26" height="16" rx="2" fill="rgba(90,10,10,0.85)" stroke="currentColor" stroke-width="0.8" opacity="0.7"/><path d="M14 34L78 34L84 140Q84 152 46 152Q8 152 8 140Z" fill="rgba(90,10,10,0.38)" stroke="currentColor" stroke-width="0.8" opacity="0.6"/><path d="M26 20L66 20L78 34L14 34Z" fill="currentColor" opacity="0.15"/><rect x="18" y="48" width="56" height="64" rx="1" fill="currentColor" opacity="0.04" stroke="currentColor" stroke-width="0.6" opacity="0.18"/></svg>`},
+  {id:1,num:'No.02',name:'Strong Stent',type:'EDP · Oryantal & Baharatlı · Erkek',notes:['Toffee','Vanilya','Tonka','Kardamom'],
+   caption:'İlk bakışın kokusu 💫\n\nKardamom ve toffee\'nin cesur açılışı, vanilya ve tonka\'nın sıcak sarmalı.\n\n✦ Strong Stent · 800 ₺\n📩 Sipariş için DM\n\n#shanze #parfum #luksparfum',
+   svg:`<svg width="92" height="162" viewBox="0 0 92 162" fill="none"><rect x="35" y="3" width="22" height="14" rx="2" fill="rgba(90,10,10,0.85)" stroke="currentColor" stroke-width="0.8" opacity="0.7"/><rect x="10" y="20" width="72" height="132" rx="5" fill="rgba(90,10,10,0.35)" stroke="currentColor" stroke-width="0.8" opacity="0.6"/><path d="M26 17L66 17L70 20L22 20Z" fill="currentColor" opacity="0.16"/><rect x="14" y="28" width="64" height="1.2" fill="currentColor" opacity="0.3"/><rect x="14" y="142" width="64" height="1.2" fill="currentColor" opacity="0.3"/></svg>`},
+  {id:2,num:'No.03',name:'Kirce',      type:'Extrait · Çiçeksi & Meyveli · Unisex',notes:['Şeftali','Müguştiyi','Misk','Sandal'],
+   caption:'Büyücü adanın kokusu 🌿\n\nŞeftali ve müguştiyinin tropikal açılışı, sandal ve misk\'in derin tabanında yaşıyor.\n\n✦ Kirce · 800 ₺ · Unisex\n📩 Sipariş için DM\n\n#shanze #parfum #luksparfum',
+   svg:`<svg width="92" height="162" viewBox="0 0 92 162" fill="none"><ellipse cx="46" cy="12" rx="14" ry="10" fill="rgba(90,10,10,0.85)" stroke="currentColor" stroke-width="0.8" opacity="0.7"/><path d="M14 32Q14 22 46 22Q78 22 78 32L80 140Q80 152 46 152Q12 152 12 140Z" fill="rgba(90,10,10,0.35)" stroke="currentColor" stroke-width="0.8" opacity="0.6"/><ellipse cx="46" cy="90" rx="18" ry="24" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.18"/><circle cx="46" cy="90" r="4" fill="currentColor" opacity="0.18"/></svg>`},
+  {id:3,num:'No.04',name:'Paralox',    type:'EDP · Çiçeksi & Amber · Kadın',     notes:['Neroli','Bergamot','Amber','Beyaz Misk'],
+   caption:'Zıtlıkların mükemmel dengesi ✨\n\nBergamot ve neroli\'nin taze zarafeti, amber ve beyaz misk\'in kadifemsi tabanı.\n\n✦ Paralox · 800 ₺ · Kadın\n📩 Sipariş için DM\n\n#shanze #parfum #luksparfum',
+   svg:`<svg width="92" height="162" viewBox="0 0 92 162" fill="none"><rect x="33" y="3" width="26" height="16" rx="3" fill="rgba(90,10,10,0.85)" stroke="currentColor" stroke-width="0.8" opacity="0.7"/><rect x="10" y="22" width="72" height="130" rx="7" fill="rgba(90,10,10,0.35)" stroke="currentColor" stroke-width="0.8" opacity="0.6"/><path d="M26 19L66 19L72 22L20 22Z" fill="currentColor" opacity="0.16"/><rect x="14" y="30" width="64" height="1.2" fill="currentColor" opacity="0.32"/></svg>`},
+  {id:4,num:'No.05',name:'Althear',    type:'EDP · Oryantal & Gourmand · Erkek', notes:['Pralin','Vanilya','Kardamom','Ambroxan'],
+   caption:'Yıldızların altında tatlı bir sır 🌙\n\nKardamom ve tarçının baharatlı açılışı, pralin ve vanilyanın sarmalında kaybolur.\n\n✦ Althear · 800 ₺\n📩 Sipariş için DM\n\n#shanze #parfum #luksparfum',
+   svg:`<svg width="92" height="162" viewBox="0 0 92 162" fill="none"><polygon points="46,3 62,20 30,20" fill="rgba(90,10,10,0.85)" stroke="currentColor" stroke-width="0.8" opacity="0.7"/><path d="M12 33L80 33L86 140Q86 152 46 152Q6 152 6 140Z" fill="rgba(90,10,10,0.35)" stroke="currentColor" stroke-width="0.8" opacity="0.6"/><path d="M26 20L66 20L80 33L12 33Z" fill="currentColor" opacity="0.14"/><circle cx="46" cy="95" r="14" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.18"/></svg>`},
+  {id:5,num:'No.06',name:'Le Paradise',type:'EDP · Taze & Tropikal · Erkek',     notes:['Nane','Hindistan Cevizi','Tonka','Sandal'],
+   caption:'Cennet bahçesinden bir esinti 🌊\n\nNane açılışı, hindistan cevizi ve incirin tropikal kalbi — her sabah kendinizi yeniliyorsunuz.\n\n✦ Le Paradise · 800 ₺\n📩 Sipariş için DM\n\n#shanze #parfum #luksparfum',
+   svg:`<svg width="92" height="162" viewBox="0 0 92 162" fill="none"><circle cx="46" cy="13" r="11" fill="rgba(90,10,10,0.85)" stroke="currentColor" stroke-width="0.8" opacity="0.7"/><path d="M14 30Q14 24 46 24Q78 24 78 30L78 140Q78 152 46 152Q14 152 14 140Z" fill="rgba(90,10,10,0.35)" stroke="currentColor" stroke-width="0.8" opacity="0.6"/><circle cx="46" cy="90" r="20" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.16"/><circle cx="46" cy="90" r="4" fill="currentColor" opacity="0.22"/></svg>`},
+];
+
+const ALINTILER=[
+  {l:'Hafıza',    t:'Bir koku bin kelimeden daha güçlü bir anıyı taşır.',              c:'Bir koku bin kelimeden daha güçlü bir anıyı taşır 🖤\n\nShanze Lüks Parfümeri · @shanzeparfum\n\n#shanze #parfum #luksparfum'},
+  {l:'Kimlik',    t:'Koku, göremeyeceğin ama her yerde hissedebileceğin tek aksesuardır.',c:'Koku, göremeyeceğin ama her yerde hissedebileceğin tek aksesuardır ✦\n\n@shanzeparfum\n\n#shanze #parfum #luksparfum'},
+  {l:'İzlenim',   t:'İlk izlenim gözle değil, kokuyla başlar.',                         c:'İlk izlenim gözle değil, kokuyla başlar ✨\n\n@shanzeparfum\n\n#shanze #parfum #luksparfum'},
+  {l:'Sır',       t:'Her parfüm, taşıyanın söylemediği bir sırdır.',                    c:'Her parfüm, taşıyanın söylemediği bir sırdır 🖤\n\n@shanzeparfum\n\n#shanze #parfum #luksparfum'},
+  {l:'Kurtarır',  t:'Doğru koku, yanlış bir günü bile kurtarır.',                      c:'Doğru koku, yanlış bir günü bile kurtarır 💫\n\n@shanzeparfum\n\n#shanze #parfum #luksparfum'},
+  {l:'Anı',       t:'Onu hatırlatan tek şey bazen sadece bir kokudur.',                 c:'Onu hatırlatan tek şey bazen sadece bir kokudur 🌹\n\n@shanzeparfum\n\n#shanze #parfum #luksparfum'},
+  {l:'Sabah',     t:'Günün ilk kokusu, o günün tonu hakkında her şeyi söyler.',        c:'Günün ilk kokusu, o günün tonu hakkında her şeyi söyler 🌅\n\n@shanzeparfum\n\n#shanze #parfum'},
+  {l:'Karakter',  t:'Giysiler değişir, koku seni ele verir.',                          c:'Giysiler değişir, koku seni ele verir 🖤\n\n@shanzeparfum\n\n#shanze #parfum #luksparfum'},
+  {l:'Sessizlik', t:'En güçlü varlık bazen sessiz kokar.',                              c:'En güçlü varlık bazen sessiz kokar ✦\n\n@shanzeparfum\n\n#shanze #parfum #luksparfum'},
+  {l:'Gece',      t:'Gece kokuları başka bir dilde konuşur.',                          c:'Gece kokuları başka bir dilde konuşur 🌙\n\n@shanzeparfum\n\n#shanze #parfum #geceParfumu'},
+  {l:'Özgürlük',  t:'Doğru koku seni özgür hissettirir. Yanlış koku ise hapseder.',   c:'Doğru koku seni özgür hissettirir ✨\n\n@shanzeparfum\n\n#shanze #parfum #luksparfum'},
+  {l:'Gerçek Lüks',t:'Gerçek lüks görünmez, hissedilir — ve kokar.',                  c:'Gerçek lüks görünmez, hissedilir — ve kokar 🖤\n\n@shanzeparfum\n\n#shanze #luksparfum'},
+];
+
+const TANITIMLAR=[
+  {l:'Ana',      t:'Şişeye hapsolmuş anılar, tene işleyen hikayeler. Shanze ile her koku sana özel bir dünya açar.',c:'Shanze burada 🖤✨\n\nŞişeye hapsolmuş anılar, tene işleyen hikayeler.\n\n6 parfüm · 800 ₺ · Türkiye geneli\n📩 DM ile sipariş\n\n#shanze #yenikoleksiyon #luksparfum'},
+  {l:'Güçlü',   t:'6 parfüm. 6 hikaye. 1 marka. Shanze ile kokunun gücünü keşfet.',  c:'6 parfüm. 6 hikaye. 1 marka 🖤\n\n800 ₺ · DM ile sipariş\n\n#shanze #luksparfum #nishparfum'},
+  {l:'Duygusal', t:'Bazı anlar kelimelerle anlatılamaz. Onları kokularla yaşa.',       c:'Bazı anlar kelimelerle anlatılamaz ✦\n\nOnları kokularla yaşa.\n\n📩 DM · 800 ₺\n\n#shanze #parfum #luksparfum'},
+  {l:'Lüks',    t:'Lüks bir ayrıcalık değil, bir tercihtir. Shanze bu tercihin adresi.',c:'Lüks bir ayrıcalık değil, bir tercihtir 🖤\n\n800 ₺ · @shanzeparfum\n\n#shanze #luksparfum'},
+  {l:'Fiyat',   t:'Tüm parfümler sabit fiyat: 800 ₺. Kaliteden ödün vermeden lüks.',  c:'Tüm parfümler 800 ₺ 🖤\n\nKaliteden ödün vermeden lüks.\n\n📩 DM · @shanzeparfum\n\n#shanze #parfum'},
+  {l:'Hikaye',  t:'Her şişenin arkasında bir mitoloji, bir efsane, bir duygu var.',    c:'Her şişenin arkasında bir hikaye var 📖🖤\n\nShanze sadece parfüm satmıyor.\n\n📩 DM · 800 ₺\n\n#shanze #parfum #luksparfum'},
+];
+
+const ACILISLAR=[
+  {l:'Yeni Koleksiyon',w:'YENİ',   em:'Koleksiyon',title:'6 yeni koku, 6 farklı hikaye',       c:'YENİ KOLEKSİYON 🎉🖤\n\n6 koku, 6 hikaye. Gold Fire · Strong Stent · Kirce · Paralox · Althear · Le Paradise\n\n✦ 800 ₺ · DM ile sipariş\n\n#shanze #yenikoleksiyon #luksparfum'},
+  {l:'Artık Burada',  w:'ARTIK',  em:'Burada',     title:'Shanze koleksiyonu sipariş alıyor',  c:'ARTIK BURADA 🖤\n\nShanze koleksiyonu sipariş alıyor.\n\n✦ 800 ₺ · @shanzeparfum\n\n#shanze #luksparfum'},
+  {l:'Keşfet',        w:'KEŞFET', em:'Shanze',     title:'Senin kokunla tanışma vakti geldi',  c:'Senin kokunla tanışma vakti geldi ✦\n\n6 parfüm, 6 ruh hali.\n\n📩 DM · 800 ₺\n\n#shanze #parfum #luksparfum'},
+  {l:'Tanışın',       w:'TANIŞIN',em:'Shanze',     title:'Türkiye\'nin en özgün parfüm koleksiyonu',c:'TANIŞIN: Shanze 🖤\n\nTürkiye\'nin en özgün parfüm koleksiyonu.\n\n800 ₺ · DM ile sipariş\n\n#shanze #yenikoleksiyon #luksparfum'},
+  {l:'Kargo Ücretsiz',w:'KARGO',  em:'Ücretsiz',   title:'1600 ₺ ve üzeri siparişlerde',       c:'KARGO ÜCRETSİZ 🚀\n\n2 parfüm al, kargo bizden! 800₺ × 2 = 1600₺\n\n📩 DM ile sipariş\n\n#shanze #parfum #kampanya'},
+];
+
+const STORYLER=[
+  {l:'Günün Kokusu', tip:'gunun',  c:'Bugünün kokusu ✦\n\n@shanzeparfum · 800 ₺ · DM ile sipariş\n\n#shanze #gununkokusu #parfum'},
+  {l:'Anket',        tip:'anket',  c:'Sabah mı gece mi? Cevabını yorum yaz 👇\n\n@shanzeparfum\n\n#shanze #parfum'},
+  {l:'Bu mu / Bu mu',tip:'bubu',   c:'Hangisi senin? A yoksa B?\n\n@shanzeparfum · DM ile sipariş\n\n#shanze #parfum'},
+  {l:'Koku Testi',   tip:'test',   c:'Ruh halini anlat, sana özel koku önerelim 🖤\n\n@shanzeparfum\n\n#shanze #parfum'},
+  {l:'Sipariş Çağrı',tip:'dm',     c:'Sipariş için DM at 📩\n\n6 parfüm · 800 ₺ · Türkiye geneli teslimat\n@shanzeparfum'},
+  {l:'Kargo Kampanya',tip:'kargo', c:'2 parfüm al, kargo ücretsiz 🚀\n\n1600₺ ve üzeri · @shanzeparfum\n\n#shanze #kampanya'},
+];
+
+const KOMBINLER=[
+  {l:'İş Toplantısı', stil:'Takım elbise · Saat · Oxford ayakkabı', parfum:'Strong Stent', neden:'Tonka ve vanilyanın otoriter sarmalı, toplantı odasında fark yaratır.', emoj:'👔',
+   c:'İş toplantısı kombininin tamamlayıcısı: Strong Stent 💼\n\nTonka ve vanilya — güç ve zarafeti aynı anda taşı.\n\n✦ 800 ₺ · DM ile sipariş\n\n#shanze #parfum #erkekstili #luksparfum'},
+  {l:'Gece Çıkışı',   stil:'Siyah takım · Metal aksesuar · Deri ayakkabı', parfum:'Gold Fire', neden:'Oud ve amber\'in mistik derinliği, gece çıkışlarının en güçlü silahı.', emoj:'🌙',
+   c:'Gece çıkışı kombininin vazgeçilmezi: Gold Fire 🌙\n\nOud ve amber — geceyi sana ait kıl.\n\n✦ 800 ₺ · DM ile sipariş\n\n#shanze #parfum #gecestili #luksparfum'},
+  {l:'Hafta Sonu',    stil:'Chino · Beyaz gömlek · Sneaker', parfum:'Le Paradise', neden:'Nane ve hindistan cevizinin tropikal ferahlığı, rahat bir hafta sonu için ideal.', emoj:'☀️',
+   c:'Hafta sonu kombininin ruhu: Le Paradise ☀️\n\nNane ve hindistan cevizi — hafif, taze, özgür.\n\n✦ 800 ₺ · DM ile sipariş\n\n#shanze #parfum #haftasonu #luksparfum'},
+  {l:'Romantik Akşam',stil:'Lacivert blazer · Sade gömlek · Klasik saat', parfum:'Althear', neden:'Pralin ve vanilyanın tatlı sıcaklığı, romantik bir akşam için biçilmiş kaftan.', emoj:'🌹',
+   c:'Romantik akşam kombininin sırrı: Althear 🌹\n\nPralin ve vanilya — yaklaşınca unutulmaz ol.\n\n✦ 800 ₺ · DM ile sipariş\n\n#shanze #parfum #romantik #luksparfum'},
+  {l:'Yaz Sabahı',    stil:'Beyaz linen gömlek · Açık renk pantolon', parfum:'Kirce', neden:'Şeftali ve müguştiyinin tropikal hafifliği, yaz sabahlarına en iyi eşlik eder.', emoj:'🌿',
+   c:'Yaz sabahı kombininin tamamlayıcısı: Kirce 🌿\n\nŞeftali ve misk — sabahın en güzel kokusu.\n\n✦ 800 ₺ · Unisex · DM ile sipariş\n\n#shanze #parfum #yazstili #luksparfum'},
+  {l:'Özel Davet',    stil:'Smoking · Cep mendili · Rugan ayakkabı', parfum:'Paralox', neden:'Bergamot ve amberın derin zarafeti, özel davetlerde iz bırakır.', emoj:'✨',
+   c:'Özel davet kombininin tamamlayıcısı: Paralox ✨\n\nBergamot ve amber — zarif, kalıcı, etkileyici.\n\n✦ 800 ₺ · DM ile sipariş\n\n#shanze #parfum #ozelgun #luksparfum'},
+];
+
+const STRATEJILER=[
+  {l:'🔥 Ne Tutuyor?', html:`<div class="ic"><h4>Parfüm hesaplarında en çok ne işe yarıyor?</h4><ul><li><b>📖 Hikaye içerikleri</b> — parfümün nereden ilham aldığı, mitoloji bağlantısı. En çok kaydedilen içerik türü.</li><li><b>🎯 Kişilik testi tarzı</b> — "Sabah mı gece misin?" gibi paylaşımlar. En çok yorum alan.</li><li><b>🌅 Günün kokusu story</b> — her gün "bugün ne sıktım". Takipçi bağlılığını en çok artıran.</li><li><b>💡 Kombin + parfüm</b> — "Bu kombine bu koku" formatı. Kaydedilme oranı çok yüksek.</li></ul></div>`},
+  {l:'📊 Format Sıralaması', html:`<div class="ic"><h4>Hangi format ne kadar etkileşim getirir?</h4><ul><li>🥇 <b>Reels</b> — en fazla yeni takipçi, keşfete düşer</li><li>🥈 <b>Carousel (kaydır)</b> — en çok kaydedilen. "Koku rehberi" tarzı</li><li>🥉 <b>Story anketleri</b> — en çok DM ve sipariş</li><li>4️⃣ <b>Alıntı görselleri</b> — kaydedilme oranı yüksek</li><li>5️⃣ <b>Ürün fotoğrafı</b> — en az organik erişim ama güven oluşturur</li></ul></div>`},
+  {l:'📅 Haftalık Plan', html:`<div class="ic"><h4>İdeal haftalık içerik takvimi</h4><ul><li><b>Pazartesi</b> — Alıntı / mood (🤍 krem tema)</li><li><b>Çarşamba</b> — Parfüm tanıtımı (🖤 koyu tema)</li><li><b>Cuma</b> — Kombin + parfüm (⬛ siyah tema)</li><li><b>Pazar</b> — Hikaye/lore içeriği</li><li><b>Her gün</b> — Story: günün kokusu + anket</li></ul><p style="margin-top:8px;color:rgba(201,160,122,.6)">💡 Koyu–Krem–Koyu sıralamasıyla paylaş</p></div>`},
+  {l:'⏰ En İyi Saatler', html:`<div class="ic"><h4>Ne zaman paylaşmalısın?</h4><ul><li>🌅 <b>07:00–09:00</b> — sabah rutini kitlesi</li><li>🌙 <b>20:00–22:00</b> — en yüksek etkileşim saati</li></ul><p>Paylaşım sonrası <b style="color:var(--gold)">ilk 1 saat kritik</b> — gelen yorumlara hemen cevap ver.</p></div>`},
+  {l:'💬 Yorum Artırma', html:`<div class="ic"><h4>Nasıl daha fazla yorum alırsın?</h4><ul><li>Caption sonuna soru ekle: <i>"Sen hangisini tercih ederdin?"</i></li><li>Cümle tamamlama: <i>"Benim imza koküm ___ çünkü..."</i></li><li>Story anketinden en çok oyu post olarak paylaş</li><li>Her yoruma cevap ver — algoritma aktif hesapları öne çıkarır</li></ul></div>`},
+  {l:'🎯 Hedef Kitle', html:`<div class="ic"><h4>Shanze'nin hedef kitlesi</h4><ul><li>👨 <b>Erkek 22–35</b> — oryantal/oud sevenler</li><li>👩 <b>Kadın 20–30</b> — Paralox için, çiçeksi amber</li><li>🌍 <b>Unisex</b> — Kirce için, niş parfüm meraklıları</li></ul><p>En iyi hashtagler:</p><div><span class="tag">#luksparfum</span><span class="tag">#nishparfum</span><span class="tag">#erkekparfumu</span><span class="tag">#ouddparfum</span><span class="tag">#shanze</span></div></div>`},
+];
+
+// ══════════════════════════════
+//  STATE
+// ══════════════════════════════
+let sablon='parfum', tema='koyu';
+let iP=0,iA=0,iTN=0,iAC=0,iST=0,iSTP=0,iKO=0,iSTR=0;
+
+// ══════════════════════════════
+//  BUTONLAR
+// ══════════════════════════════
+function mkBtns(id,arr,labelKey,cb,activeIdx){
+  const el=document.getElementById(id);
+  el.innerHTML=arr.map((x,i)=>`<button class="b${i===activeIdx?' on':''}" onclick="${cb}(${i},this)">${x[labelKey]||x.l}</button>`).join('');
+}
+function buildAll(){
+  mkBtns('bp',PARFUMLER,'name','selP',iP);
+  mkBtns('ba',ALINTILER,'l','selA',iA);
+  mkBtns('btn',TANITIMLAR,'l','selTN',iTN);
+  mkBtns('bac',ACILISLAR,'l','selAC',iAC);
+  mkBtns('bst',STORYLER,'l','selST',iST);
+  mkBtns('bstp',PARFUMLER,'name','selSTP',iSTP);
+  mkBtns('bko',KOMBINLER,'l','selKO',iKO);
+  mkBtns('bstr',STRATEJILER,'l','selSTR',iSTR);
+}
+function grp(id,i){document.querySelectorAll('#'+id+' .b').forEach((b,j)=>b.classList.toggle('on',j===i));}
+
+function selP(i,b){iP=i;grp('bp',i);render();}
+function selA(i,b){iA=i;grp('ba',i);render();}
+function selTN(i,b){iTN=i;grp('btn',i);render();}
+function selAC(i,b){iAC=i;grp('bac',i);render();}
+function selST(i,b){
+  iST=i;grp('bst',i);
+  document.getElementById('story-parfum-sec').style.display=STORYLER[i].tip==='gunun'?'block':'none';
+  render();
+}
+function selSTP(i,b){iSTP=i;grp('bstp',i);render();}
+function selKO(i,b){iKO=i;grp('bko',i);render();}
+function selSTR(i,b){iSTR=i;grp('bstr',i);renderStrateji();}
+
+// ══════════════════════════════
+//  SEKME DEĞİŞTİR
+// ══════════════════════════════
+function ST(s,btn){
+  sablon=s;
+  document.querySelectorAll('.tbt').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  ['sp','sa','stn','sac','sst','sko','sstr'].forEach(id=>document.getElementById(id).style.display='none');
+  const map={parfum:'sp',alinti:'sa',tanitim:'stn',acilis:'sac',story:'sst',kombin:'sko',strateji:'sstr'};
+  if(map[s])document.getElementById(map[s]).style.display='block';
+  document.getElementById('sec-caption').style.display=s==='strateji'?'none':'block';
+  const cv=document.getElementById('cv');
+  cv.className=s==='story'?'story':'';
+  document.getElementById('pinfo').textContent=s==='story'?'9:16 · Story Formatı':s==='strateji'?'İçerik Rehberi':'4:5 · 1080×1350 · Profilde kırpılmaz';
+  render();
+}
+function ST_tema(t,btn){
+  tema=t;
+  document.querySelectorAll('.panel .sec:first-child .b').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  render();
+}
+
+// ══════════════════════════════
+//  CAPTION
+// ══════════════════════════════
+function setCaption(txt){document.getElementById('ctxt').textContent=txt;document.getElementById('cbtn').textContent='📋 Kopyala';document.getElementById('cbtn').classList.remove('ok');}
+function kopyala(){
+  const txt=document.getElementById('ctxt').textContent;
+  const btn=document.getElementById('cbtn');
+  const ok=()=>{btn.textContent='✅ Kopyalandı!';btn.classList.add('ok');setTimeout(()=>{btn.textContent='📋 Kopyala';btn.classList.remove('ok');},2500);};
+  navigator.clipboard?navigator.clipboard.writeText(txt).then(ok):(()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);ok();})();
+}
+
+// ══════════════════════════════
+//  YARDIMCILAR
+// ══════════════════════════════
+function CRS(t){return`<div class="cr tl" style="border-color:${t.brd}"></div><div class="cr tr" style="border-color:${t.brd}"></div><div class="cr bl" style="border-color:${t.brd}"></div><div class="cr br" style="border-color:${t.brd}"></div>`;}
+
+// ══════════════════════════════
+//  RENDER
+// ══════════════════════════════
+function render(){
+  const cv=document.getElementById('cv');
+  const tm=T[tema];
+  if(sablon==='parfum')  rParfum(cv,tm);
+  else if(sablon==='alinti')   rAlinti(cv,tm);
+  else if(sablon==='tanitim')  rTanitim(cv,tm);
+  else if(sablon==='acilis')   rAcilis(cv,tm);
+  else if(sablon==='story')    rStory(cv,tm);
+  else if(sablon==='kombin')   rKombin(cv,tm);
+  else if(sablon==='strateji') renderStrateji();
+}
+
+function rParfum(cv,tm){
+  const p=PARFUMLER[iP];
+  setCaption(p.caption);
+  const g=tema==='krem'?'rgba(122,21,21,0.12)':tema==='siyah'?'rgba(180,130,60,0.35)':'rgba(122,21,21,0.5)';
+  cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;background:${tm.bg}">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 65% 45% at 68% 32%,${tm.rad} 0%,transparent 70%)"></div>
+    ${CRS(tm)}
+    <div class="anim-fadein" style="position:relative;z-index:2;padding:22px 22px 0">
+      <div style="font-size:.3rem;letter-spacing:.48em;text-transform:uppercase;color:${tm.gold}">Shanze · Lüks Parfümeri</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:.6rem;font-weight:300;color:${tm.gold};opacity:.4;margin-top:2px">${p.num}</div>
+    </div>
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;">
+      <div style="position:absolute;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,${g} 0%,transparent 70%)" class="anim-glow"></div>
+      <div class="anim-float" style="color:${tm.gold}">${p.svg}</div>
+    </div>
+    <div class="anim-fadein3" style="position:relative;z-index:2;padding:0 22px 22px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:${tm.txt};letter-spacing:.06em;line-height:1">${p.name}</div>
+      <div style="font-size:.3rem;letter-spacing:.32em;text-transform:uppercase;color:${tm.gold};opacity:.7;margin:5px 0 10px">${p.type}</div>
+      <div style="width:32px;height:1px;background:linear-gradient(to right,${tm.gold},transparent);margin-bottom:10px"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px">${p.notes.map(n=>`<span style="font-size:.28rem;letter-spacing:.14em;text-transform:uppercase;border:1px solid ${tm.brd};padding:2px 7px;color:${tm.sub}">${n}</span>`).join('')}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:${tm.gold}">800 ₺</div>
+        <div style="font-size:.28rem;letter-spacing:.26em;text-transform:uppercase;color:${tm.gold};opacity:.45">@shanzeparfum</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function rAlinti(cv,tm){
+  const a=ALINTILER[iA];
+  setCaption(a.c);
+  const lb=tema==='krem'?'rgba(122,21,21,0.04)':'rgba(201,160,122,0.025)';
+  const cb=tema==='krem'?'rgba(122,21,21,0.06)':'rgba(201,160,122,0.05)';
+  cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:${tm.bg}">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 44px,${lb} 44px,${lb} 45px)"></div>
+    <div style="position:absolute;width:360px;height:360px;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;border:1px solid ${cb}"></div>
+    <div style="position:absolute;width:260px;height:260px;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;border:1px solid ${cb}"></div>
+    ${CRS(tm)}
+    <div class="anim-scale" style="position:relative;z-index:2;text-align:center;padding:36px 30px;width:100%">
+      <div style="font-size:.65rem;letter-spacing:.45em;color:${tm.gold};margin-bottom:20px;opacity:.4" class="anim-fadein">— ✦ —</div>
+      <div class="anim-fadein2" style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:300;font-style:italic;line-height:1.65;color:${tm.txt}">&ldquo;${a.t}&rdquo;</div>
+      <div style="width:28px;height:1px;background:${tm.gold};margin:18px auto 14px"></div>
+      <div class="anim-fadein3" style="font-size:.28rem;letter-spacing:.36em;text-transform:uppercase;color:${tm.gold};opacity:.55">Shanze · Lüks Parfümeri</div>
+    </div>
+    <div style="position:absolute;bottom:22px;left:0;right:0;text-align:center;z-index:2">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;letter-spacing:.3em;opacity:.16;color:${tm.txt}">SHANZE</div>
+      <div style="font-size:.26rem;letter-spacing:.28em;text-transform:uppercase;opacity:.28;color:${tm.gold};margin-top:2px">@shanzeparfum</div>
+    </div>
+  </div>`;
+}
+
+function rTanitim(cv,tm){
+  const t=TANITIMLAR[iTN];
+  setCaption(t.c);
+  const gb=tema==='krem'?'rgba(122,21,21,0.05)':'rgba(122,21,21,0.28)';
+  cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:${tm.bg}">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 50%,${gb} 0%,transparent 70%)"></div>
+    ${CRS(tm)}
+    <div style="position:relative;z-index:2;text-align:center;padding:22px 26px;width:100%">
+      <div class="anim-fadein" style="font-size:.65rem;letter-spacing:.45em;color:${tm.gold};margin-bottom:13px;opacity:.38">— ✦ —</div>
+      <div class="anim-fadein" style="font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;letter-spacing:.3em;line-height:1;margin-bottom:5px;color:${tm.txt}">SHANZE</div>
+      <div class="anim-fadein2" style="font-size:.3rem;letter-spacing:.5em;text-transform:uppercase;color:${tm.gold};margin-bottom:16px">Lüks Parfümeri</div>
+      <div style="width:42px;height:1px;background:linear-gradient(to right,transparent,${tm.gold},transparent);margin:0 auto 16px"></div>
+      <div class="anim-fadein2" style="font-family:'Cormorant Garamond',serif;font-size:.7rem;font-style:italic;line-height:1.65;color:${tm.sub};margin-bottom:14px">${t.t}</div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin-bottom:14px">${PARFUMLER.map(p=>`<span style="font-size:.26rem;letter-spacing:.14em;text-transform:uppercase;border:1px solid ${tm.brd};padding:2px 7px;color:${tm.sub}">${p.name}</span>`).join('')}</div>
+      <div class="anim-fadein3" style="display:inline-block;border:1px solid ${tm.brd};padding:7px 20px;font-size:.28rem;letter-spacing:.3em;text-transform:uppercase;color:${tm.gold}">@shanzeparfum</div>
+    </div>
+    <div style="position:absolute;bottom:20px;font-size:.26rem;letter-spacing:.28em;text-transform:uppercase;color:${tm.gold};opacity:.3">@shanzeparfum</div>
+  </div>`;
+}
+
+function rAcilis(cv,tm){
+  const a=ACILISLAR[iAC];
+  setCaption(a.c);
+  cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;background:${tm.bg}">
+    <div style="flex:1;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:${tm.aTop}">
+      <div style="position:absolute;font-family:'Cormorant Garamond',serif;font-size:4rem;letter-spacing:.2em;opacity:.08;font-weight:300;white-space:nowrap;color:${tm.txt}">${a.w}</div>
+      <div style="position:relative;z-index:2;text-align:center">
+        <div class="anim-fadein" style="font-size:.58rem;letter-spacing:.5em;color:${tm.gold};opacity:.35;margin-bottom:13px">— ✦ —</div>
+        <div class="anim-fadein2" style="font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;letter-spacing:.32em;color:${tm.txt};text-align:center">${a.w} <em style="color:${tm.gold}">${a.em}</em></div>
+        <div style="width:1px;height:42px;background:linear-gradient(to bottom,transparent,${tm.gold},transparent);margin:12px auto;opacity:.35"></div>
+      </div>
+    </div>
+    <div style="background:${tm.aBot};border-top:1px solid rgba(201,160,122,.12);padding:18px 24px;display:flex;flex-direction:column;justify-content:space-between;text-align:center;">
+      <div>
+        <div class="anim-fadein" style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:${tm.txt};line-height:1.2;margin-bottom:5px;text-align:center">${a.title}</div>
+        <div style="font-size:.28rem;letter-spacing:.12em;line-height:1.8;color:${tm.sub};text-align:center">${PARFUMLER.map(p=>p.name).join(' · ')}</div>
+      </div>
+      <div style="display:flex;justify-content:center;align-items:center;gap:14px;margin-top:10px">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:.82rem;letter-spacing:.28em;color:${tm.txt};opacity:.2">SHANZE</div>
+        <div style="font-size:.26rem;letter-spacing:.16em;text-transform:uppercase;border:1px solid ${tm.brd};padding:3px 9px;color:${tm.gold}">Şimdi Mevcut</div>
+        <div style="font-size:.26rem;letter-spacing:.24em;text-transform:uppercase;color:${tm.gold};opacity:.38">@shanzeparfum</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function rStory(cv,tm){
+  const s=STORYLER[iST];
+  const p=PARFUMLER[iSTP];
+  setCaption(s.c);
+  const g=tema==='krem'?'rgba(122,21,21,0.07)':'rgba(122,21,21,0.3)';
+
+  if(s.tip==='gunun'){
+    cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:${tm.bg}">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 50%,${g} 0%,transparent 70%)"></div>
+      ${CRS(tm)}
+      <div style="position:relative;z-index:2;text-align:center;padding:22px 18px;width:100%">
+        <div class="anim-fadein" style="font-size:.28rem;letter-spacing:.44em;text-transform:uppercase;color:${tm.gold};margin-bottom:14px">— Günün Kokusu —</div>
+        <div class="anim-float" style="color:${tm.gold};margin-bottom:10px">${p.svg}</div>
+        <div class="anim-fadein2" style="font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;color:${tm.txt};letter-spacing:.08em">${p.name}</div>
+        <div style="font-size:.26rem;letter-spacing:.28em;text-transform:uppercase;color:${tm.gold};opacity:.7;margin-top:3px">${p.type}</div>
+        <div style="width:30px;height:1px;background:${tm.gold};margin:14px auto"></div>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:3px;margin-bottom:18px">${p.notes.map(n=>`<span style="font-size:.24rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid ${tm.brd};padding:2px 6px;color:${tm.sub}">${n}</span>`).join('')}</div>
+        <div style="border:1px solid ${tm.brd};padding:8px 16px;color:${tm.gold};font-size:.26rem;letter-spacing:.24em;text-transform:uppercase;display:inline-block">800 ₺ · DM ile sipariş</div>
+      </div>
+      <div style="position:absolute;bottom:16px;font-size:.24rem;letter-spacing:.26em;text-transform:uppercase;color:${tm.gold};opacity:.4">@shanzeparfum</div>
+    </div>`;
+  } else if(s.tip==='anket'){
+    cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:${tm.bg}">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 50%,${g} 0%,transparent 70%)"></div>
+      ${CRS(tm)}
+      <div style="position:relative;z-index:2;text-align:center;padding:24px 18px;width:100%">
+        <div class="anim-fadein" style="font-size:.28rem;letter-spacing:.4em;text-transform:uppercase;color:${tm.gold};margin-bottom:18px">— Sana Sorum Var —</div>
+        <div class="anim-fadein" style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-style:italic;color:${tm.txt};line-height:1.5;margin-bottom:24px">"Sabah mı gece mi<br>kokarsin?"</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+          <div class="anim-fadein2" style="background:rgba(201,160,122,0.1);border:1px solid ${tm.brd};padding:11px;color:${tm.txt};font-family:'Cormorant Garamond',serif;font-size:.85rem">🌅 Sabah — Le Paradise</div>
+          <div class="anim-fadein3" style="background:rgba(122,21,21,0.2);border:1px solid rgba(201,160,122,0.35);padding:11px;color:${tm.txt};font-family:'Cormorant Garamond',serif;font-size:.85rem">🌙 Gece — Gold Fire</div>
+        </div>
+        <div style="font-size:.26rem;letter-spacing:.18em;text-transform:uppercase;color:${tm.gold};opacity:.6">Cevabını yorum yaz 👇</div>
+      </div>
+      <div style="position:absolute;bottom:16px;font-size:.24rem;letter-spacing:.26em;text-transform:uppercase;color:${tm.gold};opacity:.4">@shanzeparfum</div>
+    </div>`;
+  } else if(s.tip==='bubu'){
+    cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;background:${tm.bg}">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-bottom:1px solid ${tm.brd};padding:20px;text-align:center">
+        <div style="font-size:.26rem;letter-spacing:.36em;text-transform:uppercase;color:${tm.gold};margin-bottom:8px">A seçeneği</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:${tm.txt}">Gold Fire</div>
+        <div style="font-size:.26rem;letter-spacing:.18em;text-transform:uppercase;color:${tm.sub};margin-top:4px">Güçlü · Gizemli · Cesur</div>
+      </div>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:${tema==='krem'?'#e8d8c4':'#1a0404'};border:1px solid ${tm.gold};color:${tm.gold};font-family:'Cormorant Garamond',serif;font-size:.8rem;padding:6px 12px;letter-spacing:.1em">ya da</div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center">
+        <div style="font-size:.26rem;letter-spacing:.36em;text-transform:uppercase;color:${tm.gold};margin-bottom:8px">B seçeneği</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:${tm.txt}">Le Paradise</div>
+        <div style="font-size:.26rem;letter-spacing:.18em;text-transform:uppercase;color:${tm.sub};margin-top:4px">Taze · Tropikal · Özgür</div>
+      </div>
+      <div style="position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:.24rem;letter-spacing:.26em;text-transform:uppercase;color:${tm.gold};opacity:.4">@shanzeparfum</div>
+    </div>`;
+  } else if(s.tip==='test'){
+    cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:${tm.bg}">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 50%,${g} 0%,transparent 70%)"></div>
+      ${CRS(tm)}
+      <div style="position:relative;z-index:2;text-align:center;padding:24px 18px">
+        <div class="anim-fadein" style="font-size:.65rem;color:${tm.gold};margin-bottom:14px;letter-spacing:.3em">✦</div>
+        <div class="anim-fadein" style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:${tm.txt};line-height:1.4;margin-bottom:14px">Senin kokunla<br>tanışalım.</div>
+        <div style="width:30px;height:1px;background:${tm.gold};margin:0 auto 14px"></div>
+        <div class="anim-fadein2" style="font-size:.28rem;letter-spacing:.16em;line-height:1.9;color:${tm.sub};margin-bottom:20px">Ruh halini anlat 👇<br>sana özel bir koku önerelim</div>
+        <div style="border:1px solid ${tm.brd};padding:10px 18px;color:${tm.gold};font-size:.26rem;letter-spacing:.24em;text-transform:uppercase;display:inline-block">DM'den yaz 📩</div>
+      </div>
+      <div style="position:absolute;bottom:16px;font-size:.24rem;letter-spacing:.26em;text-transform:uppercase;color:${tm.gold};opacity:.4">@shanzeparfum</div>
+    </div>`;
+  } else if(s.tip==='dm'){
+    cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:${tm.bg}">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 50%,${g} 0%,transparent 70%)"></div>
+      ${CRS(tm)}
+      <div style="position:relative;z-index:2;text-align:center;padding:24px 20px;width:100%">
+        <div class="anim-fadein" style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:${tm.txt};letter-spacing:.2em;margin-bottom:5px">SHANZE</div>
+        <div style="font-size:.26rem;letter-spacing:.46em;text-transform:uppercase;color:${tm.gold};margin-bottom:22px">Lüks Parfümeri</div>
+        <div style="width:38px;height:1px;background:linear-gradient(to right,transparent,${tm.gold},transparent);margin:0 auto 20px"></div>
+        <div class="anim-fadein2" style="font-family:'Cormorant Garamond',serif;font-size:.9rem;font-style:italic;color:${tm.sub};line-height:1.65;margin-bottom:20px">6 parfüm · 800 ₺<br>Türkiye geneli teslimat</div>
+        <div style="background:rgba(201,160,122,0.1);border:1px solid ${tm.brd};padding:12px;margin-bottom:8px">
+          <div style="font-size:.28rem;letter-spacing:.22em;text-transform:uppercase;color:${tm.gold}">📩 Sipariş için DM at</div>
+        </div>
+        <div style="font-size:.24rem;letter-spacing:.16em;color:${tm.sub};opacity:.6">24 saat içinde cevaplıyoruz</div>
+      </div>
+      <div style="position:absolute;bottom:16px;font-size:.24rem;letter-spacing:.26em;text-transform:uppercase;color:${tm.gold};opacity:.4">@shanzeparfum</div>
+    </div>`;
+  } else if(s.tip==='kargo'){
+    cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:${tm.bg}">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 50%,${g} 0%,transparent 70%)"></div>
+      ${CRS(tm)}
+      <div style="position:relative;z-index:2;text-align:center;padding:24px 20px">
+        <div class="anim-fadein" style="font-size:.28rem;letter-spacing:.38em;text-transform:uppercase;color:${tm.gold};margin-bottom:16px">— Fırsat —</div>
+        <div class="anim-fadein" style="font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:300;color:${tm.txt};line-height:1.1;margin-bottom:7px">KARGO<br><em style="color:${tm.gold}">ÜCRETSİZ</em></div>
+        <div style="width:30px;height:1px;background:${tm.gold};margin:14px auto"></div>
+        <div class="anim-fadein2" style="font-size:.28rem;letter-spacing:.14em;line-height:1.9;color:${tm.sub};margin-bottom:18px">1600 ₺ ve üzeri siparişlerde<br>kargo bizden 🚀</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:.8rem;color:${tm.sub};margin-bottom:16px">800 ₺ × 2 parfüm = 1600 ₺</div>
+        <div style="border:1px solid ${tm.brd};padding:9px 18px;color:${tm.gold};font-size:.26rem;letter-spacing:.26em;text-transform:uppercase;display:inline-block">DM ile sipariş 📩</div>
+      </div>
+      <div style="position:absolute;bottom:16px;font-size:.24rem;letter-spacing:.26em;text-transform:uppercase;color:${tm.gold};opacity:.4">@shanzeparfum</div>
+    </div>`;
+  }
+}
+
+function rKombin(cv,tm){
+  const k=KOMBINLER[iKO];
+  setCaption(k.c);
+  const g=tema==='krem'?'rgba(122,21,21,0.06)':'rgba(122,21,21,0.3)';
+  const p=PARFUMLER.find(x=>x.name===k.parfum)||PARFUMLER[0];
+  cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;background:${tm.bg}">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 65% 45% at 50% 50%,${g} 0%,transparent 70%)"></div>
+    ${CRS(tm)}
+    <!-- ÜST: KOMBİN -->
+    <div style="flex:1;position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;border-bottom:1px solid ${tm.brd}">
+      <div class="anim-fadein" style="font-size:.28rem;letter-spacing:.44em;text-transform:uppercase;color:${tm.gold};margin-bottom:10px">— ${k.stil} —</div>
+      <div style="font-size:2.2rem;margin-bottom:10px">${k.emoj}</div>
+      <div class="anim-fadein" style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:${tm.txt};line-height:1.1">${k.l}</div>
+    </div>
+    <!-- ALT: PARFÜM -->
+    <div style="height:55%;position:relative;z-index:2;display:flex;align-items:center;padding:0 22px;gap:16px">
+      <div style="flex-shrink:0;color:${tm.gold}" class="anim-float">${p.svg.replace('width="92"','width="70"').replace('height="162"','height="125"')}</div>
+      <div style="flex:1">
+        <div style="font-size:.26rem;letter-spacing:.38em;text-transform:uppercase;color:${tm.gold};margin-bottom:6px">Bu Kombinin Kokusu</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:${tm.txt};line-height:1">${p.name}</div>
+        <div style="width:24px;height:1px;background:${tm.gold};margin:8px 0 8px"></div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:.62rem;font-style:italic;color:${tm.sub};line-height:1.6;margin-bottom:10px">${k.neden}</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:.85rem;color:${tm.gold}">800 ₺</div>
+      </div>
+    </div>
+    <div style="position:absolute;bottom:16px;right:18px;font-size:.24rem;letter-spacing:.24em;text-transform:uppercase;color:${tm.gold};opacity:.38">@shanzeparfum</div>
+  </div>`;
+}
+
+function renderStrateji(){
+  const s=STRATEJILER[iSTR];
+  const cv=document.getElementById('cv');
+  cv.className='info';
+  cv.innerHTML=`<div style="width:100%;min-height:100%;background:#1a0404;display:flex;flex-direction:column;">
+    <div style="background:linear-gradient(135deg,#2d0a0a,#1a0404);padding:16px 18px;border-bottom:1px solid rgba(201,160,122,.15);position:sticky;top:0;">
+      <div style="font-size:.26rem;letter-spacing:.38em;text-transform:uppercase;color:rgba(201,160,122,.5);margin-bottom:3px">Shanze · İçerik Rehberi</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#fff;">${s.l}</div>
+    </div>
+    <div style="padding:14px;">${s.html}</div>
+  </div>`;
+}
+
+// ══════════════════════════════
+//  İNDİR
+// ══════════════════════════════
+function indir(){
+  if(sablon==='strateji'){alert('Strateji sayfası indirilemez — bu senin için bir not!');return;}
+  const cv=document.getElementById('cv');
+  html2canvas(cv,{scale:3,useCORS:true,allowTaint:true,backgroundColor:null,logging:false}).then(canvas=>{
+    const url=canvas.toDataURL('image/png');
+    const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
+    if(isSafari||isIOS){
+      const w=window.open('','_blank');
+      w.document.write(`<html><head><title>Shanze</title><meta name="viewport" content="width=device-width"><style>body{margin:0;background:#0e0202;display:flex;flex-direction:column;align-items:center;padding:20px;}img{max-width:100%;}p{color:#c9a07a;font-family:sans-serif;font-size:13px;margin:14px 0;text-align:center;}</style></head><body><p>📥 Görsele uzun bas → "Fotoğrafa Kaydet"</p><img src="${url}"><p>Shanze · @shanzeparfum</p></body></html>`);
+      w.document.close();
+    }else{
+      const a=document.createElement('a');a.href=url;a.download=`shanze-${sablon}.png`;
+      document.body.appendChild(a);a.click();document.body.removeChild(a);
+    }
+  });
+}
+
+// ══════════════════════════════
+//  BAŞLAT
+// ══════════════════════════════
+buildAll();
+render();
+</script>
+</body>
+</html>
+<!-- ANİMASYON STÜDYOSU -->
+<div id="anim-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.94);z-index:999;overflow-y:auto;">
+  <div style="max-width:480px;margin:0 auto;padding:20px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#c9a07a;letter-spacing:.2em;">🎬 Animasyon Stüdyosu</div>
+      <button onclick="document.getElementById('anim-modal').style.display='none';if(animFrame)cancelAnimationFrame(animFrame);" style="background:none;border:1px solid rgba(201,160,122,.3);color:#c9a07a;padding:5px 13px;cursor:pointer;font-size:.7rem;font-family:'Montserrat',sans-serif;">✕ Kapat</button>
+    </div>
+    <div style="font-size:.54rem;color:rgba(245,230,208,.5);margin-bottom:14px;line-height:1.7;background:rgba(201,160,122,.05);border:1px solid rgba(201,160,122,.12);padding:10px;">
+      📱 <b style="color:#c9a07a;">iPhone Ekran Kaydı:</b> Ayarlar → Denetim Merkezi → Ekran Kaydı ekle → Kontrol merkezinden başlat → Yeniden Oynat → Durdur → Reels'e yükle
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px;" id="anim-tabs">
+      <button class="b on"  onclick="selAnim('particles',this)">✨ Partiküller</button>
+      <button class="b"     onclick="selAnim('smoke',this)">🌫️ Duman</button>
+      <button class="b"     onclick="selAnim('light',this)">💡 Işık Huzmesi</button>
+      <button class="b"     onclick="selAnim('typewriter',this)">✍️ Yazı Yazılır</button>
+      <button class="b"     onclick="selAnim('goldrain',this)">🌟 Altın Yağmur</button>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <div style="font-size:.44rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(201,160,122,.5);margin-bottom:6px;">Parfüm / Metin</div>
+      <div style="display:flex;flex-wrap:wrap;gap:3px;" id="anim-parfum-btns"></div>
+    </div>
+
+    <canvas id="anim-canvas" width="360" height="450" style="width:100%;display:block;box-shadow:0 8px 40px rgba(0,0,0,.8);background:#0a0101;"></canvas>
+
+    <button onclick="yenidenOynat()" style="width:100%;margin-top:8px;background:rgba(201,160,122,.1);border:1px solid rgba(201,160,122,.25);color:#c9a07a;padding:10px;cursor:pointer;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;font-family:'Montserrat',sans-serif;">▶ Yeniden Oynat</button>
+    <div style="margin-top:6px;font-size:.48rem;color:rgba(201,160,122,.4);text-align:center;">Her animasyon ~3-4 saniye · Ekran kaydı ile kaydet</div>
+  </div>
+</div>
+
+<script>
+// Panel'e animasyon butonu ekle
+document.querySelector('.panel .sec:last-child .sl').insertAdjacentHTML('afterend',
+  '<button class="dbtn" onclick="document.getElementById(\'anim-modal\').style.display=\'block\';initAnim()" style="background:linear-gradient(135deg,#3a0870,#1a0440);margin-bottom:5px;">🎬 Animasyon Stüdyosu</button>'
+);
+
+// ══════════════════════════════
+//  ANİMASYON SİSTEMİ
+// ══════════════════════════════
+let animTip='particles', animP=0, animFrame=null;
+
+function initAnim(){
+  const ab=document.getElementById('anim-parfum-btns');
+  ab.innerHTML=PARFUMLER.map((p,i)=>`<button class="b${i===0?' on':''}" onclick="selAnimP(${i},this)">${p.name}</button>`).join('');
+  playAnim();
+}
+function selAnim(tip,btn){
+  animTip=tip;
+  document.querySelectorAll('#anim-tabs .b').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  playAnim();
+}
+function selAnimP(i,btn){
+  animP=i;
+  document.querySelectorAll('#anim-parfum-btns .b').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  playAnim();
+}
+function yenidenOynat(){playAnim();}
+
+function playAnim(){
+  if(animFrame)cancelAnimationFrame(animFrame);
+  const canvas=document.getElementById('anim-canvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const p=PARFUMLER[animP];
+  const startTime=performance.now();
+
+  // Her animasyon için state sıfırla
+  initAnimState(animTip, canvas.width, canvas.height, p);
+
+  function loop(now){
+    const elapsed=now-startTime;
+    const t=elapsed/4000; // 4 saniye toplam
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const keep=drawAnim(ctx,canvas,p,t,elapsed);
+    if(keep) animFrame=requestAnimationFrame(loop);
+  }
+  animFrame=requestAnimationFrame(loop);
+}
+
+function easeOut(t){return 1-Math.pow(1-t,3);}
+function easeIn(t){return t*t*t;}
+function lerp(a,b,t){return a+(b-a)*t;}
+
+// ══ PARÇACIK SİSTEMİ ══
+let particles=[];
+function initAnimState(tip, W, H, p){
+  particles=[];
+  if(tip==='particles'){
+    for(let i=0;i<90;i++){
+      particles.push({
+        x:W*0.5+((Math.random()-0.5)*W*0.6),
+        y:H+Math.random()*100,
+        vx:(Math.random()-0.5)*0.8,
+        vy:-(0.8+Math.random()*2.2),
+        r:1+Math.random()*3,
+        alpha:0.4+Math.random()*0.6,
+        delay:Math.random()*2000,
+        type:Math.random()>0.7?'star':'dot',
+        rot:Math.random()*Math.PI*2,
+        rotv:(Math.random()-0.5)*0.04,
+      });
+    }
+  }
+  if(tip==='smoke'){
+    for(let i=0;i<22;i++){
+      particles.push({
+        x:W/2+(Math.random()-0.5)*80,
+        y:H*0.7,
+        vx:(Math.random()-0.5)*0.3,
+        vy:-(0.4+Math.random()*0.8),
+        r:20+Math.random()*60,
+        alpha:0,
+        targetAlpha:0.08+Math.random()*0.12,
+        delay:Math.random()*2500,
+        life:0,
+        maxLife:2000+Math.random()*2000,
+        hue:Math.random()>0.5?'201,160,122':'255,200,150',
+      });
+    }
+  }
+  if(tip==='goldrain'){
+    for(let i=0;i<70;i++){
+      particles.push({
+        x:Math.random()*W,
+        y:-20-Math.random()*H,
+        vy:1.5+Math.random()*3,
+        vx:(Math.random()-0.5)*0.5,
+        r:1+Math.random()*2,
+        alpha:0.3+Math.random()*0.7,
+        delay:Math.random()*2000,
+        len:6+Math.random()*14,
+      });
+    }
+  }
+}
+
+function drawAnim(ctx, cv, p, t, elapsed){
+  const W=cv.width, H=cv.height;
+
+  if(animTip==='particles')    return drawParticles(ctx,W,H,p,t,elapsed);
+  if(animTip==='smoke')        return drawSmoke(ctx,W,H,p,t,elapsed);
+  if(animTip==='light')        return drawLight(ctx,W,H,p,t,elapsed);
+  if(animTip==='typewriter')   return drawTypewriter(ctx,W,H,p,t,elapsed);
+  if(animTip==='goldrain')     return drawGoldRain(ctx,W,H,p,t,elapsed);
+  return false;
+}
+
+// ══════════════════════════
+//  1. PARTİKÜLLER — Altın ışık parçacıkları yükseliyor
+// ══════════════════════════
+function drawParticles(ctx,W,H,p,t,elapsed){
+  // Arka plan gradient
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#1a0304');
+  bg.addColorStop(0.5,'#0e0202');
+  bg.addColorStop(1,'#050101');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+  // Merkez ışıma
+  const glow_t=Math.min(elapsed/1500,1);
+  const glowR=ctx.createRadialGradient(W/2,H*0.55,0,W/2,H*0.55,200);
+  glowR.addColorStop(0,`rgba(180,100,30,${0.18*glow_t})`);
+  glowR.addColorStop(0.5,`rgba(120,30,10,${0.12*glow_t})`);
+  glowR.addColorStop(1,'transparent');
+  ctx.fillStyle=glowR;ctx.fillRect(0,0,W,H);
+
+  // Parçacıklar
+  particles.forEach(pt=>{
+    if(elapsed<pt.delay)return;
+    const age=elapsed-pt.delay;
+    pt.x+=pt.vx;
+    pt.y+=pt.vy;
+    pt.rot+=pt.rotv;
+    const fade=age<400?(age/400):age>3000?Math.max(0,1-(age-3000)/800):1;
+    ctx.save();
+    ctx.globalAlpha=pt.alpha*fade;
+    ctx.translate(pt.x,pt.y);
+    if(pt.type==='star'){
+      ctx.rotate(pt.rot);
+      ctx.fillStyle='rgba(220,175,100,1)';
+      for(let i=0;i<4;i++){
+        ctx.beginPath();
+        ctx.ellipse(0,0,pt.r*0.3,pt.r*1.5,i*Math.PI/2,0,Math.PI*2);
+        ctx.fill();
+      }
+    } else {
+      ctx.beginPath();
+      ctx.arc(0,0,pt.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${201+Math.random()*20|0},${140+Math.random()*30|0},${80+Math.random()*30|0},1)`;
+      ctx.fill();
+    }
+    ctx.restore();
+  });
+
+  // Ana metin — fade in
+  const txt_t=easeOut(Math.min(elapsed/1800,1));
+  
+  ctx.save();
+  ctx.globalAlpha=txt_t;
+
+  // Dekoratif çizgi üst
+  const line_t=easeOut(Math.min(elapsed/1200,1));
+  ctx.strokeStyle='rgba(201,160,122,0.4)';
+  ctx.lineWidth=0.8;
+  ctx.beginPath();
+  ctx.moveTo(W/2-60*line_t,H*0.32);
+  ctx.lineTo(W/2+60*line_t,H*0.32);
+  ctx.stroke();
+  
+  ctx.fillStyle='rgba(201,160,122,0.55)';
+  ctx.font='300 9px Montserrat,sans-serif';
+  ctx.textAlign='center';
+  ctx.letterSpacing='0.38em';
+  ctx.fillText('— ✦ —', W/2, H*0.38);
+
+  // Parfüm adı
+  ctx.fillStyle='#fff';
+  ctx.font='300 44px Cormorant Garamond,serif';
+  ctx.shadowColor='rgba(201,160,122,0.5)';
+  ctx.shadowBlur=30*txt_t;
+  ctx.fillText(p.name, W/2, H*0.52);
+  ctx.shadowBlur=0;
+
+  // Alt bilgi
+  ctx.fillStyle='rgba(201,160,122,0.75)';
+  ctx.font='300 10px Montserrat,sans-serif';
+  ctx.letterSpacing='0.22em';
+  ctx.fillText('SHANZE · LÜK PARFÜMERİ', W/2, H*0.59);
+  ctx.fillStyle='rgba(201,160,122,0.45)';
+  ctx.font='300 8px Montserrat,sans-serif';
+  ctx.fillText('800 ₺  ·  DM ile sipariş  ·  @shanzeparfum', W/2, H*0.65);
+
+  ctx.restore();
+
+  // Köşe çerçevesi
+  drawCorners(ctx,W,H,Math.min(elapsed/1000,1)*0.6);
+  return true; // sürekli döngü
+}
+
+// ══════════════════════════
+//  2. DUMAN — İnce sis bulutu
+// ══════════════════════════
+function drawSmoke(ctx,W,H,p,t,elapsed){
+  const bg=ctx.createLinearGradient(0,H,0,0);
+  bg.addColorStop(0,'#0a0101');
+  bg.addColorStop(0.6,'#1a0303');
+  bg.addColorStop(1,'#2a0606');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+  // Duman parçacıkları
+  particles.forEach(pt=>{
+    if(elapsed<pt.delay)return;
+    const age=elapsed-pt.delay;
+    pt.x+=pt.vx;
+    pt.y+=pt.vy;
+    pt.r+=0.25;
+    pt.life+=16;
+    const fade=pt.life<400?(pt.life/400):pt.life>pt.maxLife*0.7?Math.max(0,1-(pt.life-pt.maxLife*0.7)/(pt.maxLife*0.3)):1;
+    const a=pt.targetAlpha*fade;
+    if(a<=0)return;
+    const g=ctx.createRadialGradient(pt.x,pt.y,0,pt.x,pt.y,pt.r);
+    g.addColorStop(0,`rgba(${pt.hue},${a})`);
+    g.addColorStop(1,`rgba(${pt.hue},0)`);
+    ctx.beginPath();
+    ctx.arc(pt.x,pt.y,pt.r,0,Math.PI*2);
+    ctx.fillStyle=g;
+    ctx.fill();
+  });
+
+  // Zemin sis şeridi
+  const sis=ctx.createLinearGradient(0,H*0.75,0,H);
+  sis.addColorStop(0,'rgba(180,120,60,0.06)');
+  sis.addColorStop(1,'rgba(180,120,60,0.0)');
+  ctx.fillStyle=sis;ctx.fillRect(0,H*0.75,W,H*0.25);
+
+  // Metin
+  const txt_t=easeOut(Math.min(elapsed/2000,1));
+  ctx.save();
+  ctx.globalAlpha=txt_t;
+
+  // Üst küçük yazı
+  ctx.fillStyle='rgba(201,160,122,0.5)';
+  ctx.font='8px Montserrat,sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('S H A N Z E', W/2, H*0.28);
+
+  // Büyük italik
+  ctx.fillStyle='rgba(255,245,235,0.92)';
+  ctx.font='italic 300 38px Cormorant Garamond,serif';
+  ctx.shadowColor='rgba(201,130,50,0.4)';
+  ctx.shadowBlur=20;
+  ctx.fillText(p.name, W/2, H*0.46);
+  ctx.shadowBlur=0;
+
+  // Dekoratif çizgi
+  ctx.strokeStyle='rgba(201,160,122,0.35)';
+  ctx.lineWidth=0.7;
+  ctx.beginPath();
+  ctx.moveTo(W/2-80,H*0.52);ctx.lineTo(W/2+80,H*0.52);
+  ctx.stroke();
+
+  // Alt notalar
+  ctx.fillStyle='rgba(201,160,122,0.65)';
+  ctx.font='7px Montserrat,sans-serif';
+  ctx.fillText(p.notes.join('  ·  ').toUpperCase(), W/2, H*0.57);
+
+  ctx.fillStyle='rgba(255,245,235,0.35)';
+  ctx.font='7px Montserrat,sans-serif';
+  ctx.fillText('800 ₺  ·  @shanzeparfum', W/2, H*0.63);
+
+  ctx.restore();
+  drawCorners(ctx,W,H,0.4);
+  return true;
+}
+
+// ══════════════════════════
+//  3. IŞIK HUZMESİ — Sinematik ışık sütunları
+// ══════════════════════════
+function drawLight(ctx,W,H,p,t,elapsed){
+  ctx.fillStyle='#050101';ctx.fillRect(0,0,W,H);
+
+  const beam_t=easeOut(Math.min(elapsed/1000,1));
+
+  // Ana ışık huzmesi — merkez
+  const beam1=ctx.createLinearGradient(0,0,0,H);
+  beam1.addColorStop(0,'rgba(201,150,80,0)');
+  beam1.addColorStop(0.1,`rgba(201,150,80,${0.18*beam_t})`);
+  beam1.addColorStop(0.5,`rgba(180,120,60,${0.12*beam_t})`);
+  beam1.addColorStop(1,'rgba(180,120,60,0)');
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(W/2,0);
+  ctx.lineTo(W/2-120,H);
+  ctx.lineTo(W/2+120,H);
+  ctx.lineTo(W/2,0);
+  ctx.fillStyle=beam1;ctx.fill();
+  ctx.restore();
+
+  // Yan huzmeler
+  [-0.3,0.3].forEach(offset=>{
+    const b=ctx.createLinearGradient(0,0,0,H);
+    b.addColorStop(0,'rgba(180,120,50,0)');
+    b.addColorStop(0.15,`rgba(180,120,50,${0.08*beam_t})`);
+    b.addColorStop(1,'rgba(180,120,50,0)');
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(W/2+W*offset,0);
+    ctx.lineTo(W/2+W*offset-70,H);
+    ctx.lineTo(W/2+W*offset+70,H);
+    ctx.lineTo(W/2+W*offset,0);
+    ctx.fillStyle=b;ctx.fill();
+    ctx.restore();
+  });
+
+  // Yatay ışık çizgileri
+  for(let i=0;i<5;i++){
+    const y=H*(0.1+i*0.2);
+    const line_a=Math.sin(elapsed/800+i)*0.03+0.04;
+    ctx.beginPath();
+    ctx.moveTo(0,y);ctx.lineTo(W,y);
+    ctx.strokeStyle=`rgba(201,160,100,${line_a*beam_t})`;
+    ctx.lineWidth=1;ctx.stroke();
+  }
+
+  // Üst parlak nokta
+  const topG=ctx.createRadialGradient(W/2,20,0,W/2,20,80);
+  topG.addColorStop(0,`rgba(255,220,150,${0.6*beam_t})`);
+  topG.addColorStop(0.3,`rgba(201,150,80,${0.2*beam_t})`);
+  topG.addColorStop(1,'transparent');
+  ctx.fillStyle=topG;ctx.fillRect(0,0,W,H*0.4);
+
+  // Toz parçacıkları
+  const dust_t=Math.min(elapsed/2000,1);
+  ctx.save();
+  ctx.globalAlpha=0.5*dust_t;
+  for(let i=0;i<30;i++){
+    const seed=i*137.5;
+    const px=(seed%1)*W;
+    const py=((seed*0.618)%1)*H;
+    const drift=Math.sin(elapsed/1200+i)*3;
+    ctx.beginPath();
+    ctx.arc(px+drift,py,0.8+Math.sin(seed)*0.7,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,220,150,${0.3+Math.sin(elapsed/600+i)*0.2})`;
+    ctx.fill();
+  }
+  ctx.restore();
+
+  // Metin
+  const txt_t=easeOut(Math.min(elapsed/1500,1));
+  ctx.save();
+  ctx.globalAlpha=txt_t;
+
+  ctx.fillStyle='rgba(201,160,122,0.6)';
+  ctx.font='300 9px Montserrat,sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('SHANZE · LÜK PARFÜMERİ', W/2, H*0.34);
+
+  ctx.fillStyle='rgba(255,248,235,0.95)';
+  ctx.font='300 46px Cormorant Garamond,serif';
+  ctx.shadowColor='rgba(255,180,80,0.6)';
+  ctx.shadowBlur=40;
+  ctx.fillText(p.name, W/2, H*0.5);
+  ctx.shadowBlur=0;
+
+  // Çizgi
+  const cl=Math.min(elapsed/2000,1)*90;
+  ctx.strokeStyle='rgba(201,160,122,0.5)';
+  ctx.lineWidth=0.8;
+  ctx.beginPath();
+  ctx.moveTo(W/2-cl,H*0.56);ctx.lineTo(W/2+cl,H*0.56);
+  ctx.stroke();
+
+  ctx.fillStyle='rgba(201,160,122,0.7)';
+  ctx.font='300 8px Montserrat,sans-serif';
+  ctx.fillText('800 ₺  ·  DM ile sipariş  ·  @shanzeparfum', W/2, H*0.62);
+
+  ctx.restore();
+  drawCorners(ctx,W,H,0.5*beam_t);
+  return true;
+}
+
+// ══════════════════════════
+//  4. TYPEWRITER — Harf harf yazılır
+// ══════════════════════════
+let twState={phase:0,charIdx:0,lastChar:0,subIdx:0,lastSub:0};
+function drawTypewriter(ctx,W,H,p,t,elapsed){
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#1e0808');bg.addColorStop(1,'#080202');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+  // Arka plan desen — ince grid
+  ctx.strokeStyle='rgba(201,160,122,0.04)';
+  ctx.lineWidth=0.5;
+  for(let i=0;i<W;i+=40){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,H);ctx.stroke();}
+  for(let i=0;i<H;i+=40){ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(W,i);ctx.stroke();}
+
+  // "SHANZE" üst etiket
+  const header_t=easeOut(Math.min(elapsed/600,1));
+  ctx.save();
+  ctx.globalAlpha=header_t;
+  ctx.fillStyle='rgba(201,160,122,0.45)';
+  ctx.font='8px Montserrat,sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('S H A N Z E  ·  L Ü K S  P A R F Ü M E R İ', W/2, H*0.2);
+  ctx.restore();
+
+  // Çizgi
+  if(elapsed>500){
+    const l_t=easeOut(Math.min((elapsed-500)/800,1));
+    ctx.strokeStyle='rgba(201,160,122,0.35)';
+    ctx.lineWidth=0.8;
+    ctx.beginPath();
+    ctx.moveTo(W/2-l_t*100,H*0.27);ctx.lineTo(W/2+l_t*100,H*0.27);
+    ctx.stroke();
+  }
+
+  // Ana yazı — typewriter efekti
+  const fullName=p.name;
+  const typeStart=800;
+  const charsPerMs=fullName.length/2000;
+  const charsToShow=elapsed>typeStart?Math.min(Math.floor((elapsed-typeStart)*charsPerMs*1),fullName.length):0;
+  const currentText=fullName.slice(0,charsToShow);
+  const cursor=elapsed>typeStart&&charsToShow<fullName.length?(Math.floor(elapsed/500)%2===0?'|':''):''
+
+  ctx.fillStyle='rgba(255,248,235,0.95)';
+  ctx.font='300 46px Cormorant Garamond,serif';
+  ctx.textAlign='center';
+  ctx.shadowColor='rgba(201,130,50,0.3)';
+  ctx.shadowBlur=15;
+  ctx.fillText(currentText+cursor, W/2, H*0.45);
+  ctx.shadowBlur=0;
+
+  // Alt metin — sadece isim tamamen yazılınca
+  if(charsToShow>=fullName.length){
+    const sub_t=easeOut(Math.min((elapsed-(typeStart+2100))/1000,1));
+    if(sub_t>0){
+      ctx.save();
+      ctx.globalAlpha=sub_t;
+
+      // Çizgi
+      ctx.strokeStyle='rgba(201,160,122,0.3)';
+      ctx.lineWidth=0.8;
+      ctx.beginPath();
+      ctx.moveTo(W/2-80,H*0.52);ctx.lineTo(W/2+80,H*0.52);
+      ctx.stroke();
+
+      // Notalar harf harf
+      const noteStr=p.notes.join('  ·  ').toUpperCase();
+      const n_chars=Math.min(Math.floor((elapsed-(typeStart+2100))*noteStr.length/1500),noteStr.length);
+      ctx.fillStyle='rgba(201,160,122,0.75)';
+      ctx.font='7px Montserrat,sans-serif';
+      ctx.fillText(noteStr.slice(0,n_chars), W/2, H*0.58);
+
+      ctx.restore();
+
+      const price_t=easeOut(Math.min((elapsed-(typeStart+3200))/800,1));
+      if(price_t>0){
+        ctx.save();
+        ctx.globalAlpha=price_t;
+        ctx.fillStyle='rgba(201,160,122,0.5)';
+        ctx.font='7px Montserrat,sans-serif';
+        ctx.fillText('800 ₺  ·  DM ile sipariş  ·  @shanzeparfum', W/2, H*0.64);
+        ctx.restore();
+      }
+    }
+  }
+
+  drawCorners(ctx,W,H,0.45);
+  return elapsed<5500; // 5.5 saniye
+}
+
+// ══════════════════════════
+//  5. ALTIN YAĞMUR — Altın çizgiler aşağı iniyor
+// ══════════════════════════
+function drawGoldRain(ctx,W,H,p,t,elapsed){
+  // Soluk bırakma efekti — yarı saydam dolgu
+  ctx.fillStyle='rgba(5,1,1,0.18)';
+  ctx.fillRect(0,0,W,H);
+
+  // İlk frame'de tam doldur
+  if(elapsed<50){
+    ctx.fillStyle='#050101';ctx.fillRect(0,0,W,H);
+  }
+
+  // Alt glow
+  const bottomG=ctx.createLinearGradient(0,H*0.7,0,H);
+  bottomG.addColorStop(0,'transparent');
+  bottomG.addColorStop(1,'rgba(140,60,20,0.12)');
+  ctx.fillStyle=bottomG;ctx.fillRect(0,0,W,H);
+
+  // Yağmur çizgileri
+  particles.forEach(pt=>{
+    if(elapsed<pt.delay)return;
+    pt.y+=pt.vy;
+    pt.x+=pt.vx;
+    if(pt.y>H+20){pt.y=-20;pt.x=Math.random()*W;}
+
+    ctx.save();
+    ctx.globalAlpha=pt.alpha;
+    const grad=ctx.createLinearGradient(pt.x,pt.y-pt.len,pt.x,pt.y);
+    grad.addColorStop(0,'rgba(201,160,80,0)');
+    grad.addColorStop(1,`rgba(220,175,100,${pt.alpha})`);
+    ctx.strokeStyle=grad;
+    ctx.lineWidth=pt.r*0.6;
+    ctx.beginPath();
+    ctx.moveTo(pt.x,pt.y-pt.len);
+    ctx.lineTo(pt.x,pt.y);
+    ctx.stroke();
+
+    // Küçük parlaklık
+    ctx.beginPath();
+    ctx.arc(pt.x,pt.y,pt.r*0.4,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,220,130,${pt.alpha*0.8})`;
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // Merkez parlak zemin — arkaplan kararıyor yavaş yavaş
+  const center_t=Math.min(elapsed/1500,1);
+  const cg=ctx.createRadialGradient(W/2,H*0.52,0,W/2,H*0.52,160);
+  cg.addColorStop(0,`rgba(30,8,4,${0.7*center_t})`);
+  cg.addColorStop(1,'transparent');
+  ctx.fillStyle=cg;ctx.fillRect(0,0,W,H);
+
+  // Metin
+  const txt_t=easeOut(Math.min(elapsed/1200,1));
+  ctx.save();
+  ctx.globalAlpha=txt_t;
+
+  // Üst
+  ctx.fillStyle='rgba(201,160,122,0.5)';
+  ctx.font='8px Montserrat,sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('— S H A N Z E —', W/2, H*0.37);
+
+  // Ana isim
+  ctx.fillStyle='rgba(255,245,225,0.96)';
+  ctx.font='300 46px Cormorant Garamond,serif';
+  ctx.shadowColor='rgba(220,160,60,0.7)';
+  ctx.shadowBlur=25;
+  ctx.fillText(p.name, W/2, H*0.52);
+  ctx.shadowBlur=0;
+
+  // Çizgiler
+  ctx.strokeStyle='rgba(201,160,122,0.35)';ctx.lineWidth=0.8;
+  ctx.beginPath();ctx.moveTo(W/2-90,H*0.57);ctx.lineTo(W/2+90,H*0.57);ctx.stroke();
+
+  ctx.fillStyle='rgba(201,160,122,0.7)';
+  ctx.font='300 8px Montserrat,sans-serif';
+  ctx.fillText(p.type.split('·')[0].trim().toUpperCase(), W/2, H*0.62);
+
+  ctx.fillStyle='rgba(201,160,122,0.45)';
+  ctx.font='7px Montserrat,sans-serif';
+  ctx.fillText('800 ₺  ·  DM ile sipariş  ·  @shanzeparfum', W/2, H*0.68);
+
+  ctx.restore();
+  drawCorners(ctx,W,H,0.55);
+  return true; // sonsuz döngü
+}
+
+// Köşe çerçevesi
+function drawCorners(ctx,W,H,alpha){
+  ctx.save();
+  ctx.globalAlpha=Math.min(alpha,1);
+  ctx.strokeStyle='rgba(201,160,122,0.65)';
+  ctx.lineWidth=1;
+  const s=20,l=26;
+  ctx.beginPath();
+  ctx.moveTo(s,s+l);ctx.lineTo(s,s);ctx.lineTo(s+l,s);
+  ctx.moveTo(W-s-l,s);ctx.lineTo(W-s,s);ctx.lineTo(W-s,s+l);
+  ctx.moveTo(s,H-s-l);ctx.lineTo(s,H-s);ctx.lineTo(s+l,H-s);
+  ctx.moveTo(W-s-l,H-s);ctx.lineTo(W-s,H-s);ctx.lineTo(W-s,H-s-l);
+  ctx.stroke();
+  ctx.restore();
+}
+</script>
