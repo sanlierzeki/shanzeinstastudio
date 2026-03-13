@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shanze — Luxury Perfumery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --burgundy: #7a1515;
+      --cream: #f5e6d0;
+      --gold: #c9a07a;
+      --dark: #2d0a0a;
+      --card: #320c0c;
+      --muted: #c4a882;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--dark); color: var(--cream); font-family: 'Montserrat', sans-serif; font-weight: 300; overflow-x: hidden; cursor: none; }
+
+    .cursor { width: 8px; height: 8px; background: var(--cream); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+    .cursor-ring { width: 30px; height: 30px; border: 1px solid rgba(245,230,208,0.4); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: left 0.12s, top 0.12s; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; display: flex; justify-content: space-between; align-items: center; padding: 24px 56px; background: linear-gradient(to bottom, rgba(30,5,5,0.98), transparent); }
+    .nav-logo { text-decoration: none; }
+    .logo-wordmark { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; letter-spacing: 0.25em; color: var(--cream); }
+    .nav-links { display: flex; gap: 38px; list-style: none; }
+    .nav-links a { color: var(--cream); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.8; transition: opacity 0.3s, color 0.3s; }
+    .nav-links a:hover { opacity: 1; color: var(--gold); }
+    .nav-lang { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); cursor: pointer; transition: color 0.3s; user-select: none; }
+    .nav-lang:hover { color: var(--cream); }
+
+    /* HERO */
+    .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 55%, rgba(120,20,20,0.7) 0%, rgba(60,10,10,0.5) 50%, transparent 75%), var(--dark); }
+    .hero-line { position: absolute; left: 50%; top: 0; width: 1px; height: 100%; background: linear-gradient(to bottom, transparent, rgba(201,160,122,0.15), transparent); transform: translateX(-50%); }
+    .hero-line-left { position: absolute; left: 12%; top: 0; width: 1px; height: 100%; background: linear-gradient(to bottom, transparent 20%, rgba(245,230,208,0.05) 50%, transparent 80%); }
+    .hero-line-right { position: absolute; right: 12%; top: 0; width: 1px; height: 100%; background: linear-gradient(to bottom, transparent 20%, rgba(245,230,208,0.05) 50%, transparent 80%); }
+    .hero-content { position: relative; z-index: 2; text-align: center; }
+    .hero-eyebrow { font-size: 0.8rem; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold); margin-bottom: 30px; animation: fadeUp 1s ease forwards; opacity: 0; }
+    .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(4rem,13vw,11rem); font-weight: 300; letter-spacing: 0.35em; color: var(--cream); animation: fadeUp 1s 0.25s ease forwards; opacity: 0; text-shadow: 0 0 80px rgba(150,20,20,0.9); }
+    .hero-divider { width: 40px; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 20px auto 0; animation: fadeUp 1s 0.35s ease forwards; opacity: 0; }
+    .hero-sub { font-size: 0.82rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(245,230,208,0.7); margin-top: 22px; animation: fadeUp 1s 0.4s ease forwards; opacity: 0; }
+    .hero-scroll { position: absolute; bottom: 44px; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; animation: fadeUp 1s 0.8s ease forwards; opacity: 0; }
+    .hero-scroll span { font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--muted); }
+    .scroll-line { width: 1px; height: 48px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2.2s infinite; }
+
+    @keyframes scrollPulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+    .ornament { text-align: center; padding: 32px 0; color: rgba(201,160,122,0.45); font-size: 0.85rem; letter-spacing: 1.5em; }
+    .section-label { font-size: 0.72rem; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+
+    /* INTRO */
+    .intro { padding: 110px 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; border-top: 1px solid rgba(245,230,208,0.12); }
+    .intro-text h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem,4.5vw,3.6rem); font-weight: 300; line-height: 1.25; margin-bottom: 28px; }
+    .intro-text h2 em { font-style: italic; color: var(--gold); }
+    .intro-text p { font-size: 0.95rem; line-height: 2.1; color: rgba(245,230,208,0.8); max-width: 400px; }
+    .intro-visual { display: flex; justify-content: center; align-items: center; }
+    .bottle-frame { width: 220px; height: 320px; border: 1px solid rgba(201,160,122,0.25); position: relative; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(120,20,20,0.2), rgba(45,10,10,0.4)); }
+    .bottle-frame::before { content: ''; position: absolute; top: -1px; left: -1px; width: 20px; height: 20px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); opacity: 0.6; }
+    .bottle-frame::after { content: ''; position: absolute; bottom: -1px; right: -1px; width: 20px; height: 20px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); opacity: 0.6; }
+
+    /* KARGO BANNER */
+    .kargo-banner { background: linear-gradient(to right, rgba(120,20,20,0.3), rgba(201,160,122,0.12), rgba(120,20,20,0.3)); border-top: 1px solid rgba(201,160,122,0.2); border-bottom: 1px solid rgba(201,160,122,0.2); padding: 18px 56px; display: flex; justify-content: center; gap: 60px; align-items: center; }
+    .kargo-item { display: flex; align-items: center; gap: 12px; }
+    .kargo-icon { font-size: 1.2rem; }
+    .kargo-text { font-size: 0.78rem; letter-spacing: 0.08em; color: rgba(245,230,208,0.85); }
+    .kargo-text strong { color: var(--gold); font-weight: 500; }
+
+    /* COLLECTION */
+    .collection { padding: 90px 56px; border-top: 1px solid rgba(245,230,208,0.12); }
+    .collection-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; }
+    .collection-header h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem,4.5vw,3.6rem); font-weight: 300; }
+    .collection-header h2 em { font-style: italic; color: var(--gold); }
+    .view-all { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(201,160,122,0.4); padding-bottom: 3px; transition: border-color 0.3s; }
+    .view-all:hover { border-color: var(--gold); }
+    .products-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: rgba(245,230,208,0.1); }
+    .product-card { background: var(--card); padding: 44px 32px; position: relative; overflow: hidden; transition: background 0.4s; cursor: pointer; }
+    .product-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, transparent, var(--gold), transparent); transform: scaleX(0); transition: transform 0.5s ease; }
+    .product-card:hover { background: rgba(120,20,20,0.4); }
+    .product-card:hover::after { transform: scaleX(1); }
+    .product-number { font-size: 0.65rem; letter-spacing: 0.35em; color: rgba(201,160,122,0.55); margin-bottom: 22px; }
+    .product-bottle-icon { width: 48px; height: 65px; margin-bottom: 20px; }
+    .product-brand { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .product-name { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; margin-bottom: 6px; line-height: 1.2; color: #fff; transition: color 0.3s; }
+    .product-card:hover .product-name { color: var(--gold); }
+    .product-ref { font-size: 0.62rem; color: rgba(201,160,122,0.6); letter-spacing: 0.08em; margin-bottom: 8px; }
+    .product-type { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+    .product-desc { font-size: 0.88rem; line-height: 1.85; color: rgba(245,230,208,0.8); margin-bottom: 22px; }
+    .product-price { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--gold); margin-bottom: 16px; font-weight: 300; }
+    .product-notes { display: flex; gap: 6px; flex-wrap: wrap; }
+    .note-tag { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(201,160,122,0.3); color: rgba(245,230,208,0.85); padding: 5px 12px; transition: all 0.3s; }
+    .product-card:hover .note-tag { border-color: var(--gold); color: #fff; }
+
+    /* NASIL SİPARİŞ */
+    .how-order { padding: 90px 56px; border-top: 1px solid rgba(245,230,208,0.12); text-align: center; }
+    .how-order h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,4vw,3rem); font-weight: 300; margin-bottom: 16px; }
+    .how-order h2 em { font-style: italic; color: var(--gold); }
+    .how-order > p { font-size: 0.9rem; color: rgba(245,230,208,0.7); margin-bottom: 60px; }
+    .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: rgba(245,230,208,0.08); max-width: 860px; margin: 0 auto 52px; }
+    .step { background: var(--card); padding: 44px 32px; text-align: center; }
+    .step-num { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 300; color: rgba(201,160,122,0.25); line-height: 1; margin-bottom: 16px; }
+    .step-title { font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .step-desc { font-size: 0.88rem; line-height: 1.8; color: rgba(245,230,208,0.75); }
+    .order-btn { display: inline-flex; align-items: center; gap: 12px; background: #25d366; color: #fff; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 18px 44px; font-family: 'Montserrat', sans-serif; font-weight: 400; transition: background 0.3s, transform 0.2s; }
+    .order-btn:hover { background: #1ebe5d; transform: translateY(-2px); }
+    .order-btn svg { width: 22px; height: 22px; fill: #fff; }
+
+    /* KOKU TESTİ */
+    .quiz-section { padding: 90px 56px; border-top: 1px solid rgba(245,230,208,0.12); background: linear-gradient(to bottom, var(--dark), rgba(120,20,20,0.1), var(--dark)); }
+    .quiz-section h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,4vw,3rem); font-weight: 300; text-align: center; margin-bottom: 12px; }
+    .quiz-section h2 em { font-style: italic; color: var(--gold); }
+    .quiz-section > p { text-align: center; font-size: 0.9rem; color: rgba(245,230,208,0.7); margin-bottom: 52px; }
+    .quiz-box { max-width: 680px; margin: 0 auto; background: var(--card); border: 1px solid rgba(201,160,122,0.2); padding: 52px; }
+    .quiz-question { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; color: #fff; margin-bottom: 32px; line-height: 1.4; text-align: center; }
+    .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; }
+    .quiz-opt { background: rgba(245,230,208,0.05); border: 1px solid rgba(201,160,122,0.2); padding: 16px 20px; font-size: 0.85rem; color: rgba(245,230,208,0.85); cursor: pointer; transition: all 0.3s; text-align: left; font-family: 'Montserrat', sans-serif; }
+    .quiz-opt:hover { background: rgba(120,20,20,0.3); border-color: var(--gold); color: #fff; }
+    .quiz-opt.selected { background: rgba(120,20,20,0.4); border-color: var(--gold); color: #fff; }
+    .quiz-progress { display: flex; gap: 6px; justify-content: center; margin-bottom: 32px; }
+    .quiz-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(201,160,122,0.25); transition: background 0.3s; }
+    .quiz-dot.active { background: var(--gold); }
+    .quiz-dot.done { background: rgba(201,160,122,0.5); }
+    .quiz-result { text-align: center; }
+    .quiz-result-label { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .quiz-result-name { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; color: #fff; margin-bottom: 16px; }
+    .quiz-result-desc { font-size: 0.92rem; line-height: 1.9; color: rgba(245,230,208,0.82); margin-bottom: 32px; }
+    .quiz-result-btn { display: inline-flex; align-items: center; gap: 10px; background: #25d366; color: #fff; text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 14px 32px; font-family: 'Montserrat', sans-serif; transition: background 0.3s; }
+    .quiz-result-btn:hover { background: #1ebe5d; }
+    .quiz-restart { background: none; border: 1px solid rgba(201,160,122,0.3); color: var(--muted); font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 10px 24px; cursor: pointer; font-family: 'Montserrat', sans-serif; margin-top: 16px; transition: all 0.3s; display: block; margin: 16px auto 0; }
+    .quiz-restart:hover { border-color: var(--gold); color: var(--cream); }
+
+    /* YORUMLAR */
+    .reviews { padding: 90px 56px; border-top: 1px solid rgba(245,230,208,0.12); }
+    .reviews-header { text-align: center; margin-bottom: 60px; }
+    .reviews-header h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,4vw,3rem); font-weight: 300; margin-bottom: 12px; }
+    .reviews-header h2 em { font-style: italic; color: var(--gold); }
+    .reviews-header p { font-size: 0.9rem; color: rgba(245,230,208,0.7); }
+    .reviews-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: rgba(245,230,208,0.08); }
+    .review-card { background: var(--card); padding: 40px 32px; }
+    .review-stars { color: var(--gold); font-size: 0.85rem; letter-spacing: 4px; margin-bottom: 20px; }
+    .review-text { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; line-height: 1.85; color: rgba(245,230,208,0.88); margin-bottom: 24px; }
+    .review-author { display: flex; align-items: center; gap: 14px; }
+    .review-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, rgba(120,20,20,0.6), rgba(201,160,122,0.3)); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--gold); font-weight: 500; border: 1px solid rgba(201,160,122,0.25); }
+    .review-name { font-size: 0.75rem; letter-spacing: 0.1em; color: rgba(245,230,208,0.7); }
+    .review-product { font-size: 0.65rem; color: var(--gold); letter-spacing: 0.08em; margin-top: 2px; }
+
+    /* PHILOSOPHY */
+    .philosophy { padding: 140px 56px; border-top: 1px solid rgba(245,230,208,0.12); text-align: center; background: linear-gradient(to bottom, var(--dark), rgba(120,20,20,0.18), var(--dark)); position: relative; overflow: hidden; }
+    .philosophy::before { content: '"'; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); font-family: 'Cormorant Garamond', serif; font-size: 18rem; color: rgba(120,20,20,0.12); line-height: 1; pointer-events: none; }
+    .philosophy blockquote { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.7rem,3.5vw,2.8rem); font-weight: 300; font-style: italic; line-height: 1.65; max-width: 780px; margin: 24px auto 36px; color: var(--cream); position: relative; }
+    .philosophy cite { font-size: 0.75rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); font-style: normal; }
+    .philosophy-line { width: 40px; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 0 auto 20px; opacity: 0.6; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid rgba(245,230,208,0.12); padding: 80px 56px 50px; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 56px; }
+    .footer-wordmark { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; letter-spacing: 0.25em; color: var(--cream); margin-bottom: 18px; display: block; }
+    .footer-brand p { font-size: 0.88rem; line-height: 1.95; color: rgba(245,230,208,0.7); max-width: 280px; }
+    .footer-col h4 { font-size: 0.68rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 14px; }
+    .footer-col ul li a { text-decoration: none; font-size: 0.88rem; color: rgba(245,230,208,0.75); transition: color 0.3s; }
+    .footer-col ul li a:hover { color: var(--cream); }
+    .footer-col ul li span { font-size: 0.88rem; color: rgba(245,230,208,0.75); }
+    .footer-bottom { border-top: 1px solid rgba(245,230,208,0.08); padding: 26px 56px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-bottom p { font-size: 0.68rem; letter-spacing: 0.15em; color: rgba(201,160,122,0.55); }
+
+    /* WHATSAPP SABİT BUTON */
+    .wa-float { position: fixed; bottom: 32px; right: 32px; z-index: 1000; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+    .wa-bubble { background: rgba(45,10,10,0.95); border: 1px solid rgba(201,160,122,0.3); color: rgba(245,230,208,0.85); font-size: 0.72rem; padding: 10px 16px; max-width: 200px; text-align: right; line-height: 1.5; display: none; }
+    .wa-float:hover .wa-bubble { display: block; }
+    .wa-btn { width: 58px; height: 58px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 20px rgba(37,211,102,0.35); transition: transform 0.3s, box-shadow 0.3s; animation: waPulse 2.5s infinite; }
+    .wa-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.5); animation: none; }
+    .wa-btn svg { width: 28px; height: 28px; fill: #fff; }
+    @keyframes waPulse { 0%,100%{box-shadow:0 4px 20px rgba(37,211,102,0.35)} 50%{box-shadow:0 4px 28px rgba(37,211,102,0.6)} }
+
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.82); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; padding: 20px; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal { background: #3a0c0c; border: 1px solid rgba(201,160,122,0.4); max-width: 860px; width: 100%; max-height: 92vh; overflow-y: auto; position: relative; transform: translateY(30px); transition: transform 0.4s ease; box-shadow: 0 40px 120px rgba(0,0,0,0.7); }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal::-webkit-scrollbar { width: 4px; }
+    .modal::-webkit-scrollbar-thumb { background: rgba(201,160,122,0.3); }
+    .modal-close { position: absolute; top: 18px; right: 18px; background: rgba(245,230,208,0.12); border: 1px solid rgba(245,230,208,0.3); color: #fff; font-size: 1rem; cursor: pointer; z-index: 10; font-family: 'Montserrat', sans-serif; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+    .modal-close:hover { background: rgba(201,160,122,0.25); border-color: var(--gold); }
+    .modal-inner { display: grid; grid-template-columns: 1fr 1.6fr; min-height: 520px; }
+    .modal-left { background: linear-gradient(145deg, rgba(120,20,20,0.6), rgba(50,8,8,0.95)); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 40px; border-right: 1px solid rgba(201,160,122,0.18); }
+    .modal-num { font-size: 0.72rem; letter-spacing: 0.4em; color: rgba(201,160,122,0.7); margin-bottom: 32px; }
+    .modal-bottle { margin-bottom: 36px; }
+    .modal-brand-tag { font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(245,230,208,0.75); }
+    .modal-right { padding: 52px 48px; display: flex; flex-direction: column; background: #3e0e0e; }
+    .modal-eyebrow { font-size: 0.68rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 3.2rem; font-weight: 300; color: #fff; line-height: 1; margin-bottom: 8px; }
+    .modal-type { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: #d4b08a; margin-bottom: 6px; }
+    .modal-price-tag { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--gold); margin-bottom: 22px; font-weight: 300; }
+    .modal-divider { height: 1px; background: linear-gradient(to right, rgba(201,160,122,0.5), transparent); margin-bottom: 24px; }
+    .modal-story { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; line-height: 2; color: #f0dfc5; margin-bottom: 28px; }
+    .modal-section-title { font-size: 0.68rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .modal-notes-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .modal-note { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(201,160,122,0.45); color: #f0dfc5; padding: 7px 16px; background: rgba(201,160,122,0.1); }
+    .modal-props { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 32px; }
+    .modal-prop { background: rgba(245,230,208,0.08); border: 1px solid rgba(245,230,208,0.15); padding: 14px 18px; }
+    .modal-prop-label { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(201,160,122,0.8); margin-bottom: 6px; }
+    .modal-prop-val { font-size: 0.95rem; color: #fff; font-weight: 400; }
+    .modal-cta { display: inline-flex; align-items: center; gap: 10px; background: #25d366; color: #fff; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 14px 28px; text-decoration: none; font-family: 'Montserrat', sans-serif; transition: background 0.3s; align-self: flex-start; }
+    .modal-cta:hover { background: #1ebe5d; }
+    .modal-cta svg { width: 18px; height: 18px; fill: #fff; flex-shrink: 0; }
+    @media(max-width:700px){ .modal-inner{grid-template-columns:1fr;} .modal-left{padding:40px 24px;min-height:200px;} .modal-right{padding:36px 28px;} .modal-props{grid-template-columns:1fr 1fr;} }
+
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.85s ease, transform 0.85s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+
+    /* MANİFESTO */
+    .manifesto { padding: 110px 56px; border-top: 1px solid rgba(245,230,208,0.12); background: linear-gradient(to bottom, var(--dark), rgba(45,10,10,0.5), var(--dark)); }
+    .manifesto-inner { max-width: 780px; margin: 0 auto; text-align: center; }
+    .manifesto-deco { font-size: 1.2rem; color: var(--gold); margin-bottom: 24px; opacity: 0.6; }
+    .manifesto-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,4vw,3rem); font-weight: 300; margin-bottom: 52px; }
+    .manifesto-title em { font-style: italic; color: var(--gold); }
+    .manifesto-text p { font-size: 1rem; line-height: 2.2; color: rgba(245,230,208,0.8); margin-bottom: 28px; text-align: left; }
+    .manifesto-text p:first-child::first-letter { font-family: 'Cormorant Garamond', serif; font-size: 3.8rem; font-weight: 300; color: var(--gold); float: left; line-height: 0.75; margin-right: 10px; margin-top: 8px; }
+    .manifesto-line { width: 40px; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 48px auto 24px; }
+    .manifesto-sig { font-size: 0.75rem; letter-spacing: 0.25em; color: rgba(245,230,208,0.5); font-style: italic; }
+
+    /* KOKU TAKVİMİ */
+    .takvim { padding: 90px 56px; border-top: 1px solid rgba(245,230,208,0.12); }
+    .takvim-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,4vw,3rem); font-weight: 300; text-align: center; margin-bottom: 12px; }
+    .takvim-title em { font-style: italic; color: var(--gold); }
+    .takvim-sub { text-align: center; font-size: 0.9rem; color: rgba(245,230,208,0.65); margin-bottom: 52px; }
+    .takvim-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: rgba(245,230,208,0.08); }
+    .takvim-card { background: var(--card); padding: 36px 28px; position: relative; transition: background 0.3s; }
+    .takvim-card:hover { background: rgba(120,20,20,0.35); }
+    .takvim-card.active-month { background: rgba(120,20,20,0.3); border-top: 2px solid var(--gold); }
+    .takvim-ay { font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(201,160,122,0.6); margin-bottom: 16px; }
+    .takvim-parfum { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 300; color: #fff; margin-bottom: 16px; }
+    .takvim-card:hover .takvim-parfum, .takvim-card.active-month .takvim-parfum { color: var(--gold); }
+    .takvim-neden { font-size: 0.85rem; line-height: 1.85; color: rgba(245,230,208,0.72); }
+    .takvim-badge { position: absolute; top: 16px; right: 16px; font-size: 0.58rem; letter-spacing: 0.15em; color: var(--gold); border: 1px solid rgba(201,160,122,0.4); padding: 4px 10px; text-transform: uppercase; }
+
+    /* ANKETLER */
+    .anket-section { padding: 90px 56px; border-top: 1px solid rgba(245,230,208,0.12); }
+    .anket-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,4vw,3rem); font-weight: 300; text-align: center; margin-bottom: 12px; }
+    .anket-title em { font-style: italic; color: var(--gold); }
+    .anket-sub { text-align: center; font-size: 0.9rem; color: rgba(245,230,208,0.65); margin-bottom: 48px; }
+    .anket-container { max-width: 720px; margin: 0 auto; }
+    .anket-tabs { display: flex; gap: 2px; margin-bottom: 2px; background: rgba(245,230,208,0.06); flex-wrap: wrap; }
+    .anket-tab { flex: 1; background: var(--card); border: none; color: rgba(245,230,208,0.6); font-family: 'Montserrat', sans-serif; font-size: 0.72rem; letter-spacing: 0.1em; padding: 14px 12px; cursor: pointer; transition: all 0.3s; min-width: 140px; }
+    .anket-tab:hover { background: rgba(120,20,20,0.3); color: var(--cream); }
+    .anket-tab.active { background: rgba(120,20,20,0.5); color: var(--gold); border-bottom: 2px solid var(--gold); }
+    .anket-box { background: var(--card); border: 1px solid rgba(201,160,122,0.15); padding: 48px; min-height: 320px; }
+    .anket-soru { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; color: #fff; margin-bottom: 36px; line-height: 1.5; text-align: center; }
+    .anket-secenekler { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+    .anket-opt { background: rgba(245,230,208,0.05); border: 1px solid rgba(201,160,122,0.18); padding: 16px 20px; font-size: 0.88rem; color: rgba(245,230,208,0.85); cursor: pointer; transition: all 0.3s; text-align: left; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; gap: 12px; }
+    .anket-opt:hover { background: rgba(120,20,20,0.3); border-color: var(--gold); color: #fff; }
+    .anket-opt.selected { background: rgba(120,20,20,0.45); border-color: var(--gold); color: #fff; }
+    .anket-opt-emoji { font-size: 1.2rem; flex-shrink: 0; }
+    .anket-sonuc { text-align: center; animation: fadeUp 0.5s ease forwards; }
+    .anket-sonuc-label { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .anket-sonuc-parfum { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 300; color: #fff; margin-bottom: 14px; }
+    .anket-sonuc-aciklama { font-size: 0.92rem; line-height: 1.9; color: rgba(245,230,208,0.82); margin-bottom: 8px; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .anket-sonuc-kisilik { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; color: var(--gold); margin-bottom: 28px; }
+    .anket-paylasim { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+    .anket-share-btn { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 10px 20px; border: 1px solid rgba(201,160,122,0.35); color: rgba(245,230,208,0.75); background: none; cursor: pointer; font-family: 'Montserrat', sans-serif; transition: all 0.3s; }
+    .anket-share-btn:hover { border-color: var(--gold); color: var(--cream); }
+    .anket-tekrar { background: none; border: none; color: rgba(245,230,208,0.45); font-size: 0.72rem; letter-spacing: 0.1em; cursor: pointer; font-family: 'Montserrat', sans-serif; transition: color 0.3s; display: block; margin: 0 auto; }
+    .anket-tekrar:hover { color: var(--muted); }
+    .anket-progress { display: flex; gap: 6px; justify-content: center; margin-bottom: 32px; }
+    .anket-pdot { width: 28px; height: 3px; background: rgba(201,160,122,0.2); transition: background 0.3s; }
+    .anket-pdot.done { background: rgba(201,160,122,0.5); }
+    .anket-pdot.active { background: var(--gold); }
+
+    @media(max-width:900px){
+      .takvim-grid { grid-template-columns: 1fr; }
+      .manifesto { padding: 70px 24px; }
+      .takvim,.anket-section { padding: 70px 24px; }
+      .anket-box { padding: 28px 20px; }
+      .anket-secenekler { grid-template-columns: 1fr; }
+      .anket-tabs { flex-direction: column; }
+      .anket-tab { min-width: unset; }
+    }
+
+
+
+
+    /* NAV KEŞİF EFEKT */
+    .nav-kesif { position: relative; color: var(--gold) !important; }
+    .nav-kesif::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 1px; background: var(--gold); animation: navGlow 2.2s ease-in-out infinite; }
+    @keyframes navGlow {
+      0%,100% { opacity: 0.3; box-shadow: none; }
+      50% { opacity: 1; box-shadow: 0 0 8px rgba(201,160,122,0.8); }
+    }
+    .nav-kesif span.nav-star { font-size: 0.5rem; vertical-align: super; margin-left: 3px; animation: navGlow 2.2s ease-in-out infinite; }
+
+
+    /* SCROLL BİLDİRİM */
+    .scroll-notif { position: fixed; bottom: 100px; left: 28px; z-index: 998; background: var(--card); border: 1px solid rgba(201,160,122,0.3); padding: 20px 22px; width: 190px; text-align: center; transform: translateX(-240px); transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+    .scroll-notif.show { transform: translateX(0); }
+    .scroll-notif-close { position: absolute; top: 8px; right: 10px; background: none; border: none; color: rgba(245,230,208,0.35); font-size: 0.65rem; cursor: pointer; padding: 2px 4px; transition: color 0.2s; }
+    .scroll-notif-close:hover { color: var(--muted); }
+    .scroll-notif-icon { font-size: 1.2rem; color: var(--gold); margin-bottom: 8px; animation: pulse 2.5s ease-in-out infinite; }
+    .scroll-notif-text { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 300; color: #fff; margin-bottom: 4px; }
+    .scroll-notif-sub { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245,230,208,0.5); margin-bottom: 16px; }
+    .scroll-notif-btn { display: block; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); text-decoration: none; border: 1px solid rgba(201,160,122,0.35); padding: 9px 0; transition: all 0.3s; }
+    .scroll-notif-btn:hover { background: rgba(201,160,122,0.12); border-color: var(--gold); }
+
+    /* EĞLENCE BÖLÜMLERİ ORTAK */
+    .eglen-section { padding: 90px 56px; border-top: 1px solid rgba(245,230,208,0.12); }
+    .eglen-section h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,4vw,3rem); font-weight: 300; text-align: center; margin-bottom: 12px; }
+    .eglen-section h2 em { font-style: italic; color: var(--gold); }
+    .eglen-sub { text-align: center; font-size: 0.9rem; color: rgba(245,230,208,0.65); margin-bottom: 52px; }
+
+    /* MOOD EŞLEŞTİRİCİ */
+    .mood-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; max-width: 700px; margin: 0 auto 40px; }
+    .mood-btn { background: var(--card); border: 1px solid rgba(201,160,122,0.15); padding: 22px 12px; cursor: pointer; transition: all 0.3s; font-family: 'Montserrat', sans-serif; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .mood-btn:hover { background: rgba(120,20,20,0.4); border-color: var(--gold); transform: translateY(-3px); }
+    .mood-btn.selected { background: rgba(120,20,20,0.5); border-color: var(--gold); }
+    .mood-emoji { font-size: 2rem; }
+    .mood-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,230,208,0.75); }
+    .mood-result { max-width: 600px; margin: 0 auto; background: var(--card); border: 1px solid rgba(201,160,122,0.25); padding: 44px; text-align: center; display: none; animation: fadeUp 0.5s ease forwards; }
+    .mood-result.show { display: block; }
+    .mood-result-emoji { font-size: 2.5rem; margin-bottom: 16px; }
+    .mood-result-label { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .mood-result-parfum { font-family: 'Cormorant Garamond', serif; font-size: 2.6rem; font-weight: 300; color: #fff; margin-bottom: 12px; }
+    .mood-result-neden { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-style: italic; line-height: 1.9; color: rgba(245,230,208,0.85); margin-bottom: 28px; }
+    .mood-result-cta { display: inline-flex; align-items: center; gap: 10px; background: #25d366; color: #fff; text-decoration: none; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 13px 28px; font-family: 'Montserrat', sans-serif; transition: background 0.3s; }
+    .mood-result-cta:hover { background: #1ebe5d; }
+    .mood-tekrar { background: none; border: none; color: rgba(245,230,208,0.4); font-size: 0.7rem; letter-spacing: 0.1em; cursor: pointer; font-family: 'Montserrat', sans-serif; margin-top: 14px; display: block; margin-left: auto; margin-right: auto; transition: color 0.3s; }
+    .mood-tekrar:hover { color: var(--muted); }
+
+    /* LORE KARTLARI */
+    .lore-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .lore-card { height: 280px; perspective: 1000px; cursor: pointer; }
+    .lore-inner { position: relative; width: 100%; height: 100%; transition: transform 0.7s cubic-bezier(0.4,0.2,0.2,1); transform-style: preserve-3d; }
+    .lore-card:hover .lore-inner, .lore-card.flipped .lore-inner { transform: rotateY(180deg); }
+    .lore-front, .lore-back { position: absolute; inset: 0; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 32px; border: 1px solid rgba(201,160,122,0.2); }
+    .lore-front { background: var(--card); }
+    .lore-back { background: linear-gradient(145deg, rgba(120,20,20,0.6), #2d0a0a); transform: rotateY(180deg); border-color: rgba(201,160,122,0.35); justify-content: flex-start; }
+    .lore-num { font-size: 0.58rem; letter-spacing: 0.4em; color: rgba(201,160,122,0.45); margin-bottom: 16px; }
+    .lore-name { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; color: #fff; margin-bottom: 8px; text-align: center; }
+    .lore-hint { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(201,160,122,0.5); }
+    .lore-back-num { font-size: 0.58rem; letter-spacing: 0.4em; color: rgba(201,160,122,0.5); margin-bottom: 14px; align-self: flex-start; }
+    .lore-back-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--gold); margin-bottom: 18px; align-self: flex-start; }
+    .lore-back-text { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; font-style: italic; line-height: 1.85; color: rgba(245,230,208,0.88); }
+    .lore-flip-hint { text-align: center; font-size: 0.62rem; letter-spacing: 0.2em; color: rgba(201,160,122,0.4); margin-top: 20px; text-transform: uppercase; }
+
+    /* RULET */
+    .rulet-container { display: flex; flex-direction: column; align-items: center; gap: 40px; }
+    .rulet-wrap { position: relative; width: 340px; height: 340px; }
+    .rulet-canvas { border-radius: 50%; box-shadow: 0 0 60px rgba(120,20,20,0.4); }
+    .rulet-pointer { position: absolute; top: 50%; right: -18px; transform: translateY(-50%); width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-right: 28px solid var(--gold); filter: drop-shadow(0 2px 6px rgba(201,160,122,0.5)); }
+    .rulet-btn { display: inline-flex; align-items: center; gap: 12px; background: rgba(201,160,122,0.15); border: 1px solid rgba(201,160,122,0.5); color: var(--gold); font-size: 0.82rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 16px 44px; cursor: pointer; font-family: 'Montserrat', sans-serif; transition: all 0.3s; }
+    .rulet-btn:hover:not(:disabled) { background: rgba(201,160,122,0.25); color: #fff; }
+    .rulet-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .rulet-result { background: var(--card); border: 1px solid rgba(201,160,122,0.25); padding: 36px 44px; text-align: center; min-width: 340px; max-width: 480px; display: none; animation: fadeUp 0.5s ease; }
+    .rulet-result.show { display: block; }
+    .rulet-result-label { font-size: 0.62rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .rulet-result-name { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 300; color: #fff; margin-bottom: 10px; }
+    .rulet-result-desc { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; line-height: 1.85; color: rgba(245,230,208,0.82); margin-bottom: 22px; }
+    .rulet-cta { display: inline-flex; align-items: center; gap: 8px; background: #25d366; color: #fff; text-decoration: none; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 12px 24px; font-family: 'Montserrat', sans-serif; }
+
+    
+
+    /* KEŞİF KÖŞESİ — SEKMELER */
+    .etab-nav { display: flex; gap: 2px; margin-bottom: 2px; background: rgba(245,230,208,0.06); max-width: 700px; margin: 0 auto 2px; }
+    .etab-btn { flex: 1; background: var(--card); border: none; color: rgba(245,230,208,0.55); font-family: 'Montserrat', sans-serif; font-size: 0.78rem; letter-spacing: 0.12em; padding: 16px 12px; cursor: pointer; transition: all 0.3s; }
+    .etab-btn:hover { background: rgba(120,20,20,0.3); color: var(--cream); }
+    .etab-btn.active { background: rgba(120,20,20,0.55); color: var(--gold); border-bottom: 2px solid var(--gold); }
+    .etab-panel { display: none; background: var(--card); border: 1px solid rgba(201,160,122,0.12); padding: 48px; max-width: 700px; margin: 0 auto; }
+    .etab-panel.active { display: block; animation: fadeUp 0.35s ease; }
+    .etab-desc { text-align: center; font-size: 0.88rem; color: rgba(245,230,208,0.6); margin-bottom: 36px; letter-spacing: 0.05em; }
+
+    /* LORE ACCORDEON */
+    .lore-list { display: flex; flex-direction: column; gap: 2px; }
+    .lore-item { cursor: pointer; border: 1px solid rgba(201,160,122,0.12); transition: border-color 0.3s; }
+    .lore-item.open { border-color: rgba(201,160,122,0.35); }
+    .lore-item-front { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; background: rgba(245,230,208,0.03); transition: background 0.3s; }
+    .lore-item:hover .lore-item-front, .lore-item.open .lore-item-front { background: rgba(120,20,20,0.25); }
+    .lore-item-left { display: flex; align-items: baseline; gap: 18px; }
+    .lore-item-num { font-size: 0.58rem; letter-spacing: 0.35em; color: rgba(201,160,122,0.5); flex-shrink: 0; }
+    .lore-item-name { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 300; color: #fff; }
+    .lore-item.open .lore-item-name { color: var(--gold); }
+    .lore-item-sub { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(201,160,122,0.5); }
+    .lore-item-arrow { font-size: 1rem; color: rgba(201,160,122,0.4); transition: transform 0.4s, color 0.3s; flex-shrink: 0; }
+    .lore-item.open .lore-item-arrow { transform: rotate(90deg); color: var(--gold); }
+    .lore-item-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), padding 0.3s; }
+    .lore-item.open .lore-item-body { max-height: 300px; }
+    .lore-item-body p { padding: 20px 24px 24px; font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-style: italic; line-height: 2; color: rgba(245,230,208,0.85); margin: 0; border-top: 1px solid rgba(201,160,122,0.1); }
+
+    @media(max-width:900px){
+      .etab-panel { padding: 28px 18px; }
+      .etab-nav { max-width: 100%; }
+      .rulet-wrap { width: 260px; height: 260px; }
+      .mood-grid { grid-template-columns: repeat(2,1fr); }
+    }
+    @media(max-width:900px){
+      .eglen-section { padding: 70px 24px; }
+    }
+    @media(max-width:900px){
+      nav{padding:20px 24px;} .nav-links{display:none;}
+      .intro,footer{grid-template-columns:1fr;padding:70px 24px;}
+      .collection,.how-order,.quiz-section,.reviews{padding:70px 24px;}
+      .products-grid,.steps,.reviews-grid{grid-template-columns:1fr;}
+      .collection-header{flex-direction:column;align-items:flex-start;gap:20px;}
+      .philosophy{padding:70px 24px;}
+      .footer-bottom{padding:20px 24px;flex-direction:column;gap:8px;}
+      .kargo-banner{flex-direction:column;gap:20px;padding:24px;}
+      .quiz-options{grid-template-columns:1fr;}
+      .quiz-box{padding:32px 24px;}
+      .wa-float{bottom:20px;right:20px;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<!-- SCROLL BİLDİRİM KARTI -->
+<div class="scroll-notif" id="scrollNotif">
+  <button class="scroll-notif-close" onclick="document.getElementById('scrollNotif').classList.remove('show')">✕</button>
+  <div class="scroll-notif-icon">✦</div>
+  <div class="scroll-notif-text">Bugün hangi koku?</div>
+  <div class="scroll-notif-sub">Mood'una göre bul</div>
+  <a href="#eglence" class="scroll-notif-btn" onclick="document.querySelector('#eglence').scrollIntoView({behavior:'smooth'});document.getElementById('scrollNotif').classList.remove('show');return false;">Keşfet →</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo"><span class="logo-wordmark">Shanze</span></a>
+  <ul class="nav-links">
+    <li><a href="#collection" data-tr="KOLEKSİYON" data-en="COLLECTION">KOLEKSİYON</a></li>
+    <li><a href="#quiz" data-tr="KOKU TESTİ" data-en="SCENT QUIZ">KOKU TESTİ</a></li>
+    <li><a href="#reviews" data-tr="YORUMLAR" data-en="REVIEWS">YORUMLAR</a></li>
+    <li><a href="#eglence" class="nav-kesif" data-tr="KEŞİF ✦" data-en="EXPLORE ✦">KEŞİF <span class="nav-star">✦</span></a></li>
+    <li><a href="#contact" data-tr="İLETİŞİM" data-en="CONTACT">İLETİŞİM</a></li>
+  </ul>
+  <div class="nav-lang" id="langToggle" onclick="toggleLang()">EN / TR</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-line"></div>
+  <div class="hero-line-left"></div>
+  <div class="hero-line-right"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow" data-tr="Lüks Parfümeri" data-en="Luxury Perfumery">Lüks Parfümeri</p>
+    <h1 class="hero-title">SHANZE</h1>
+    <div class="hero-divider"></div>
+    <p class="hero-sub" data-tr="Her damla bir hikaye · Her koku bir duygu" data-en="Every drop a story · Every scent an emotion">Her damla bir hikaye · Her koku bir duygu</p>
+  </div>
+  <div class="hero-scroll">
+    <span data-tr="KEŞFEDİN" data-en="DISCOVER">KEŞFEDİN</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- KARGO BANNER -->
+<div class="kargo-banner">
+  <div class="kargo-item"><span class="kargo-icon">✦</span><span class="kargo-text"><strong>800 ₺</strong> — Tüm parfümler sabit fiyat</span></div>
+  <div class="kargo-item"><span class="kargo-icon">✦</span><span class="kargo-text"><strong>1600 ₺ ve üzeri</strong> siparişlerde kargo ücretsiz</span></div>
+  <div class="kargo-item"><span class="kargo-icon">✦</span><span class="kargo-text">Türkiye'nin her yerine <strong>hızlı teslimat</strong></span></div>
+</div>
+
+<div class="ornament">— ✦ —</div>
+
+<!-- INTRO -->
+<section class="intro reveal">
+  <div class="intro-text">
+    <p class="section-label" data-tr="BİZ KİMİZ" data-en="ABOUT US">BİZ KİMİZ</p>
+    <h2>Zarafetin <em>özü</em>,<br/>kokunun <em>şiiri</em></h2>
+    <p data-tr="Shanze, dünyanın en prestijli parfümlerinden ilham alarak Türkiye'de doğan bir lüks parfümeri markasıdır. Her kokumuz seçkin hammaddelerle titizlikle hazırlanmış — kendinizi olağanüstü hissettirmek için tasarlanmıştır." data-en="Shanze is a luxury perfumery brand born in Turkey, inspired by the world's most prestigious fragrances. Each scent is meticulously crafted with premium ingredients — designed to make you feel extraordinary.">Shanze, dünyanın en prestijli parfümlerinden ilham alarak Türkiye'de doğan bir lüks parfümeri markasıdır. Her kokumuz seçkin hammaddelerle titizlikle hazırlanmış — kendinizi olağanüstü hissettirmek için tasarlanmıştır.</p>
+  </div>
+  <div class="intro-visual">
+    <div class="bottle-frame">
+      <svg width="90" height="160" viewBox="0 0 90 160" fill="none">
+        <rect x="28" y="4" width="34" height="18" rx="2" fill="rgba(90,10,10,0.7)" stroke="rgba(201,160,122,0.5)" stroke-width="0.8"/>
+        <rect x="32" y="22" width="26" height="12" fill="rgba(245,230,208,0.06)" stroke="rgba(201,160,122,0.4)" stroke-width="0.7"/>
+        <path d="M20 38 L70 38 L74 148 Q74 158 45 158 Q16 158 16 148 Z" fill="rgba(90,10,10,0.22)" stroke="rgba(201,160,122,0.4)" stroke-width="0.8"/>
+        <rect x="24" y="66" width="42" height="54" rx="1" fill="rgba(90,10,10,0.65)" stroke="rgba(201,160,122,0.3)" stroke-width="0.6"/>
+        <path d="M54 82C54 78 50 76 45 76C40 76 36 78 36 82C36 85 38 87 42 89L48 91C52 93 54 95 54 99C54 102 51 103 45 103C39 103 36 101 36 98" stroke="#c9a07a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <text x="45" y="113" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-size="7" fill="rgba(245,230,208,0.55)" letter-spacing="2">Shanze</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- KOLEKSİYON -->
+<section class="collection" id="collection">
+  <div class="collection-header reveal">
+    <div>
+      <p class="section-label" data-tr="KOLEKSİYONUMUZ" data-en="OUR COLLECTION">KOLEKSİYONUMUZ</p>
+      <h2>Seçkin <em>Kokular</em></h2>
+    </div>
+    <a href="https://wa.me/905399842345" target="_blank" class="view-all" data-tr="Sipariş İçin WhatsApp →" data-en="Order via WhatsApp →">Sipariş İçin WhatsApp →</a>
+  </div>
+  <div class="products-grid">
+
+    <div class="product-card reveal" onclick="openModal(0)">
+      <div class="product-number">01</div>
+      <svg class="product-bottle-icon" viewBox="0 0 48 65" fill="none"><rect x="16" y="2" width="16" height="8" rx="1" fill="rgba(90,10,10,0.6)" stroke="rgba(201,160,122,0.5)" stroke-width="0.7"/><path d="M12 16L36 16L40 57Q40 63 24 63Q8 63 8 57Z" fill="rgba(90,10,10,0.22)" stroke="rgba(201,160,122,0.4)" stroke-width="0.7"/><path d="M16 10L32 10L36 16L12 16Z" fill="rgba(201,160,122,0.12)" stroke="rgba(201,160,122,0.3)" stroke-width="0.6"/><rect x="12" y="24" width="24" height="22" rx="1" fill="rgba(201,160,122,0.07)" stroke="rgba(201,160,122,0.18)" stroke-width="0.5"/></svg>
+      <div class="product-brand">Shanze</div>
+      <div class="product-name">Gold Fire</div>
+      <div class="product-ref">İlham: God of Fire</div>
+      <div class="product-type">EDP · Oryantal & Meyveli · <span style="color:var(--gold);opacity:0.9">Erkek</span></div>
+      <div class="product-desc">Ateşin gücünü ve altının zarafetini buluşturan derin, sıcak ve mistik bir koku.</div>
+      <div class="product-price">800 ₺</div>
+      <div class="product-notes"><span class="note-tag">Mango</span><span class="note-tag">Oud</span><span class="note-tag">Amber</span></div>
+    </div>
+
+    <div class="product-card reveal" onclick="openModal(1)">
+      <div class="product-number">02</div>
+      <svg class="product-bottle-icon" viewBox="0 0 48 65" fill="none"><rect x="18" y="2" width="12" height="7" rx="1" fill="rgba(90,10,10,0.6)" stroke="rgba(201,160,122,0.5)" stroke-width="0.7"/><rect x="10" y="14" width="28" height="48" rx="3" fill="rgba(90,10,10,0.22)" stroke="rgba(201,160,122,0.4)" stroke-width="0.7"/><path d="M18 9L30 9L32 14L16 14Z" fill="rgba(201,160,122,0.12)" stroke="rgba(201,160,122,0.3)" stroke-width="0.6"/><rect x="14" y="22" width="20" height="26" rx="1" fill="none" stroke="rgba(201,160,122,0.18)" stroke-width="0.5"/></svg>
+      <div class="product-brand">Shanze</div>
+      <div class="product-name">Strong Stent</div>
+      <div class="product-ref">İlham: Stronger With You Intensely</div>
+      <div class="product-type">EDP · Oryantal & Baharatlı · <span style="color:var(--gold);opacity:0.9">Erkek</span></div>
+      <div class="product-desc">Tutkuyu ve zarafeti bir arada sunan baharatlı-tatlı dansıyla büyüleyen kışkırtıcı bir koku.</div>
+      <div class="product-price">800 ₺</div>
+      <div class="product-notes"><span class="note-tag">Kardamom</span><span class="note-tag">Toffee</span><span class="note-tag">Vanilya</span></div>
+    </div>
+
+    <div class="product-card reveal" onclick="openModal(2)">
+      <div class="product-number">03</div>
+      <svg class="product-bottle-icon" viewBox="0 0 48 65" fill="none"><ellipse cx="24" cy="6" rx="7" ry="5" fill="rgba(90,10,10,0.6)" stroke="rgba(201,160,122,0.5)" stroke-width="0.7"/><path d="M10 20Q10 12 24 12Q38 12 38 20L40 58Q40 63 24 63Q8 63 8 58Z" fill="rgba(90,10,10,0.22)" stroke="rgba(201,160,122,0.4)" stroke-width="0.7"/><ellipse cx="24" cy="38" rx="9" ry="11" fill="none" stroke="rgba(201,160,122,0.18)" stroke-width="0.5"/><circle cx="24" cy="38" r="3" fill="rgba(201,160,122,0.1)"/></svg>
+      <div class="product-brand">Shanze</div>
+      <div class="product-name">Kirce</div>
+      <div class="product-ref">İlham: Kirke</div>
+      <div class="product-type">Extrait · Çiçeksi & Meyveli · <span style="color:var(--gold);opacity:0.9">Unisex</span></div>
+      <div class="product-desc">Tropikal meyveler ve çiçekli kalp notalarıyla mitolojinin büyüleyici dünyasına açılan kapı.</div>
+      <div class="product-price">800 ₺</div>
+      <div class="product-notes"><span class="note-tag">Şeftali</span><span class="note-tag">Müguştiyi</span><span class="note-tag">Sandal</span></div>
+    </div>
+
+    <div class="product-card reveal" onclick="openModal(3)">
+      <div class="product-number">04</div>
+      <svg class="product-bottle-icon" viewBox="0 0 48 65" fill="none"><rect x="19" y="1" width="10" height="9" rx="2" fill="rgba(90,10,10,0.6)" stroke="rgba(201,160,122,0.5)" stroke-width="0.7"/><rect x="8" y="14" width="32" height="48" rx="5" fill="rgba(90,10,10,0.22)" stroke="rgba(201,160,122,0.4)" stroke-width="0.7"/><path d="M18 10L30 10L32 14L16 14Z" fill="rgba(201,160,122,0.12)" stroke="rgba(201,160,122,0.3)" stroke-width="0.6"/><rect x="12" y="20" width="24" height="1" fill="rgba(201,160,122,0.25)"/><rect x="12" y="54" width="24" height="1" fill="rgba(201,160,122,0.25)"/></svg>
+      <div class="product-brand">Shanze</div>
+      <div class="product-name">Paralox</div>
+      <div class="product-ref">İlham: Prada Paradoxe</div>
+      <div class="product-type">EDP · Çiçeksi & Amber · <span style="color:var(--gold);opacity:0.9">Kadın</span></div>
+      <div class="product-desc">Zıtlıkların mükemmel dengesi. Taze bergamot açılışı, neroli kalbi ve kadifemsi amber tabanı.</div>
+      <div class="product-price">800 ₺</div>
+      <div class="product-notes"><span class="note-tag">Bergamot</span><span class="note-tag">Neroli</span><span class="note-tag">Amber</span></div>
+    </div>
+
+    <div class="product-card reveal" onclick="openModal(4)">
+      <div class="product-number">05</div>
+      <svg class="product-bottle-icon" viewBox="0 0 48 65" fill="none"><polygon points="24,2 30,10 18,10" fill="rgba(90,10,10,0.6)" stroke="rgba(201,160,122,0.5)" stroke-width="0.7"/><path d="M14 18L34 18L38 58Q38 63 24 63Q10 63 10 58Z" fill="rgba(90,10,10,0.22)" stroke="rgba(201,160,122,0.4)" stroke-width="0.7"/><path d="M18 10L30 10L34 18L14 18Z" fill="rgba(201,160,122,0.1)" stroke="rgba(201,160,122,0.3)" stroke-width="0.6"/><circle cx="24" cy="41" r="5" fill="none" stroke="rgba(201,160,122,0.15)" stroke-width="0.5"/></svg>
+      <div class="product-brand">Shanze</div>
+      <div class="product-name">Althear</div>
+      <div class="product-ref">İlham: Althair</div>
+      <div class="product-type">EDP · Oryantal & Gourmand · <span style="color:var(--gold);opacity:0.9">Erkek</span></div>
+      <div class="product-desc">Yıldızlardan gelen tatlı bir sır. Baharatlı açılış, kremsi vanilya kalbi, pralinli derin taban.</div>
+      <div class="product-price">800 ₺</div>
+      <div class="product-notes"><span class="note-tag">Kardamom</span><span class="note-tag">Vanilya</span><span class="note-tag">Pralin</span></div>
+    </div>
+
+    <div class="product-card reveal" onclick="openModal(5)">
+      <div class="product-number">06</div>
+      <svg class="product-bottle-icon" viewBox="0 0 48 65" fill="none"><circle cx="24" cy="7" r="6" fill="rgba(90,10,10,0.6)" stroke="rgba(201,160,122,0.5)" stroke-width="0.7"/><path d="M11 20Q11 12 24 12Q37 12 37 20L37 58Q37 63 24 63Q11 63 11 58Z" fill="rgba(90,10,10,0.22)" stroke="rgba(201,160,122,0.4)" stroke-width="0.7"/><circle cx="24" cy="40" r="10" fill="none" stroke="rgba(201,160,122,0.15)" stroke-width="0.5"/><circle cx="24" cy="40" r="4" fill="rgba(201,160,122,0.2)"/></svg>
+      <div class="product-brand">Shanze</div>
+      <div class="product-name">Le Paradise</div>
+      <div class="product-ref">İlham: Paradise Garden</div>
+      <div class="product-type">EDP · Taze & Tropikal · <span style="color:var(--gold);opacity:0.9">Erkek</span></div>
+      <div class="product-desc">Cennet bahçesinden bir esinti. Nane ve zencefil açılışı, hindistan cevizi ve incir kalbi.</div>
+      <div class="product-price">800 ₺</div>
+      <div class="product-notes"><span class="note-tag">Nane</span><span class="note-tag">Hindistan Cevizi</span><span class="note-tag">Tonka</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- NASIL SİPARİŞ VERİLİR -->
+<section class="how-order reveal">
+  <p class="section-label" style="text-align:center">SİPARİŞ SÜRECİ</p>
+  <h2>3 adımda <em>kapına gelsin</em></h2>
+  <p>Hızlı, kolay ve güvenli sipariş süreci</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Seç</div>
+      <div class="step-desc">Koleksiyonumuzu incele, seni büyüleyen kokuyu bul. Emin olamıyorsan koku testini dene.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">WhatsApp'a Yaz</div>
+      <div class="step-desc">Parfüm adını ve adresini WhatsApp'tan bize ilet. Anında yanıt veriyoruz.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Kapında</div>
+      <div class="step-desc">Siparişin özenle paketlenir, Türkiye'nin her yerine hızla ulaştırılır.</div>
+    </div>
+  </div>
+  <a href="https://wa.me/905399842345?text=Merhaba%2C%20Shanze%20parfüm%20sipariş%20vermek%20istiyorum." target="_blank" class="order-btn">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    WhatsApp ile Sipariş Ver
+  </a>
+</section>
+
+<!-- KOKU TESTİ -->
+<section class="quiz-section reveal" id="quiz">
+  <p class="section-label" style="text-align:center">İNTERAKTİF TEST</p>
+  <h2>Hangi koku <em>sana göre?</em></h2>
+  <p>4 soruyu yanıtla, sana özel parfümünü bulalım</p>
+  <div class="quiz-box">
+    <div class="quiz-progress" id="quizProgress"></div>
+    <div id="quizContent"></div>
+  </div>
+</section>
+
+<!-- YORUMLAR -->
+<section class="reviews reveal" id="reviews">
+  <div class="reviews-header">
+    <p class="section-label">MÜŞTERİ DENEYİMLERİ</p>
+    <h2>Onlar <em>denedi,</em> anlattı</h2>
+    <p>Gerçek müşterilerimizden gerçek yorumlar</p>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"Gold Fire'ı ilk sıktığımda karım 'bu ne koku öyle, inan çok güzel' dedi. Ofiste de herkes sordu, nereden aldığımı. Kesinlikle tekrar alacağım."</div>
+      <div class="review-author">
+        <div class="review-avatar">AK</div>
+        <div><div class="review-name">Ahmet K.</div><div class="review-product">Gold Fire</div></div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"Kirce'yi aldım, fiyatı duyunca şaşırdım açıkçası. 800 TL'ye bu kalite mi diye düşündüm ama kokuyu sıkınca inandım. Yurtdışındaki parfümlere benziyor gerçekten."</div>
+      <div class="review-author">
+        <div class="review-avatar">SY</div>
+        <div><div class="review-name">Selin Y.</div><div class="review-product">Kirce</div></div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"Strong Stent'i kışlık arıyordum, tam istediğim koku bu. Sabah sıktım, akşama kadar üstümde kaldı. Kargosu da çok hızlı geldi, 2 günde kapımdaydı."</div>
+      <div class="review-author">
+        <div class="review-avatar">ME</div>
+        <div><div class="review-name">Murat E.</div><div class="review-product">Strong Stent</div></div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"Althear'ı kışlık olarak aldım, tam aradığım şeydi. Vanilya ve baharatın o sıcak karışımı inanılmaz. Sabah sıktım akşama kadar üstümde kaldı, çevremdekiler hep sordu."</div>
+      <div class="review-author">
+        <div class="review-avatar">KD</div>
+        <div><div class="review-name">Kerem D.</div><div class="review-product">Althear</div></div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"Le Paradise yazın favorim oldu. Sabah işe giderken sıkıyorum, serinliği ve hafifliği çok iyi. 2 şişe birden aldım, ücretsiz kargo da geldi, süper."</div>
+      <div class="review-author">
+        <div class="review-avatar">OA</div>
+        <div><div class="review-name">Onur A.</div><div class="review-product">Le Paradise</div></div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"Paralox'u iş yerimde sıktım, toplantıda 'ne güzel koku bu' diye soruldu. Fiyatını söyleyince inanamadılar. Kadın parfümü deyip geçmeyin, gerçekten çok kaliteli."</div>
+      <div class="review-author">
+        <div class="review-avatar">NB</div>
+        <div><div class="review-name">Neslihan B.</div><div class="review-product">Paralox</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FELSEFE -->
+<section class="philosophy reveal" id="philosophy">
+  <p class="section-label">FELSEFEMİZ</p>
+  <blockquote>&ldquo;Bir koku bin kelimeden daha güçlü bir anıyı taşır. Shanze ile her gün kendinizi yeniden keşfedin.&rdquo;</blockquote>
+  <div class="philosophy-line"></div>
+  <cite>— Shanze, Lüks Parfümeri</cite>
+</section>
+
+<div class="ornament">— ✦ —</div>
+
+
+<!-- MANİFESTO / KOKU GÜNLÜĞÜ -->
+<section class="manifesto reveal" id="manifesto">
+  <div class="manifesto-inner">
+    <div class="manifesto-deco">✦</div>
+    <p class="section-label" style="text-align:center">KOKU GÜNLÜĞܒ</p>
+    <h2 class="manifesto-title">Koku neden bu kadar <em>güçlü?</em></h2>
+    <div class="manifesto-text">
+      <p>Beyin, bir kokuyu aldığında doğrudan limbik sisteme — yani duyguların ve anıların merkezi olan bölgeye — gönderir. Görüntüler unutulur, sesler silinir; ama koku, yıllar sonra bile aynı hissi geri getirebilir. Çocukluğun mutfak kokusu, sevdiğin birinin yastığı, yağmurun ilk damlası… Hepsi bir şişenin içinde saklı duruyor.</p>
+      <p>Shanze'yi kurarken bu gerçekten yola çıktık. Parfüm bir aksesuar değil; senin hikayenin, izin, anının ta kendisi. İnsanların seni hatırlaması için bir isme değil, bir kokuya ihtiyaçları var.</p>
+      <p>Biz sadece parfüm satmıyoruz. Seninle özdeşleşecek, yıllarca akıllarda kalacak o kokuyu arıyoruz. Ve bir kez bulunca, hiç bırakmak istemiyorsun.</p>
+    </div>
+    <div class="manifesto-line"></div>
+    <span class="manifesto-sig">— Zeki Şanlıer, Shanze Kurucusu</span>
+  </div>
+</section>
+
+<div class="ornament">— ✦ —</div>
+
+<!-- KOKU TAKVİMİ -->
+<section class="takvim reveal" id="takvim">
+  <p class="section-label" style="text-align:center">KOKU TAKVİMİ</p>
+  <h2 class="takvim-title">Bu ay ne <em>sık?</em></h2>
+  <p class="takvim-sub">Mevsime ve ruh haline göre parfüm rehberi</p>
+  <div class="takvim-grid">
+    <div class="takvim-card active-month">
+      <div class="takvim-ay">MART</div>
+      <div class="takvim-parfum">Le Paradise</div>
+      <div class="takvim-neden">Bahar kapıda, taze notalar ön plana çıkıyor. Nane ve hindistan cevizinin özgür enerjisi bu geçiş dönemine mükemmel eşlik eder.</div>
+      <div class="takvim-badge">Bu ay ✦</div>
+    </div>
+    <div class="takvim-card">
+      <div class="takvim-ay">NİSAN — MAYIS</div>
+      <div class="takvim-parfum">Kirce</div>
+      <div class="takvim-neden">İlkbaharın tam çiçeklenmesinde tropik meyveler ve çiçek notaları doruk noktasına ulaşır. Unisex yapısıyla herkesin favorisi.</div>
+    </div>
+    <div class="takvim-card">
+      <div class="takvim-ay">HAZİRAN — AĞUSTOS</div>
+      <div class="takvim-parfum">Paralox</div>
+      <div class="takvim-neden">Yazın sıcağında bergamot ve neroli ferahlık verir, amber tabanı uzun gecelerde tende kalır. Yaz akşamlarının vazgeçilmezi.</div>
+    </div>
+    <div class="takvim-card">
+      <div class="takvim-ay">EYLÜL — EKİM</div>
+      <div class="takvim-parfum">Gold Fire</div>
+      <div class="takvim-neden">Sonbaharın ilk serinliğinde oryantal notalar güçlenir. Mango ve oud'un karışımı mevsim değişimini kutlar gibi açılır.</div>
+    </div>
+    <div class="takvim-card">
+      <div class="takvim-ay">KASIM — ARALIK</div>
+      <div class="takvim-parfum">Althear</div>
+      <div class="takvim-neden">Soğuk kış gecelerinde pralin ve vanilyanın sıcak sarmalı tam ihtiyaç duyduğun konforu sağlar. Kışın en derin kokusu.</div>
+    </div>
+    <div class="takvim-card">
+      <div class="takvim-ay">OCAK — ŞUBAT</div>
+      <div class="takvim-parfum">Strong Stent</div>
+      <div class="takvim-neden">Yılın en soğuk aylarında baharatlı ve tatlı notalar ısınmak gibi hissettirir. Kardamom ve toffee'nin kışkırtıcı kombinasyonu.</div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament">— ✦ —</div>
+
+<!-- EĞLENCELİ BÖLÜMLER — SEKMELİ -->
+<section class="eglen-section reveal" id="eglence">
+  <p class="section-label" style="text-align:center">KEŞİF KÖŞESİ</p>
+  <h2>Kokunla <em>oyna</em></h2>
+  <p class="eglen-sub">Ruh halini seç, çarkı döndür ya da gizli hikayeleri keşfet</p>
+
+  <div class="etab-nav">
+    <button class="etab-btn active" onclick="eTabSec(0)">😄 Mood</button>
+    <button class="etab-btn" onclick="eTabSec(1)">🃏 Hikayeler</button>
+    <button class="etab-btn" onclick="eTabSec(2)">🎡 Rulet</button>
+    <button class="etab-btn" onclick="eTabSec(3)">📋 Anketler</button>
+  </div>
+
+  <!-- SEKME 0: MOOD -->
+  <div class="etab-panel active" id="epanel-0">
+    <p class="etab-desc">Şu an nasıl hissediyorsun?</p>
+    <div class="mood-grid">
+      <button class="mood-btn" onclick="moodSec('mutlu')"><span class="mood-emoji">😄</span><span class="mood-label">Mutlu</span></button>
+      <button class="mood-btn" onclick="moodSec('romantik')"><span class="mood-emoji">💕</span><span class="mood-label">Romantik</span></button>
+      <button class="mood-btn" onclick="moodSec('guclu')"><span class="mood-emoji">💪</span><span class="mood-label">Güçlü</span></button>
+      <button class="mood-btn" onclick="moodSec('huzurlu')"><span class="mood-emoji">🌿</span><span class="mood-label">Huzurlu</span></button>
+      <button class="mood-btn" onclick="moodSec('gizemli')"><span class="mood-emoji">🖤</span><span class="mood-label">Gizemli</span></button>
+      <button class="mood-btn" onclick="moodSec('maceraci')"><span class="mood-emoji">🔥</span><span class="mood-label">Maceracı</span></button>
+      <button class="mood-btn" onclick="moodSec('nostaljik')"><span class="mood-emoji">🌙</span><span class="mood-label">Nostaljik</span></button>
+      <button class="mood-btn" onclick="moodSec('ozgur')"><span class="mood-emoji">🌊</span><span class="mood-label">Özgür</span></button>
+    </div>
+    <div class="mood-result" id="moodResult">
+      <div class="mood-result-emoji" id="moodEmoji"></div>
+      <div class="mood-result-label">Bu an için parfümün</div>
+      <div class="mood-result-parfum" id="moodParfum"></div>
+      <div class="mood-result-neden" id="moodNeden"></div>
+      <a id="moodCta" href="#" target="_blank" class="mood-result-cta">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Sipariş Ver — 800 ₺
+      </a>
+      <button class="mood-tekrar" onclick="moodReset()">↺ Tekrar seç</button>
+    </div>
+  </div>
+
+  <!-- SEKME 1: HİKAYELER -->
+  <div class="etab-panel" id="epanel-1">
+    <p class="etab-desc">Tıkla — her kokunun gizli bir dünyası var</p>
+    <div class="lore-list">
+
+      <div class="lore-item" onclick="loreToggle(this)">
+        <div class="lore-item-front">
+          <div class="lore-item-left">
+            <span class="lore-item-num">No. 01</span>
+            <span class="lore-item-name">Gold Fire</span>
+            <span class="lore-item-sub">Aztek Ateşi</span>
+          </div>
+          <span class="lore-item-arrow">→</span>
+        </div>
+        <div class="lore-item-body">
+          <p>Azteklerin ateş tanrısı Xiuhtecuhtli, güneşin her sabah yeniden doğmasını sağlardı. Ritüellerinde mango ve tropikal meyvelerin fermente kokusu yükselir, oud ve amber dumanıyla birleşirdi. Gold Fire bu ritüelin modern hali — her sabah tene vurulduğunda bir yeniden doğuşu simgeler.</p>
+        </div>
+      </div>
+
+      <div class="lore-item" onclick="loreToggle(this)">
+        <div class="lore-item-front">
+          <div class="lore-item-left">
+            <span class="lore-item-num">No. 02</span>
+            <span class="lore-item-name">Strong Stent</span>
+            <span class="lore-item-sub">İlk Bakışın Kokusu</span>
+          </div>
+          <span class="lore-item-arrow">→</span>
+        </div>
+        <div class="lore-item-body">
+          <p>Bilim insanları ilk bakışın yalnızca 0.2 saniye sürdüğünü söyler. Ama koku, saniyeler içinde beyinde kalıcı bir iz bırakır. Strong Stent tam da bu an için tasarlandı — kardamom ve toffee'nin cesur açılışı ilk izlenimi, vanilya ve süetin kadifemsi tabanı ise kalıcı anıyı oluşturur.</p>
+        </div>
+      </div>
+
+      <div class="lore-item" onclick="loreToggle(this)">
+        <div class="lore-item-front">
+          <div class="lore-item-left">
+            <span class="lore-item-num">No. 03</span>
+            <span class="lore-item-name">Kirce</span>
+            <span class="lore-item-sub">Büyücünün Adası</span>
+          </div>
+          <span class="lore-item-arrow">→</span>
+        </div>
+        <div class="lore-item-body">
+          <p>Kirke, Homeros'un Odysseia'sında Aiaia adasında yaşayan bir büyücü tanrıçaydı. Bitkilerden ve çiçeklerden iksirler hazırlar, geçenleri büyülerdi. Efsaneye göre adasında sürekli bir meyve ve çiçek kokusu yükselirdi. Kirce bu efsanevi büyünün şişeye alınmış hali.</p>
+        </div>
+      </div>
+
+      <div class="lore-item" onclick="loreToggle(this)">
+        <div class="lore-item-front">
+          <div class="lore-item-left">
+            <span class="lore-item-num">No. 04</span>
+            <span class="lore-item-name">Paralox</span>
+            <span class="lore-item-sub">Paradoksun Güzelliği</span>
+          </div>
+          <span class="lore-item-arrow">→</span>
+        </div>
+        <div class="lore-item-body">
+          <p>Filozoflar yüzyıllardır zıtlıkların birbirini tamamladığını söyler. Işık karanlıksız, sıcak soğuksuz anlamsızdır. Paralox bu felsefeyi kokuya taşır — bergamotun ferahlığı ile amberin sıcaklığı, neroli'nin zarafeti ile miskin derinliği. Zıt güçlerin mükemmel dansı.</p>
+        </div>
+      </div>
+
+      <div class="lore-item" onclick="loreToggle(this)">
+        <div class="lore-item-front">
+          <div class="lore-item-left">
+            <span class="lore-item-num">No. 05</span>
+            <span class="lore-item-name">Althear</span>
+            <span class="lore-item-sub">Yıldızın Sırrı</span>
+          </div>
+          <span class="lore-item-arrow">→</span>
+        </div>
+        <div class="lore-item-body">
+          <p>Althair, Kartal takım yıldızının en parlak yıldızı. Antik Arap astronomları bu yıldızın göründüğü gecelerde havada tatlı ve baharatlı bir enerji hissettiklerini yazarlardı. Althear, o yıldız altındaki geceleri — pralin'in tatlılığını, kardamom'un sıcaklığını — şişeye hapsetti.</p>
+        </div>
+      </div>
+
+      <div class="lore-item" onclick="loreToggle(this)">
+        <div class="lore-item-front">
+          <div class="lore-item-left">
+            <span class="lore-item-num">No. 06</span>
+            <span class="lore-item-name">Le Paradise</span>
+            <span class="lore-item-sub">Cennetin Kokusu</span>
+          </div>
+          <span class="lore-item-arrow">→</span>
+        </div>
+        <div class="lore-item-body">
+          <p>Dünyanın dört bir yanındaki kültürler cenneti farklı hayal etmiş ama hepsinde ortak bir şey var: mis kokulu bahçeler. Hint mitolojisinde incir, Akdeniz'de nane, Polinezya'da hindistan cevizi. Le Paradise bu evrensel cennet imgelerini tek bir şişede buluşturdu.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SEKME 2: RULET -->
+  <div class="etab-panel" id="epanel-2">
+    <p class="etab-desc">Karar veremedin mi? Kadere bırak.</p>
+    <div class="rulet-container">
+      <div class="rulet-wrap">
+        <div class="rulet-pointer"></div>
+        <canvas id="ruletCanvas" class="rulet-canvas" width="320" height="320"></canvas>
+      </div>
+      <button class="rulet-btn" id="ruletBtn" onclick="ruletDondur()">✦ &nbsp; Çarkı Döndür</button>
+      <div class="rulet-result" id="ruletResult">
+        <div class="rulet-result-label">Kaderin seçti</div>
+        <div class="rulet-result-name" id="ruletName"></div>
+        <div class="rulet-result-desc" id="ruletDesc"></div>
+        <a id="ruletCta" href="#" target="_blank" class="rulet-cta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Sipariş Ver — 800 ₺
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEKME 3: ANKETLER -->
+  <div class="etab-panel" id="epanel-3">
+    <div class="anket-tabs" style="margin-bottom:2px;">
+      <button class="anket-tab active" onclick="switchAnket(0)">☀️ Sabah</button>
+      <button class="anket-tab" onclick="switchAnket(1)">🎬 Film</button>
+      <button class="anket-tab" onclick="switchAnket(2)">🎨 Renk</button>
+      <button class="anket-tab" onclick="switchAnket(3)">✈️ Tatil</button>
+    </div>
+    <div class="anket-box" id="anketBox"></div>
+  </div>
+
+</section>
+
+<div class="ornament">— ✦ —</div>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-brand reveal">
+    <span class="footer-wordmark">Shanze</span>
+    <p>Lüks ve zarafetin buluştuğu noktada, her koku size özel bir hikaye anlatır.</p>
+  </div>
+  <div class="footer-col reveal">
+    <h4>KOLEKSİYON</h4>
+    <ul>
+      <li><a href="#">Gold Fire — 800 ₺</a></li>
+      <li><a href="#">Strong Stent — 800 ₺</a></li>
+      <li><a href="#">Kirce — 800 ₺</a></li>
+      <li><a href="#">Paralox — 800 ₺</a></li>
+      <li><a href="#">Althear — 800 ₺</a></li>
+      <li><a href="#">Le Paradise — 800 ₺</a></li>
+    </ul>
+  </div>
+  <div class="footer-col reveal">
+    <h4>İLETİŞİM</h4>
+    <ul>
+      <li><a href="https://instagram.com/shanzeparfum" target="_blank">&#64;shanzeparfum</a></li>
+      <li><a href="/cdn-cgi/l/email-protection#cab9a2aba4b0afbaabb8acbfa7ece9fcfef1ada7aba3a6e4a9a5a7">shanzeparfum&#64;gmail.com</a></li>
+      <li><a href="https://wa.me/905399842345" target="_blank">WhatsApp: 0539 984 23 45</a></li>
+      <li><span>Zeki Şanlıer</span></li>
+    </ul>
+  </div>
+</footer>
+
+<div class="footer-bottom">
+  <p>© 2025 Shanze. Tüm hakları saklıdır.</p>
+  <p>Türkiye'de tasarlandı ✦</p>
+</div>
+
+<!-- WHATSAPP SABİT BUTON -->
+<div class="wa-float">
+  <div class="wa-bubble">Sipariş vermek için tıkla, hemen yanıt veriyoruz! 🖤</div>
+  <a href="https://wa.me/905399842345?text=Merhaba%2C%20Shanze%20parf%C3%BCm%20sipari%C5%9F%20vermek%20istiyorum." target="_blank" class="wa-btn" title="WhatsApp ile Sipariş Ver">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="window.closeModalDirect()">✕</button>
+    <div class="modal-inner">
+      <div class="modal-left">
+        <div class="modal-num" id="mNum"></div>
+        <div class="modal-bottle" id="mBottle"></div>
+        <div class="modal-brand-tag">Shanze Parfümeri</div>
+      </div>
+      <div class="modal-right">
+        <div class="modal-eyebrow">Eau de Parfum</div>
+        <div class="modal-title" id="mTitle"></div>
+        <div class="modal-type" id="mType"></div>
+        <div class="modal-price-tag">800 ₺</div>
+        <div class="modal-divider"></div>
+        <div class="modal-story" id="mStory"></div>
+        <div class="modal-section-title">Koku Notaları</div>
+        <div class="modal-notes-grid" id="mNotes"></div>
+        <div class="modal-section-title">Özellikler</div>
+        <div class="modal-props" id="mProps"></div>
+        <a id="mCta" href="#" target="_blank" class="modal-cta">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp ile Sipariş Ver
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── CURSOR ──
+  const cursor=document.getElementById('cursor'), ring=document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+  (function anim(){rx+=(mx-rx)*0.1;ry+=(my-ry)*0.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+
+  // ── REVEAL ──
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+
+  // ── DİL ──
+  let lang='tr';
+  function toggleLang(){lang=lang==='tr'?'en':'tr';document.getElementById('langToggle').textContent=lang==='tr'?'EN / TR':'TR / EN';document.querySelectorAll('[data-tr]').forEach(el=>{const v=el.getAttribute('data-'+lang);if(v)el.innerHTML=v;});}
+
+  // ── ÜRÜN VERİLERİ ──
+  const WA = '905399842345';
+  const products = [
+    { num:'No. 01', name:'Gold Fire', type:'Eau de Parfum · Oryantal & Meyveli',
+      story:'Aztek mitolojisinin ateş tanrısından ilham alan Gold Fire, mango, limon ve kırmızı meyvelerin enerjik açılışını yasemin ve sedir kalbinde olgunlaştırıyor. Oud, amber ve miskin mistik tabanıyla tamamlanan bu koku, dikkat çeken ve unutulmaz bir iz bırakmak isteyenler için yaratılmıştır.',
+      notes:['Mango','Limon','Kırmızı Meyveler','Zencefil','Yasemin','Sedir','Oud','Amber','Misk'],
+      props:[{l:'Yoğunluk',v:'Çok Yoğun'},{l:'Kalıcılık',v:'12+ Saat'},{l:'Sezon',v:'Yaz · İlkbahar'},{l:'Karakter',v:'Egzotik · Mistik'}],
+      bottle:`<svg width="80" height="140" viewBox="0 0 80 140" fill="none"><rect x="28" y="4" width="24" height="14" rx="1" fill="rgba(90,10,10,0.7)" stroke="rgba(201,160,122,0.6)" stroke-width="1"/><path d="M16 28L64 28L70 122Q70 136 40 136Q10 136 10 122Z" fill="rgba(90,10,10,0.3)" stroke="rgba(201,160,122,0.55)" stroke-width="1"/><path d="M24 18L56 18L64 28L16 28Z" fill="rgba(201,160,122,0.18)" stroke="rgba(201,160,122,0.4)" stroke-width="0.8"/><rect x="18" y="44" width="44" height="50" rx="1" fill="rgba(201,160,122,0.08)" stroke="rgba(201,160,122,0.25)" stroke-width="0.7"/></svg>`},
+    { num:'No. 02', name:'Strong Stent', type:'Eau de Parfum · Oryantal & Baharatlı',
+      story:'Genç ve yoğun bir aşkın heyecanını taşıyan Strong Stent, pembeli biber ve kardamomun cesur açılışıyla başlıyor. Tarçın ve toffeenin tatlı kalbi, vanilya, tonka ve süetin kadifemsi tabanında saatlerce yaşıyor. Sonbahar ve kış gecelerinin en çok compliment alan kokularından biri.',
+      notes:['Pembeli Biber','Kardamom','Menekşe','Toffee','Tarçın','Lavanta','Vanilya','Amber','Tonka','Süet'],
+      props:[{l:'Yoğunluk',v:'Çok Yoğun'},{l:'Kalıcılık',v:'10-12 Saat'},{l:'Sezon',v:'Sonbahar · Kış'},{l:'Karakter',v:'Tatlı · Tutkulu'}],
+      bottle:`<svg width="80" height="140" viewBox="0 0 80 140" fill="none"><rect x="30" y="4" width="20" height="12" rx="1" fill="rgba(90,10,10,0.7)" stroke="rgba(201,160,122,0.6)" stroke-width="1"/><rect x="14" y="22" width="52" height="110" rx="4" fill="rgba(90,10,10,0.28)" stroke="rgba(201,160,122,0.55)" stroke-width="1"/><path d="M28 16L52 16L56 22L24 22Z" fill="rgba(201,160,122,0.18)" stroke="rgba(201,160,122,0.4)" stroke-width="0.8"/><rect x="20" y="36" width="40" height="54" rx="1" fill="none" stroke="rgba(201,160,122,0.22)" stroke-width="0.7"/></svg>`},
+    { num:'No. 03', name:'Kirce', type:'Extrait de Parfum · Çiçeksi & Meyveli',
+      story:'Antik mitolojinin büyücü tanrıçasından ilham alan Kirce, çarkıfelek meyvesi ve şeftali tropik açılışını ahududu, armut ve frenk üzümü kalbiyle buluşturuyor. Müguştiyi, misk, sandal ağacı ve vanilyanın derin tabanı bu deneyimi saatlerce teninde yaşatıyor.',
+      notes:['Çarkıfelek Meyvesi','Şeftali','Ahududu','Armut','Frenk Üzümü','Müguştiyi','Misk','Sandal Ağacı','Vanilya','Heliotrop'],
+      props:[{l:'Yoğunluk',v:'Çok Yoğun'},{l:'Kalıcılık',v:'12+ Saat'},{l:'Sezon',v:'İlkbahar · Yaz'},{l:'Karakter',v:'Meyveli · Büyüleyici'}],
+      bottle:`<svg width="80" height="140" viewBox="0 0 80 140" fill="none"><ellipse cx="40" cy="10" rx="12" ry="8" fill="rgba(90,10,10,0.7)" stroke="rgba(201,160,122,0.6)" stroke-width="1"/><path d="M16 30Q16 18 40 18Q64 18 64 30L66 122Q66 134 40 134Q14 134 14 122Z" fill="rgba(90,10,10,0.28)" stroke="rgba(201,160,122,0.55)" stroke-width="1"/><ellipse cx="40" cy="80" rx="16" ry="22" fill="none" stroke="rgba(201,160,122,0.25)" stroke-width="0.8"/><circle cx="40" cy="80" r="6" fill="rgba(201,160,122,0.12)"/></svg>`},
+    { num:'No. 04', name:'Paralox', type:'Eau de Parfum · Çiçeksi & Amber',
+      story:'Zıtlıkların mükemmel dengesi. Armut, mandalina ve bergamotun taze açılışının ardından portakal çiçeği ve nerolinin zarif kalbi yükseliyor. Bourbon vanilya, amber ve beyaz miskin kadifemsi tabanı bu zarafeti uzun süre yaşatıyor.',
+      notes:['Armut','Mandalina','Bergamot','Portakal Çiçeği','Neroli','Yasemin','Bourbon Vanilya','Amber','Beyaz Misk'],
+      props:[{l:'Yoğunluk',v:'Orta'},{l:'Kalıcılık',v:'6-8 Saat'},{l:'Sezon',v:'4 Mevsim'},{l:'Karakter',v:'Modern · Zarif'}],
+      bottle:`<svg width="80" height="140" viewBox="0 0 80 140" fill="none"><rect x="30" y="3" width="20" height="14" rx="2" fill="rgba(90,10,10,0.7)" stroke="rgba(201,160,122,0.6)" stroke-width="1"/><rect x="12" y="22" width="56" height="110" rx="6" fill="rgba(90,10,10,0.28)" stroke="rgba(201,160,122,0.55)" stroke-width="1"/><path d="M28 17L52 17L56 22L24 22Z" fill="rgba(201,160,122,0.18)" stroke="rgba(201,160,122,0.4)" stroke-width="0.8"/><rect x="18" y="30" width="44" height="1" fill="rgba(201,160,122,0.35)"/><rect x="18" y="122" width="44" height="1" fill="rgba(201,160,122,0.35)"/></svg>`},
+    { num:'No. 05', name:'Althear', type:'Eau de Parfum · Oryantal & Gourmand',
+      story:'Yıldızların arasından süzülen tatlı bir sır. Althear, portakal çiçeği ve bergamotun aydınlık açılışını kardamom ve tarçının baharatlı sıcaklığıyla harmanlıyor. Bourbon vanilya ve eleminin kremsi kalbi, pralin ve guaiac ağacının derin tabanında saatlerce yaşıyor.',
+      notes:['Portakal Çiçeği','Bergamot','Tarçın','Kardamom','Bourbon Vanilya','Elemi','Pralin','Guaiac Ağacı','Ambroxan','Misk'],
+      props:[{l:'Yoğunluk',v:'Yoğun'},{l:'Kalıcılık',v:'10-12 Saat'},{l:'Sezon',v:'Sonbahar · Kış'},{l:'Karakter',v:'Tatlı · Sofistike'}],
+      bottle:`<svg width="80" height="140" viewBox="0 0 80 140" fill="none"><polygon points="40,4 52,18 28,18" fill="rgba(90,10,10,0.7)" stroke="rgba(201,160,122,0.6)" stroke-width="1"/><path d="M18 28L62 28L68 122Q68 134 40 134Q12 134 12 122Z" fill="rgba(90,10,10,0.28)" stroke="rgba(201,160,122,0.55)" stroke-width="1"/><path d="M26 18L54 18L62 28L18 28Z" fill="rgba(201,160,122,0.15)" stroke="rgba(201,160,122,0.35)" stroke-width="0.8"/><circle cx="40" cy="73" r="10" fill="none" stroke="rgba(201,160,122,0.2)" stroke-width="0.8"/></svg>`},
+    { num:'No. 06', name:'Le Paradise', type:'Eau de Parfum · Taze & Tropikal',
+      story:'Bir cennet bahçesinden yükselen ferahlık. Le Paradise, taze nane ve zencefilin enerjik açılışından hindistan cevizi ve incirin tropikal kalbine doğru büyülü bir yolculuğa çıkarıyor. Tonka fasulyesi ve sandal ağacının kremsi tabanı bu tropik kaçışı tene işliyor.',
+      notes:['Nane','Zencefil','Yeşil Notalar','Su Notaları','Hindistan Cevizi','İncir','Tuz','Tonka Fasulyesi','Sandal Ağacı'],
+      props:[{l:'Yoğunluk',v:'Orta'},{l:'Kalıcılık',v:'6-8 Saat'},{l:'Sezon',v:'İlkbahar · Yaz'},{l:'Karakter',v:'Taze · Tropikal'}],
+      bottle:`<svg width="80" height="140" viewBox="0 0 80 140" fill="none"><circle cx="40" cy="12" r="10" fill="rgba(90,10,10,0.7)" stroke="rgba(201,160,122,0.6)" stroke-width="1"/><path d="M16 32Q16 20 40 20Q64 20 64 32L64 122Q64 134 40 134Q16 134 16 122Z" fill="rgba(90,10,10,0.28)" stroke="rgba(201,160,122,0.55)" stroke-width="1"/><circle cx="40" cy="78" r="18" fill="none" stroke="rgba(201,160,122,0.2)" stroke-width="0.8"/><circle cx="40" cy="78" r="8" fill="none" stroke="rgba(201,160,122,0.25)" stroke-width="0.8"/><circle cx="40" cy="78" r="3" fill="rgba(201,160,122,0.3)"/></svg>`}
+  ];
+
+  // ── MODAL ──
+  window.openModal = function(i) {
+    const p = products[i];
+    document.getElementById('mNum').textContent = p.num;
+    document.getElementById('mTitle').textContent = p.name;
+    document.getElementById('mType').textContent = p.type;
+    document.getElementById('mStory').textContent = p.story;
+    document.getElementById('mBottle').innerHTML = p.bottle;
+    document.getElementById('mNotes').innerHTML = p.notes.map(n=>`<span class="modal-note">${n}</span>`).join('');
+    document.getElementById('mProps').innerHTML = p.props.map(pr=>`<div class="modal-prop"><div class="modal-prop-label">${pr.l}</div><div class="modal-prop-val">${pr.v}</div></div>`).join('');
+    const msg = encodeURIComponent('Merhaba, ' + p.name + ' parfümünü sipariş etmek istiyorum.');
+    document.getElementById('mCta').href = 'https://wa.me/' + WA + '?text=' + msg;
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+  function closeModal(e){if(e.target===document.getElementById('modalOverlay'))window.closeModalDirect();}
+  window.closeModalDirect=function(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';};
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')window.closeModalDirect();});
+
+  // ── KOKU TESTİ ──
+  const questions = [
+    { q:'Kendini nasıl tanımlarsın?', opts:['Güçlü ve dikkat çekici','Tatlı ve sıcakkanlı','Doğal ve özgür','Zarif ve sofistike'] },
+    { q:'En çok hangi mevsimi seversin?', opts:['Yaz — güneş ve enerji','Kış — sıcak ve derin','İlkbahar — taze ve hafif','Sonbahar — gizemli ve sıcak'] },
+    { q:'Bir kokuda ne ararsın?', opts:['Güçlü kalıcılık, iz bırakmak','Tatlı ve sarıcı bir sıcaklık','Tazelik ve hafiflik','Zarif ve kompleks bir yapı'] },
+    { q:'Parfümünü ne zaman kullanırsın?', opts:['Her zaman — güçlü bir imza','Özel gecelerde ve randevularda','Günlük, sabah işe giderken','Toplantılarda ve özel anlarda'] }
+  ];
+  const quizResults = [
+    { name:'Gold Fire', desc:'Güçlü, egzotik ve dikkat çekici. Mango ve oudun karışımı tam sana göre.' },
+    { name:'Strong Stent', desc:'Sıcak, tatlı ve tutkulu. Vanilya ve kardamomun sarıcı kucağı.' },
+    { name:'Le Paradise', desc:'Taze, özgür ve neşeli. Nane ve hindistan cevizinin tropikal enerjisi.' },
+    { name:'Paralox', desc:'Zarif, modern ve sofistike. Neroli ve amberin dengeli dansı.' },
+    { name:'Althear', desc:'Derin, tatlı ve sofistike. Bourbon vanilya ve pralin tam aradığın koku.' },
+    { name:'Kirce', desc:'Meyveli, çiçeksi ve büyüleyici. Şeftali ve müguştiyinin tropik enerjisi.' }
+  ];
+  const scoreMap=[[0,3,4,1],[0,1,2,4],[0,1,2,3],[0,1,2,3]];
+  let qAnswers=[],qCurrent=0;
+  function renderQuiz(){
+    const prog=document.getElementById('quizProgress');
+    const content=document.getElementById('quizContent');
+    if(!prog||!content) return;
+    prog.innerHTML=questions.map((_,i)=>`<div class="quiz-dot ${i<qCurrent?'done':i===qCurrent?'active':''}"></div>`).join('');
+    if(qCurrent<questions.length){
+      content.innerHTML=`<div class="quiz-question">${questions[qCurrent].q}</div><div class="quiz-options">${questions[qCurrent].opts.map((o,i)=>`<button class="quiz-opt" onclick="pickAnswer(${i})">${o}</button>`).join('')}</div>`;
+    } else {
+      const score=qAnswers.reduce((s,a,qi)=>s+scoreMap[qi][a],0);
+      const ri=Math.min(Math.round(score/qAnswers.length),quizResults.length-1);
+      const r=quizResults[ri];
+      const msg=encodeURIComponent('Merhaba, koku testinden '+r.name+' çıktı ve sipariş vermek istiyorum.');
+      prog.innerHTML=questions.map(()=>`<div class="quiz-dot done"></div>`).join('');
+      content.innerHTML=`<div class="quiz-result"><div class="quiz-result-label">Sana özel parfüm</div><div class="quiz-result-name">${r.name}</div><div class="quiz-result-desc">${r.desc}</div><a href="https://wa.me/${WA}?text=${msg}" target="_blank" class="quiz-result-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>${r.name} Sipariş Ver — 800 ₺</a><button class="quiz-restart" onclick="restartQuiz()">Testi Tekrarla</button></div>`;
+    }
+  }
+  window.pickAnswer=function(i){qAnswers.push(i);qCurrent++;renderQuiz();};
+  window.restartQuiz=function(){qAnswers=[];qCurrent=0;renderQuiz();};
+  renderQuiz();
+
+  // ── ANKET SİSTEMİ ──
+  const anketler=[
+    { baslik:'Sabah rutinine göre parfümün...',
+      sorular:[
+        {s:'Sabah uyandığında ilk ne yaparsın?',opts:[{e:'☕',t:'Kahve yaparım, sessizce uyanırım'},{e:'🏃',t:'Spor / yürüyüş — harekete geçerim'},{e:'📱',t:'Telefona bakarım'},{e:'🛁',t:'Uzun bir duş, yavaş başlarım'}],puan:[3,1,5,2]},
+        {s:'Sabah kahvaltında ne tercih edersin?',opts:[{e:'🥐',t:'Simit veya börek — hızlı'},{e:'🍳',t:'Tam kahvaltı — hazırlamak keyifli'},{e:'🍌',t:'Meyve / smoothie — hafif'},{e:'☕',t:'Sadece kahve yeter'}],puan:[1,4,3,5]},
+        {s:'Güne başlarken ruh halin?',opts:[{e:'⚡',t:'Enerjik ve hazır!'},{e:'😌',t:'Sakin ve odaklı'},{e:'🌊',t:'Akışa bırakıyorum'},{e:'🔥',t:'Tutkulu — bugün bir şeyler yapacağım'}],puan:[1,3,2,4]}
+      ],
+      sonuclar:[
+        {min:3,max:5,parfum:'Le Paradise',kisilik:'Özgür Ruh',aciklama:'Sabahları enerjik başlayan biri olarak Le Paradise\'ın taze notaları tam sana göre.'},
+        {min:6,max:8,parfum:'Paralox',kisilik:'Dengeli Zarif',aciklama:'Her şeyi ölçülü yaparsın. Paralox\'un sofistike dengesi sabah rutininin yansıması.'},
+        {min:9,max:11,parfum:'Kirce',kisilik:'Yaratıcı Ruh',aciklama:'Rutinleri sevmezsin. Kirce\'nin çok katmanlı yapısı senin gibi öngörülemez.'},
+        {min:12,max:15,parfum:'Strong Stent',kisilik:'Güçlü Karakter',aciklama:'Sabahın ilk saatinden güçlüsün. Strong Stent\'in yoğun kokusu bu enerjiyi taşıyor.'}
+      ]
+    },
+    { baslik:'Film türüne göre parfümün...',
+      sorular:[
+        {s:'Cuma akşamı hangisini seçersin?',opts:[{e:'🔪',t:'Gerilim / Thriller'},{e:'💕',t:'Romantik komedi'},{e:'🌌',t:'Sci-Fi / Fantastik'},{e:'🎭',t:'Dram — derin, düşündürücü'}],puan:[4,2,1,3]},
+        {s:'Filmi izlerken nasılsın?',opts:[{e:'🍿',t:'Atıştırmalıksız olmaz'},{e:'🤫',t:'Sessizlik şart'},{e:'💬',t:'Yorum yaparım'},{e:'😭',t:'Duygulanırsam sorun değil'}],puan:[2,4,1,3]},
+        {s:'Favori film karakterin?',opts:[{e:'🦸',t:'Kahraman — dürüst ve güçlü'},{e:'🕵️',t:'Dedektif — zeki ve gizemli'},{e:'🎸',t:'Asi — kurallara uymaz'},{e:'👑',t:'Lider — doğal otorite'}],puan:[2,3,1,4]}
+      ],
+      sonuclar:[
+        {min:3,max:5,parfum:'Kirce',kisilik:'Asi Ruh',aciklama:'Alışılagelmişin dışında ararsın. Kirce\'nin tahmin edilemez yapısı senin karakterin.'},
+        {min:6,max:8,parfum:'Le Paradise',kisilik:'Kaçışçı',aciklama:'Başka dünyalara kaçmayı seversin. Le Paradise\'ın tropikal notaları seni tatile götürür.'},
+        {min:9,max:11,parfum:'Althear',kisilik:'Derin Düşünür',aciklama:'Yüzeyin altını görürsün. Althear\'ın sofistike yapısı bu derin karakterini yansıtıyor.'},
+        {min:12,max:15,parfum:'Gold Fire',kisilik:'Güç Odaklı',aciklama:'Güçlü karakterleri takdir edersin. Gold Fire\'ın kararlı yapısı bu enerjiyi taşıyor.'}
+      ]
+    },
+    { baslik:'Renk seçimine göre parfümün...',
+      sorular:[
+        {s:'Dolabında en çok hangi renk var?',opts:[{e:'🖤',t:'Siyah — klasik ve güçlü'},{e:'🤍',t:'Beyaz / Krem — sade'},{e:'🟤',t:'Toprak tonları — doğal'},{e:'🎨',t:'Renkli — ne gelirse'}],puan:[4,2,3,1]},
+        {s:'Bir oda dekore etsen duvarlar?',opts:[{e:'🌿',t:'Açık yeşil — sakin'},{e:'🔵',t:'Gri / Mavi — minimal'},{e:'🟡',t:'Sarı / Turuncu — canlı'},{e:'🟣',t:'Koyu ton — dramatik'}],puan:[2,1,3,4]},
+        {s:'Favori renk kombinasyonu?',opts:[{e:'✨',t:'Siyah + Altın — lüks'},{e:'🌸',t:'Pastel tonlar — yumuşak'},{e:'🌊',t:'Mavi + Beyaz — özgür'},{e:'🍂',t:'Kahve + Krem — sıcak'}],puan:[4,2,1,3]}
+      ],
+      sonuclar:[
+        {min:3,max:5,parfum:'Le Paradise',kisilik:'Özgür Renk',aciklama:'Renkleri özgürce kullanırsın. Le Paradise\'ın tropikal notaları bu kişiliğinle uyum sağlıyor.'},
+        {min:6,max:8,parfum:'Paralox',kisilik:'Minimalist',aciklama:'Az ama öz — sadelikte zarafet. Paralox\'un modern yapısı bu estetiğini kokuya taşıyor.'},
+        {min:9,max:11,parfum:'Althear',kisilik:'Sıcak Ton',aciklama:'Toprak tonları seni huzurlu hissettiriyor. Althear\'ın sıcak gourmand bazı bu estetikle örtüşüyor.'},
+        {min:12,max:15,parfum:'Strong Stent',kisilik:'Güçlü Estetik',aciklama:'Siyah ve altın — tam senin tarzın. Strong Stent\'in güçlü yapısı bu lüks estetiğin parfümü.'}
+      ]
+    },
+    { baslik:'Tatil tarzına göre parfümün...',
+      sorular:[
+        {s:'Hayalindeki tatil?',opts:[{e:'🏝️',t:'Tropikal ada — deniz'},{e:'🏔️',t:'Dağ / Doğa — huzur'},{e:'🏙️',t:'Büyük şehir — kültür'},{e:'🏜️',t:'Egzotik — Fas, Japonya'}],puan:[1,2,3,4]},
+        {s:'Tatilde nasılsın?',opts:[{e:'📸',t:'Her şeyi fotoğraflarım'},{e:'😴',t:'Dinlenirim, deşarj olurum'},{e:'🎉',t:'Geceleri aktif, sosyalleşirim'},{e:'📖',t:'Okur, kendimle baş başa kalırım'}],puan:[3,2,1,4]},
+        {s:'Tatilden ne getirirsin?',opts:[{e:'🧿',t:'El sanatları / eşsiz objeler'},{e:'🍽️',t:'Tarif — evde yaparım'},{e:'👕',t:'Tişört — pratik'},{e:'💭',t:'Anı yeter, eşya taşımam'}],puan:[4,3,1,2]}
+      ],
+      sonuclar:[
+        {min:3,max:5,parfum:'Le Paradise',kisilik:'Tropikal Ruh',aciklama:'Deniz ve özgürlük seni tanımlıyor. Le Paradise\'ın tropikal notaları her zaman o hissi yaşatıyor.'},
+        {min:6,max:8,parfum:'Kirce',kisilik:'Huzur Arayan',aciklama:'Sessizlik seni şarj ediyor. Kirce\'nin meyveli notaları bu dingin ruh halinle uyum yakalıyor.'},
+        {min:9,max:11,parfum:'Paralox',kisilik:'Şehir Gezgini',aciklama:'Müze, kafeterya, gece hayatı. Paralox\'un çok yönlü yapısı her ortama uyum sağlayan kişiliğini yansıtıyor.'},
+        {min:12,max:15,parfum:'Gold Fire',kisilik:'Egzotik Ruh',aciklama:'Sıradan yerler seni tatmin etmez. Gold Fire\'ın oryantal yapısı bu maceraperest ruhunun kokusu.'}
+      ]
+    }
+  ];
+  let aktifAnket=0,anketCevaplar=[],anketSoruIndex=0;
+  function switchAnket(i){aktifAnket=i;anketCevaplar=[];anketSoruIndex=0;document.querySelectorAll('.anket-tab').forEach((t,idx)=>t.classList.toggle('active',idx===i));renderAnket();}
+  function renderAnket(){
+    const a=anketler[aktifAnket];
+    const box=document.getElementById('anketBox');
+    if(!box) return;
+    if(anketSoruIndex>=a.sorular.length){
+      const toplam=anketCevaplar.reduce((s,v)=>s+v,0);
+      const sonuc=a.sonuclar.find(s=>toplam>=s.min&&toplam<=s.max)||a.sonuclar[a.sonuclar.length-1];
+      const msg=encodeURIComponent('Merhaba, koku anketinden '+sonuc.parfum+' çıktı ve sipariş vermek istiyorum.');
+      box.innerHTML=`<div class="anket-progress">${a.sorular.map(()=>'<div class="anket-pdot done"></div>').join('')}</div><div class="anket-sonuc"><div class="anket-sonuc-label">Senin kokunun</div><div class="anket-sonuc-parfum">${sonuc.parfum}</div><div class="anket-sonuc-kisilik">"${sonuc.kisilik}"</div><div class="anket-sonuc-aciklama">${sonuc.aciklama}</div><div class="anket-paylasim"><a href="https://wa.me/${WA}?text=${msg}" target="_blank" class="order-btn" style="font-size:0.72rem;padding:12px 24px;">Sipariş Ver — 800 ₺</a></div><button class="anket-tekrar" onclick="switchAnket(${aktifAnket})">↺ Anketi tekrarla</button></div>`;
+      return;
+    }
+    const soru=a.sorular[anketSoruIndex];
+    box.innerHTML=`<div class="anket-progress">${a.sorular.map((_,i)=>`<div class="anket-pdot ${i<anketSoruIndex?'done':i===anketSoruIndex?'active':''}"></div>`).join('')}</div><div class="anket-soru">${soru.s}</div><div class="anket-secenekler">${soru.opts.map((o,i)=>`<button class="anket-opt" onclick="anketCevapla(${soru.puan[i]})"><span class="anket-opt-emoji">${o.e}</span>${o.t}</button>`).join('')}</div>`;
+  }
+  window.anketCevapla=function(puan){anketCevaplar.push(puan);anketSoruIndex++;renderAnket();};
+  renderAnket();
+
+  // ── MOOD EŞLEŞTİRİCİ ──
+  const moodData={
+    mutlu:    {parfum:'Le Paradise',emoji:'😄',neden:'Mutlu anların enerjisi taze notalar ister. Le Paradise\'ın nane ve tropikal açılışı bu neşeyi tüm güne yayar.'},
+    romantik: {parfum:'Paralox',emoji:'💕',neden:'Romantik anlarda zarif notalar konuşur. Paralox\'un neroli kalbi ve amber tabanı o özel atmosferi tamamlar.'},
+    guclu:    {parfum:'Gold Fire',emoji:'💪',neden:'Güçlü hissettiren günlerde güçlü koku lazım. Gold Fire\'ın oud ve amber tabanı bu enerjiyi dünyaya ilan eder.'},
+    huzurlu:  {parfum:'Kirce',emoji:'🌿',neden:'Huzurlu anlarda koku da sakinleşmeli. Kirce\'nin meyveli ve çiçeksi yapısı bu dengeyi mükemmel kuruyor.'},
+    gizemli:  {parfum:'Gold Fire',emoji:'🖤',neden:'Gizemli hissettiğinde koku da derin ve öngörülemez olmalı. Gold Fire\'ın oud ve amber tabanı o karanlık çekimi yaratıyor.'},
+    maceraci: {parfum:'Strong Stent',emoji:'🔥',neden:'Maceracı hislerde kışkırtıcı notalar aranır. Strong Stent\'in kardamom açılışı bu ruh haline tam geliyor.'},
+    nostaljik:{parfum:'Strong Stent',emoji:'🌙',neden:'Nostaljik geceler baharatlı anıları çağırır. Strong Stent\'in sıcak toffee tabanı seni o anlara götürür.'},
+    ozgur:    {parfum:'Le Paradise',emoji:'🌊',neden:'Özgür hislerde koku da sınırsız olmalı. Le Paradise\'ın tropikal yapısı bu özgürlük hissini tene işler.'}
+  };
+  window.moodSec=function(tip){
+    const d=moodData[tip];
+    document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    document.getElementById('moodEmoji').textContent=d.emoji;
+    document.getElementById('moodParfum').textContent=d.parfum;
+    document.getElementById('moodNeden').textContent=d.neden;
+    const msg=encodeURIComponent('Merhaba, '+d.parfum+' parfümünü sipariş etmek istiyorum.');
+    document.getElementById('moodCta').href='https://wa.me/'+WA+'?text='+msg;
+    const r=document.getElementById('moodResult');
+    r.classList.add('show');
+    r.scrollIntoView({behavior:'smooth',block:'nearest'});
+  };
+  window.moodReset=function(){document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));document.getElementById('moodResult').classList.remove('show');};
+
+  // ── SCROLL BİLDİRİM ──
+  let notifShown = false;
+  window.addEventListener('scroll', function() {
+    if (!notifShown && window.scrollY > window.innerHeight * 0.6) {
+      setTimeout(() => {
+        document.getElementById('scrollNotif').classList.add('show');
+        notifShown = true;
+      }, 600);
+    }
+  });
+
+  // ── SEKME SİSTEMİ ──
+  window.eTabSec = function(i) {
+    document.querySelectorAll('.etab-btn').forEach((b,idx) => b.classList.toggle('active', idx===i));
+    document.querySelectorAll('.etab-panel').forEach((p,idx) => p.classList.toggle('active', idx===i));
+    if (i === 2) setTimeout(() => ruletCiz(ruletAci), 50);
+    if (i === 3) renderAnket();
+  };
+
+  // ── LORE ACCORDION ──
+  window.loreToggle = function(el) {
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.lore-item').forEach(x => x.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  };
+
+  // ── RULET ──
+  const ruletPerfumes=[
+    {name:'Gold Fire',color:'#5a0a0a',desc:'Aztek ateşinden ilham alan mango ve oudun mistik dansı. Güçlü ve unutulmaz.'},
+    {name:'Strong Stent',color:'#7a1515',desc:'Kardamom ve toffeenin tutkulu sarmalı. Kış gecelerinin favorisi.'},
+    {name:'Kirce',color:'#4a0808',desc:'Büyücü tanrıçanın adası. Tropik meyveler ve çiçekler büyüleyici bir dans ediyor.'},
+    {name:'Paralox',color:'#6a1010',desc:'Zıtlıkların mükemmel dengesi. Bergamot ve amberin modern buluşması.'},
+    {name:'Althear',color:'#3d0606',desc:'Yıldızların arasından gelen tatlı sır. Pralin ve vanilyanın derin sarmalı.'},
+    {name:'Le Paradise',color:'#8a1818',desc:'Cennet bahçesinden esinti. Nane ve hindistan cevizinin özgür enerjisi.'}
+  ];
+  let ruletDonuyor=false,ruletAci=0;
+  function ruletCiz(rot){
+    const canvas=document.getElementById('ruletCanvas');
+    if(!canvas) return;
+    const ctx=canvas.getContext('2d');
+    const cx=canvas.width/2,cy=canvas.height/2,r=cx-6;
+    const slice=(Math.PI*2)/ruletPerfumes.length;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ruletPerfumes.forEach((p,i)=>{
+      const s=rot+i*slice,en=s+slice;
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,en);ctx.closePath();
+      ctx.fillStyle=p.color;ctx.fill();
+      ctx.strokeStyle='rgba(201,160,122,0.3)';ctx.lineWidth=1.5;ctx.stroke();
+      ctx.save();ctx.translate(cx,cy);ctx.rotate(s+slice/2);
+      ctx.textAlign='right';ctx.fillStyle='rgba(245,230,208,0.9)';
+      ctx.font='500 11px Montserrat,sans-serif';ctx.fillText(p.name,r-14,4);ctx.restore();
+    });
+    ctx.beginPath();ctx.arc(cx,cy,22,0,Math.PI*2);
+    ctx.fillStyle='#1e0404';ctx.fill();
+    ctx.strokeStyle='rgba(201,160,122,0.5)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle='rgba(201,160,122,0.7)';ctx.font='14px serif';
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('✦',cx,cy);
+  }
+  window.ruletDondur=function(){
+    if(ruletDonuyor) return;
+    ruletDonuyor=true;
+    document.getElementById('ruletBtn').disabled=true;
+    document.getElementById('ruletResult').classList.remove('show');
+    const targetSlice=Math.floor(Math.random()*ruletPerfumes.length);
+    const sliceAngle=(Math.PI*2)/ruletPerfumes.length;
+    const extra=(5+Math.random()*5)*Math.PI*2;
+    const targetAngle=extra+(Math.PI*2-targetSlice*sliceAngle-sliceAngle/2);
+    const duration=4000,start=performance.now(),startAngle=ruletAci;
+    function animate(now){
+      const elapsed=now-start,progress=Math.min(elapsed/duration,1);
+      const ease=1-Math.pow(1-progress,4);
+      ruletAci=startAngle+targetAngle*ease;
+      ruletCiz(ruletAci);
+      if(progress<1){requestAnimationFrame(animate);}
+      else{
+        ruletDonuyor=false;
+        document.getElementById('ruletBtn').disabled=false;
+        // İşaretçi üstte (-π/2), dilimler rot açısından başlıyor
+        // Hangi dilim işaretçinin altında? Normalize et
+        const sliceAng = (Math.PI*2)/ruletPerfumes.length;
+        const normalized = ((-ruletAci % (Math.PI*2)) + Math.PI*2) % (Math.PI*2);
+        // İşaretçi üstte = -π/2 = 3π/2 yönünde → ama çizimde rot=0 ile başlıyor
+        // Çizimde ilk dilim rot açısından başladığı için pointer altındaki = normalized / sliceAng
+        const realSlice = Math.floor(normalized / sliceAng) % ruletPerfumes.length;
+        const p=ruletPerfumes[realSlice];
+        document.getElementById('ruletName').textContent=p.name;
+        document.getElementById('ruletDesc').textContent=p.desc;
+        const msg=encodeURIComponent('Merhaba, '+p.name+' parfümünü sipariş etmek istiyorum.');
+        document.getElementById('ruletCta').href='https://wa.me/'+WA+'?text='+msg;
+        document.getElementById('ruletResult').classList.add('show');
+      }
+    }
+    requestAnimationFrame(animate);
+  };
+  setTimeout(()=>ruletCiz(0),200);
+
+
+</script>
+</body>
+</html>
