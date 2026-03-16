@@ -158,13 +158,13 @@ body{background:#0e0202;color:#f5e6d0;font-family:'Montserrat',sans-serif;overfl
     <!-- İNDİR -->
     <div class="sec">
       <span class="sl">Kaydet</span>
-      <button class="dbtn" onclick="indir()">⬇ PNG İndir</button>
-      <p class="tip">📱 iPhone: Yeni sekmede açılır → görsele uzun bas</p>
+      <button class="dbtn" onclick="indir()" id="dl-main">📸 Görseli Aç → Kaydet</button>
+      <div id="dl-status" style="font-size:.5rem;color:rgba(201,160,122,.5);text-align:center;margin-top:4px;min-height:16px;"></div>
+      <p class="tip">📱 Tam ekranda açılır → basılı tut → Fotoğrafa Kaydet</p>
     </div>
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 // ══════════════════════════════
 //  VERİLER
@@ -591,25 +591,185 @@ function renderStrateji(){
 }
 
 // ══════════════════════════════
-//  İNDİR
 // ══════════════════════════════
 function indir(){
-  if(sablon==='strateji'){alert('Strateji sayfası indirilemez — bu senin için bir not!');return;}
-  const cv=document.getElementById('cv');
-  html2canvas(cv,{scale:3,useCORS:true,allowTaint:true,backgroundColor:null,logging:false}).then(canvas=>{
-    const url=canvas.toDataURL('image/png');
-    const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
-    if(isSafari||isIOS){
-      const w=window.open('','_blank');
-      w.document.write(`<html><head><title>Shanze</title><meta name="viewport" content="width=device-width"><style>body{margin:0;background:#0e0202;display:flex;flex-direction:column;align-items:center;padding:20px;}img{max-width:100%;}p{color:#c9a07a;font-family:sans-serif;font-size:13px;margin:14px 0;text-align:center;}</style></head><body><p>📥 Görsele uzun bas → "Fotoğrafa Kaydet"</p><img src="${url}"><p>Shanze · @shanzeparfum</p></body></html>`);
-      w.document.close();
-    }else{
-      const a=document.createElement('a');a.href=url;a.download=`shanze-${sablon}.png`;
-      document.body.appendChild(a);a.click();document.body.removeChild(a);
-    }
-  });
+  if(sablon==='strateji'){alert('Strateji sayfası indirilemez!');return;}
+  const btn=document.getElementById('dl-main');
+  btn.textContent='⏳ Hazırlanıyor...';
+  btn.disabled=true;
+  setTimeout(()=>{
+    cizveIndir();
+    btn.textContent='📸 Görseli Aç → Kaydet';
+    btn.disabled=false;
+  },100);
 }
+
+function cizveIndir(){
+  const p=PARFUMLER[iP];
+  const tm=T[tema];
+  const W=1080, H=1350;
+  const canvas=document.createElement('canvas');
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+
+  // Arka plan
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  if(tema==='krem'){
+    bg.addColorStop(0,'#f5e6d0');bg.addColorStop(1,'#e8d8c4');
+  } else if(tema==='siyah'){
+    bg.addColorStop(0,'#0a0a0a');bg.addColorStop(1,'#080808');
+  } else {
+    bg.addColorStop(0,'#2d0a0a');bg.addColorStop(0.5,'#1a0404');bg.addColorStop(1,'#0d0202');
+  }
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  // Glow
+  const gR=ctx.createRadialGradient(W*0.7,H*0.35,0,W*0.7,H*0.35,420);
+  gR.addColorStop(0,tema==='krem'?'rgba(122,21,21,0.12)':tema==='siyah'?'rgba(180,130,60,0.3)':'rgba(122,21,21,0.45)');
+  gR.addColorStop(1,'transparent');
+  ctx.fillStyle=gR; ctx.fillRect(0,0,W,H);
+
+  const gold=tema==='krem'?'#8a5020':tema==='siyah'?'#d4a96a':'#c9a07a';
+  const txt=tema==='krem'?'#2d0a0a':'#ffffff';
+  const sub=tema==='krem'?'rgba(45,10,10,0.6)':'rgba(245,230,208,0.65)';
+  const brd=tema==='krem'?'rgba(122,21,21,0.2)':'rgba(201,160,122,0.28)';
+
+  // Köşe çerçevesi
+  ctx.strokeStyle=brd; ctx.lineWidth=3;
+  const cs=54, cl=80;
+  ctx.beginPath();
+  ctx.moveTo(cs,cs+cl);ctx.lineTo(cs,cs);ctx.lineTo(cs+cl,cs);
+  ctx.moveTo(W-cs-cl,cs);ctx.lineTo(W-cs,cs);ctx.lineTo(W-cs,cs+cl);
+  ctx.moveTo(cs,H-cs-cl);ctx.lineTo(cs,H-cs);ctx.lineTo(cs+cl,H-cs);
+  ctx.moveTo(W-cs-cl,H-cs);ctx.lineTo(W-cs,H-cs);ctx.lineTo(W-cs,H-cs-cl);
+  ctx.stroke();
+
+  // Üst etiket
+  ctx.fillStyle=gold; ctx.font='300 28px sans-serif';
+  ctx.textAlign='left';
+  ctx.fillText('SHANZE · LÜKS PARFÜMERİ', 80, 110);
+  ctx.fillStyle=gold; ctx.globalAlpha=0.4;
+  ctx.font='300 26px sans-serif';
+  ctx.fillText(p.num, 80, 148);
+  ctx.globalAlpha=1;
+
+  // Şişe — canvas'a büyük çiz
+  const bottleX=W/2, bottleY=H*0.38;
+  const bS=4.5; // scale
+  ctx.save();
+  ctx.translate(bottleX, bottleY);
+  ctx.scale(bS,bS);
+
+  // Glow arkası
+  const bGlow=ctx.createRadialGradient(0,0,0,0,0,80);
+  bGlow.addColorStop(0,tema==='krem'?'rgba(122,21,21,0.15)':tema==='siyah'?'rgba(180,130,60,0.35)':'rgba(122,21,21,0.55)');
+  bGlow.addColorStop(1,'transparent');
+  ctx.fillStyle=bGlow; ctx.beginPath(); ctx.arc(0,0,80,0,Math.PI*2); ctx.fill();
+
+  // Şişe gövdesi
+  ctx.beginPath();
+  if(p.id===2||p.id===5){
+    ctx.ellipse(0,10,38,70,0,0,Math.PI*2);
+  } else if(p.id===0){
+    ctx.moveTo(-46,80); ctx.lineTo(-38,-20); ctx.lineTo(38,-20); ctx.lineTo(46,80);
+    ctx.quadraticCurveTo(46,95,0,95); ctx.quadraticCurveTo(-46,95,-46,80);
+  } else {
+    ctx.roundRect(-36,-14,72,110,5);
+  }
+  ctx.fillStyle='rgba(90,10,10,0.5)';
+  ctx.strokeStyle=gold;
+  ctx.lineWidth=0.8/bS*bS;
+  ctx.fill(); ctx.stroke();
+
+  // Kapak
+  ctx.beginPath();
+  ctx.roundRect(-13,-34,26,22,2);
+  ctx.fillStyle='rgba(90,10,10,0.9)';
+  ctx.strokeStyle=gold;
+  ctx.lineWidth=0.6;
+  ctx.fill(); ctx.stroke();
+
+  // Parlaklık
+  ctx.beginPath();
+  ctx.moveTo(-22,0); ctx.lineTo(-22,80);
+  ctx.strokeStyle='rgba(255,220,150,0.15)';
+  ctx.lineWidth=5;
+  ctx.stroke();
+
+  ctx.restore();
+
+  // Alt metin bölümü
+  const textY = H*0.64;
+
+  // İnce çizgi
+  ctx.strokeStyle=gold; ctx.globalAlpha=0.4; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(80,textY-10); ctx.lineTo(340,textY-10); ctx.stroke();
+  ctx.globalAlpha=1;
+
+  // Parfüm adı - büyük
+  ctx.fillStyle=txt;
+  ctx.font='300 108px Georgia, serif';
+  ctx.textAlign='left';
+  ctx.fillText(p.name, 80, textY+90);
+
+  // Tür
+  ctx.fillStyle=gold; ctx.globalAlpha=0.7;
+  ctx.font='300 32px sans-serif';
+  ctx.fillText(p.type, 80, textY+145);
+  ctx.globalAlpha=1;
+
+  // Çizgi
+  ctx.strokeStyle=gold; ctx.globalAlpha=0.35; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(80,textY+168); ctx.lineTo(320,textY+168); ctx.stroke();
+  ctx.globalAlpha=1;
+
+  // Notalar
+  let noteX=80;
+  p.notes.forEach((n,i)=>{
+    ctx.strokeStyle=brd; ctx.lineWidth=1.5;
+    const nw=ctx.measureText(n.toUpperCase()).width+40;
+    ctx.strokeRect(noteX,textY+185,nw,44);
+    ctx.fillStyle=sub;
+    ctx.font='300 22px sans-serif';
+    ctx.textAlign='left';
+    ctx.fillText(n.toUpperCase(), noteX+20, textY+213);
+    noteX+=nw+10;
+    if(noteX>W-200){noteX=80;}
+  });
+
+  // Fiyat
+  ctx.fillStyle=gold;
+  ctx.font='300 56px Georgia, serif';
+  ctx.textAlign='left';
+  ctx.fillText('800 ₺', 80, H-160);
+
+  // Handle
+  ctx.fillStyle=gold; ctx.globalAlpha=0.45;
+  ctx.font='300 28px sans-serif';
+  ctx.textAlign='right';
+  ctx.fillText('@shanzeparfum', W-80, H-160);
+  ctx.globalAlpha=1;
+
+  // PNG olarak aç
+  const url=canvas.toDataURL('image/png');
+  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
+
+  if(isIOS){
+    const w=window.open('','_blank');
+    if(w){
+      w.document.write(`<!DOCTYPE html><html><head><title>Shanze</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>*{margin:0;padding:0;}body{background:#050101;display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px;}img{width:100%;max-width:500px;display:block;}p{color:#c9a07a;font-family:sans-serif;font-size:13px;text-align:center;line-height:1.7;}</style></head><body><p>👇 Görsele parmağını <b>basılı tut</b> → "Fotoğrafa Kaydet"</p><img src="${url}"><p>Shanze · @shanzeparfum</p></body></html>`);
+      w.document.close();
+    }
+  } else {
+    const a=document.createElement('a');
+    a.href=url; a.download='shanze-'+p.name+'.png';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  }
+}
+
+
+
+
 
 // ══════════════════════════════
 //  BAŞLAT
