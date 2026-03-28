@@ -284,6 +284,7 @@ function buildAll(){
   mkBtns('bst',STORYLER,'l','selST',iST);
   mkBtns('bstp',PARFUMLER,'name','selSTP',iSTP);
   mkBtns('bko',KOMBINLER,'l','selKO',iKO);
+  mkBtns('bkal',KALITELER,'l','selKAL',iKAL);
   mkBtns('bstr',STRATEJILER,'l','selSTR',iSTR);
 }
 function grp(id,i){document.querySelectorAll('#'+id+' .b').forEach((b,j)=>b.classList.toggle('on',j===i));}
@@ -352,6 +353,7 @@ function render(){
   else if(sablon==='acilis')   rAcilis(cv,tm);
   else if(sablon==='story')    rStory(cv,tm);
   else if(sablon==='kombin')   rKombin(cv,tm);
+  else if(sablon==='kalite')   rKalite(cv,tm);
   else if(sablon==='strateji') renderStrateji();
 }
 
@@ -429,26 +431,62 @@ function rTanitim(cv,tm){
 function rAcilis(cv,tm){
   const a=ACILISLAR[iAC];
   setCaption(a.c);
-  cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;background:${tm.bg}">
-    <div style="flex:1;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:${tm.aTop}">
-      <div style="position:absolute;font-family:'Georgia','Times New Roman',serif;font-size:4rem;letter-spacing:.2em;opacity:.08;font-weight:300;white-space:nowrap;color:${tm.txt}">${a.w}</div>
-      <div style="position:relative;z-index:2;text-align:center">
-        <div class="anim-fadein" style="font-size:.58rem;letter-spacing:.5em;color:${tm.gold};opacity:.35;margin-bottom:13px">— ✦ —</div>
-        <div class="anim-fadein2" style="font-family:'Georgia','Times New Roman',serif;font-size:1.7rem;font-weight:300;letter-spacing:.32em;color:${tm.txt};text-align:center">${a.w} <em style="color:${tm.gold}">${a.em}</em></div>
-        <div style="width:1px;height:42px;background:linear-gradient(to bottom,transparent,${tm.gold},transparent);margin:12px auto;opacity:.35"></div>
+  cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:${tm.bg}">
+
+    <!-- Arka plan ince yatay çizgiler - desen -->
+    <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
+      <div style="position:absolute;top:22%;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,${tm.brd},transparent);opacity:0.35;"></div>
+      <div style="position:absolute;top:78%;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,${tm.brd},transparent);opacity:0.35;"></div>
+      <div style="position:absolute;top:0;bottom:0;left:22%;width:1px;background:linear-gradient(to bottom,transparent,${tm.brd},transparent);opacity:0.2;"></div>
+      <div style="position:absolute;top:0;bottom:0;right:22%;width:1px;background:linear-gradient(to bottom,transparent,${tm.brd},transparent);opacity:0.2;"></div>
+    </div>
+
+    <!-- Radyal ışıma -->
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 50% 48%,${tm.rad} 0%,transparent 70%);"></div>
+
+    <!-- Köşe çerçevesi -->
+    <div style="position:absolute;top:18px;left:18px;width:26px;height:26px;border-top:1px solid ${tm.brd};border-left:1px solid ${tm.brd};"></div>
+    <div style="position:absolute;top:18px;right:18px;width:26px;height:26px;border-top:1px solid ${tm.brd};border-right:1px solid ${tm.brd};"></div>
+    <div style="position:absolute;bottom:18px;left:18px;width:26px;height:26px;border-bottom:1px solid ${tm.brd};border-left:1px solid ${tm.brd};"></div>
+    <div style="position:absolute;bottom:18px;right:18px;width:26px;height:26px;border-bottom:1px solid ${tm.brd};border-right:1px solid ${tm.brd};"></div>
+
+    <!-- Üst etiket -->
+    <div style="position:absolute;top:24px;left:0;right:0;text-align:center;">
+      <div style="font-family:'Helvetica Neue','Arial',sans-serif;font-size:.3rem;letter-spacing:.42em;text-transform:uppercase;color:${tm.gold};opacity:.5;">Shanze · Lüks Parfümeri</div>
+    </div>
+
+    <!-- ANA İÇERİK - tam merkez -->
+    <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;padding:0 20px;">
+
+      <!-- Dekoratif çizgi üst -->
+      <div style="font-size:.55rem;letter-spacing:.5em;color:${tm.gold};opacity:.4;margin-bottom:18px;" class="anim-fadein">— ✦ —</div>
+
+      <!-- Ana büyük yazı -->
+      <div class="anim-fadein" style="font-family:'Georgia','Times New Roman',serif;font-size:2.6rem;font-weight:300;letter-spacing:.22em;line-height:1.1;color:${tm.txt};text-align:center;margin-bottom:6px;">${a.w}</div>
+      <div class="anim-fadein2" style="font-family:'Georgia','Times New Roman',serif;font-size:2.6rem;font-weight:300;font-style:italic;letter-spacing:.18em;line-height:1.1;color:${tm.gold};text-align:center;margin-bottom:22px;">${a.em}</div>
+
+      <!-- İnce dikey çizgi -->
+      <div style="width:1px;height:36px;background:linear-gradient(to bottom,transparent,${tm.gold},transparent);margin-bottom:22px;opacity:.5;"></div>
+
+      <!-- Alt başlık -->
+      <div class="anim-fadein2" style="font-family:'Georgia','Times New Roman',serif;font-size:.95rem;font-weight:300;color:${tm.txt};opacity:.75;text-align:center;margin-bottom:18px;letter-spacing:.06em;">${a.title}</div>
+
+      <!-- Yatay ince çizgi -->
+      <div style="width:44px;height:1px;background:${tm.gold};opacity:.25;margin-bottom:18px;"></div>
+
+      <!-- Parfüm isimleri -->
+      <div style="font-family:'Helvetica Neue','Arial',sans-serif;font-size:.28rem;letter-spacing:.16em;line-height:2;color:${tm.sub};text-align:center;">
+        ${PARFUMLER.map(p=>p.name).join(' &nbsp;·&nbsp; ')}
       </div>
     </div>
-    <div style="background:${tm.aBot};border-top:1px solid rgba(201,160,122,.12);padding:18px 24px;display:flex;flex-direction:column;justify-content:space-between;text-align:center;">
-      <div>
-        <div class="anim-fadein" style="font-family:'Georgia','Times New Roman',serif;font-size:1.2rem;font-weight:300;color:${tm.txt};line-height:1.2;margin-bottom:5px;text-align:center">${a.title}</div>
-        <div style="font-size:.28rem;letter-spacing:.12em;line-height:1.8;color:${tm.sub};text-align:center">${PARFUMLER.map(p=>p.name).join(' · ')}</div>
-      </div>
-      <div style="display:flex;justify-content:center;align-items:center;gap:14px;margin-top:10px">
-        <div style="font-family:'Georgia','Times New Roman',serif;font-size:.82rem;letter-spacing:.28em;color:${tm.txt};opacity:.2">SHANZE</div>
-        <div style="font-size:.26rem;letter-spacing:.16em;text-transform:uppercase;border:1px solid ${tm.brd};padding:3px 9px;color:${tm.gold}">Şimdi Mevcut</div>
-        <div style="font-size:.26rem;letter-spacing:.24em;text-transform:uppercase;color:${tm.gold};opacity:.38">@shanzeparfum</div>
-      </div>
+
+    <!-- Alt bar -->
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(201,160,122,.1);">
+      <div style="font-family:'Helvetica Neue','Arial',sans-serif;font-size:.26rem;letter-spacing:.22em;text-transform:uppercase;color:${tm.gold};opacity:.45;">800 ₺</div>
+      <div style="font-family:'Georgia','Times New Roman',serif;font-size:.55rem;letter-spacing:.22em;color:${tm.txt};opacity:.18;">SHANZE</div>
+      <div style="font-family:'Helvetica Neue','Arial',sans-serif;font-size:.26rem;letter-spacing:.22em;text-transform:uppercase;color:${tm.gold};opacity:.45;">@shanzeparfum</div>
     </div>
+
   </div>`;
 }
 
@@ -576,6 +614,66 @@ function rKombin(cv,tm){
     </div>
     <div style="position:absolute;bottom:16px;right:18px;font-size:.24rem;letter-spacing:.24em;text-transform:uppercase;color:${tm.gold};opacity:.38">@shanzeparfum</div>
   </div>`;
+}
+
+
+const KALITELER=[
+  {l:'%30 Esans',bas:'%30 Saf Esans',alt:'Piyasa ortalamasının 2 katı',
+   detay:'Her şişemizde esans oranımız %30dir. Standart parfümler %15 ile %20 arasında kullanırken biz iki katını koyuyoruz.',
+   noktalar:['Saf esans: %30','Piyasa ort: %15','Farkımız: 2 kat'],icon:'◈',
+   c:'%30 saf esans · piyasa ortalamasının 2 katı\n\nShanze · 800 TL · DM ile sipariş\n\n#shanze #nicheparfum #luksparfum'},
+  {l:'Kalıcılık',bas:'12+ Saat Kalıcılık',alt:'Garantili uzun ömür',
+   detay:'Yüksek esans oranı sayesinde Shanze parfümleri tende 12 saatin üzerinde kalır. Sabah sıkılan koku akşam hala hissedilir.',
+   noktalar:['Kalıcılık: 12+ saat','Yayılım: Orta-güçlü','Projeksiyon: Zarif'],icon:'◉',
+   c:'12+ saat kalıcılık · sabah sık, akşam hisset\n\nShanze · 800 TL · DM ile sipariş\n\n#shanze #parfum #luksparfum'},
+  {l:'Hammadde',bas:'Seçilmiş Hammaddeler',alt:'Sadece en iyisi',
+   detay:'Arabistan oudu, Madagaskar vanilyası, Kalabria bergamotu. Her nota kendi coğrafyasının en kaliteli hammaddesinden üretilir.',
+   noktalar:['Oud · Arabistan','Vanilya · Madagaskar','Bergamot · Kalabria','Amber · Etiyopya'],icon:'◇',
+   c:'Seçilmiş hammaddeler · her notanın en iyisi\n\nShanze · 800 TL · DM ile sipariş\n\n#shanze #parfum #luksparfum'},
+  {l:'Garanti',bas:'Kalite Garantisi',alt:'Her şişede söz veriyoruz',
+   detay:'Shanze ile aldığınız her parfüm kalite garantisi taşır. Memnun kalmazsanız değiştiriyoruz. Çünkü biz ne sattığımızın arkasındayız.',
+   noktalar:['%30 saf esans garantisi','12+ saat kalıcılık','Memnuniyet garantisi','Türkiye geneli teslimat'],icon:'◆',
+   c:'Her şişede kalite garantisi\n\nMemnun kalmazsan değiştiriyoruz.\n\nShanze · 800 TL · DM\n\n#shanze #parfum #luksparfum'},
+  {l:'Karşılaştırma',bas:'Farkı Hisset',alt:'Shanze vs Standart',
+   detay:'Aynı fiyat aralığında neden Shanze? Rakiplerimiz %15 esans kullanırken biz %30 koyuyoruz. Aradaki fark tende hissedilir.',
+   noktalar:['Shanze: %30 esans · 12+ saat','Standart: %15 esans · 4-6 saat','Fiyat farkı: Yok','Kalite farkı: 2 kat'],icon:'◈',
+   c:'%30 vs %15 · farkı tende hissediyorsun\n\nShanze · 800 TL · DM ile sipariş\n\n#shanze #parfum #luksparfum'},
+];
+let iKAL=0;
+function selKAL(i,btn){iKAL=i;document.querySelectorAll('#bkal .b').forEach((b,j)=>b.classList.toggle('on',j===i));render();}
+function rKalite(cv,tm){
+  const k=KALITELER[iKAL];
+  setCaption(k.c);
+  const nhtml=k.noktalar.map(n=>
+    '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(201,160,122,0.08);">'+
+    '<div style="width:4px;height:4px;border-radius:50%;background:'+tm.gold+';flex-shrink:0;opacity:0.7;"></div>'+
+    '<div style="font-family:Helvetica Neue,Arial,sans-serif;font-size:.3rem;letter-spacing:.14em;color:'+tm.sub+';">'+n+'</div>'+
+    '</div>'
+  ).join('');
+  cv.innerHTML=
+    '<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;background:'+tm.bg+'">'+
+    '<div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 50% 40%,'+tm.rad+' 0%,transparent 70%);"></div>'+
+    '<div style="position:absolute;top:18px;left:18px;width:26px;height:26px;border-top:1px solid '+tm.brd+';border-left:1px solid '+tm.brd+';"></div>'+
+    '<div style="position:absolute;top:18px;right:18px;width:26px;height:26px;border-top:1px solid '+tm.brd+';border-right:1px solid '+tm.brd+';"></div>'+
+    '<div style="position:absolute;bottom:18px;left:18px;width:26px;height:26px;border-bottom:1px solid '+tm.brd+';border-left:1px solid '+tm.brd+';"></div>'+
+    '<div style="position:absolute;bottom:18px;right:18px;width:26px;height:26px;border-bottom:1px solid '+tm.brd+';border-right:1px solid '+tm.brd+';"></div>'+
+    '<div style="position:relative;z-index:2;display:flex;flex-direction:column;height:100%;padding:22px 24px;">'+
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">'+
+        '<div style="font-family:Helvetica Neue,Arial,sans-serif;font-size:.28rem;letter-spacing:.42em;text-transform:uppercase;color:'+tm.gold+';opacity:.5;">Shanze · Kalite</div>'+
+        '<div style="font-family:Georgia,serif;font-size:1.4rem;font-weight:300;color:'+tm.gold+';opacity:.3;">'+k.icon+'</div>'+
+      '</div>'+
+      '<div class="anim-fadein" style="font-family:Georgia,serif;font-size:2rem;font-weight:300;line-height:1.05;color:'+tm.txt+';margin-bottom:5px;">'+k.bas+'</div>'+
+      '<div class="anim-fadein" style="font-family:Helvetica Neue,Arial,sans-serif;font-size:.28rem;letter-spacing:.22em;text-transform:uppercase;color:'+tm.gold+';opacity:.65;margin-bottom:14px;">'+k.alt+'</div>'+
+      '<div style="width:100%;height:1px;background:linear-gradient(to right,'+tm.gold+',transparent);opacity:.2;margin-bottom:14px;"></div>'+
+      '<div class="anim-fadein2" style="font-family:Georgia,serif;font-size:.62rem;font-style:italic;font-weight:300;line-height:1.7;color:'+tm.sub+';margin-bottom:14px;">'+k.detay+'</div>'+
+      '<div style="flex:1;">'+nhtml+'</div>'+
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid rgba(201,160,122,0.1);">'+
+        '<div style="font-family:Georgia,serif;font-size:.9rem;font-weight:300;color:'+tm.gold+';">800 ₺</div>'+
+        '<div style="font-family:Helvetica Neue,Arial,sans-serif;font-size:.26rem;letter-spacing:.16em;text-transform:uppercase;border:1px solid '+tm.brd+';padding:4px 10px;color:'+tm.gold+';">DM ile sipariş</div>'+
+        '<div style="font-family:Helvetica Neue,Arial,sans-serif;font-size:.24rem;letter-spacing:.2em;text-transform:uppercase;color:'+tm.gold+';opacity:.4;">@shanzeparfum</div>'+
+      '</div>'+
+    '</div>'+
+    '</div>';
 }
 
 function renderStrateji(){
