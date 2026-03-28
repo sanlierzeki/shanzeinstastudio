@@ -431,64 +431,59 @@ function rTanitim(cv,tm){
 function rAcilis(cv,tm){
   const a=ACILISLAR[iAC];
   setCaption(a.c);
-  cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:${tm.bg}">
+  cv.innerHTML=`<div style="width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;background:${tm.bg}">
 
-    <!-- Arka plan ince yatay çizgiler - desen -->
+    <!-- Arka plan ince çizgiler -->
     <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
-      <div style="position:absolute;top:22%;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,${tm.brd},transparent);opacity:0.35;"></div>
-      <div style="position:absolute;top:78%;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,${tm.brd},transparent);opacity:0.35;"></div>
-      <div style="position:absolute;top:0;bottom:0;left:22%;width:1px;background:linear-gradient(to bottom,transparent,${tm.brd},transparent);opacity:0.2;"></div>
-      <div style="position:absolute;top:0;bottom:0;right:22%;width:1px;background:linear-gradient(to bottom,transparent,${tm.brd},transparent);opacity:0.2;"></div>
+      <div style="position:absolute;top:22%;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,${tm.brd},transparent);opacity:0.3;"></div>
+      <div style="position:absolute;top:78%;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,${tm.brd},transparent);opacity:0.3;"></div>
+      <div style="position:absolute;top:0;bottom:0;left:22%;width:1px;background:linear-gradient(to bottom,transparent,${tm.brd},transparent);opacity:0.18;"></div>
+      <div style="position:absolute;top:0;bottom:0;right:22%;width:1px;background:linear-gradient(to bottom,transparent,${tm.brd},transparent);opacity:0.18;"></div>
     </div>
 
     <!-- Radyal ışıma -->
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 50% 48%,${tm.rad} 0%,transparent 70%);"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 50% 45%,${tm.rad} 0%,transparent 70%);pointer-events:none;"></div>
 
-    <!-- Köşe çerçevesi -->
-    <div style="position:absolute;top:18px;left:18px;width:26px;height:26px;border-top:1px solid ${tm.brd};border-left:1px solid ${tm.brd};"></div>
-    <div style="position:absolute;top:18px;right:18px;width:26px;height:26px;border-top:1px solid ${tm.brd};border-right:1px solid ${tm.brd};"></div>
-    <div style="position:absolute;bottom:18px;left:18px;width:26px;height:26px;border-bottom:1px solid ${tm.brd};border-left:1px solid ${tm.brd};"></div>
-    <div style="position:absolute;bottom:18px;right:18px;width:26px;height:26px;border-bottom:1px solid ${tm.brd};border-right:1px solid ${tm.brd};"></div>
+    <!-- Köşe çerçevesi — alt köşeler alt barın üstünde kalacak şekilde -->
+    <div style="position:absolute;top:18px;left:18px;width:26px;height:26px;border-top:1px solid ${tm.brd};border-left:1px solid ${tm.brd};z-index:3;"></div>
+    <div style="position:absolute;top:18px;right:18px;width:26px;height:26px;border-top:1px solid ${tm.brd};border-right:1px solid ${tm.brd};z-index:3;"></div>
+    <div style="position:absolute;bottom:54px;left:18px;width:26px;height:26px;border-bottom:1px solid ${tm.brd};border-left:1px solid ${tm.brd};z-index:3;"></div>
+    <div style="position:absolute;bottom:54px;right:18px;width:26px;height:26px;border-bottom:1px solid ${tm.brd};border-right:1px solid ${tm.brd};z-index:3;"></div>
 
     <!-- Üst etiket -->
-    <div style="position:absolute;top:24px;left:0;right:0;text-align:center;">
-      <div style="font-family:'Helvetica Neue','Arial',sans-serif;font-size:.3rem;letter-spacing:.42em;text-transform:uppercase;color:${tm.gold};opacity:.5;">Shanze · Lüks Parfümeri</div>
+    <div style="flex-shrink:0;padding:22px 0 0;text-align:center;position:relative;z-index:2;">
+      <div style="font-family:'Helvetica Neue','Arial',sans-serif;font-size:.28rem;letter-spacing:.44em;text-transform:uppercase;color:${tm.gold};opacity:.45;">Shanze · Lüks Parfümeri</div>
     </div>
 
-    <!-- ANA İÇERİK - tam merkez -->
-    <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;padding:0 20px;">
+    <!-- ANA İÇERİK - flex ile ortalanmış -->
+    <div style="flex:1;position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;">
 
-      <!-- Dekoratif çizgi üst -->
-      <div style="font-size:.55rem;letter-spacing:.5em;color:${tm.gold};opacity:.4;margin-bottom:18px;" class="anim-fadein">— ✦ —</div>
+      <div style="font-size:.52rem;letter-spacing:.5em;color:${tm.gold};opacity:.38;margin-bottom:16px;" class="anim-fadein">— ✦ —</div>
 
-      <!-- Ana büyük yazı -->
-      <div class="anim-fadein" style="font-family:'Georgia','Times New Roman',serif;font-size:2.6rem;font-weight:300;letter-spacing:.22em;line-height:1.1;color:${tm.txt};text-align:center;margin-bottom:6px;">${a.w}</div>
-      <div class="anim-fadein2" style="font-family:'Georgia','Times New Roman',serif;font-size:2.6rem;font-weight:300;font-style:italic;letter-spacing:.18em;line-height:1.1;color:${tm.gold};text-align:center;margin-bottom:22px;">${a.em}</div>
+      <div class="anim-fadein" style="font-family:'Georgia','Times New Roman',serif;font-size:2.5rem;font-weight:300;letter-spacing:.22em;line-height:1.1;color:${tm.txt};margin-bottom:5px;">${a.w}</div>
+      <div class="anim-fadein2" style="font-family:'Georgia','Times New Roman',serif;font-size:2.5rem;font-weight:300;font-style:italic;letter-spacing:.18em;line-height:1.1;color:${tm.gold};margin-bottom:20px;">${a.em}</div>
 
-      <!-- İnce dikey çizgi -->
-      <div style="width:1px;height:36px;background:linear-gradient(to bottom,transparent,${tm.gold},transparent);margin-bottom:22px;opacity:.5;"></div>
+      <div style="width:1px;height:32px;background:linear-gradient(to bottom,transparent,${tm.gold},transparent);margin-bottom:20px;opacity:.45;"></div>
 
-      <!-- Alt başlık -->
-      <div class="anim-fadein2" style="font-family:'Georgia','Times New Roman',serif;font-size:.95rem;font-weight:300;color:${tm.txt};opacity:.75;text-align:center;margin-bottom:18px;letter-spacing:.06em;">${a.title}</div>
+      <div class="anim-fadein2" style="font-family:'Georgia','Times New Roman',serif;font-size:.88rem;font-weight:300;color:${tm.txt};opacity:.7;margin-bottom:16px;letter-spacing:.05em;">${a.title}</div>
 
-      <!-- Yatay ince çizgi -->
-      <div style="width:44px;height:1px;background:${tm.gold};opacity:.25;margin-bottom:18px;"></div>
+      <div style="width:40px;height:1px;background:${tm.gold};opacity:.22;margin-bottom:16px;"></div>
 
-      <!-- Parfüm isimleri -->
-      <div style="font-family:'Helvetica Neue','Arial',sans-serif;font-size:.28rem;letter-spacing:.16em;line-height:2;color:${tm.sub};text-align:center;">
-        ${PARFUMLER.map(p=>p.name).join(' &nbsp;·&nbsp; ')}
+      <div style="font-family:'Helvetica Neue','Arial',sans-serif;font-size:.26rem;letter-spacing:.14em;line-height:2.1;color:${tm.sub};">
+        ${PARFUMLER.map(p=>p.name).join(' · ')}
       </div>
     </div>
 
-    <!-- Alt bar -->
-    <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(201,160,122,.1);">
-      <div style="font-family:'Helvetica Neue','Arial',sans-serif;font-size:.26rem;letter-spacing:.22em;text-transform:uppercase;color:${tm.gold};opacity:.45;">800 ₺</div>
-      <div style="font-family:'Georgia','Times New Roman',serif;font-size:.55rem;letter-spacing:.22em;color:${tm.txt};opacity:.18;">SHANZE</div>
-      <div style="font-family:'Helvetica Neue','Arial',sans-serif;font-size:.26rem;letter-spacing:.22em;text-transform:uppercase;color:${tm.gold};opacity:.45;">@shanzeparfum</div>
+    <!-- Alt bar — sabit yükseklik, köşe çerçeveleriyle çakışmıyor -->
+    <div style="flex-shrink:0;height:48px;padding:0 22px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(201,160,122,.1);position:relative;z-index:2;">
+      <div style="font-family:'Helvetica Neue','Arial',sans-serif;font-size:.25rem;letter-spacing:.22em;text-transform:uppercase;color:${tm.gold};opacity:.5;">800 ₺</div>
+      <div style="font-family:'Georgia','Times New Roman',serif;font-size:.5rem;letter-spacing:.24em;color:${tm.txt};opacity:.16;">SHANZE</div>
+      <div style="font-family:'Helvetica Neue','Arial',sans-serif;font-size:.25rem;letter-spacing:.22em;text-transform:uppercase;color:${tm.gold};opacity:.5;">@shanzeparfum</div>
     </div>
 
   </div>`;
 }
+
 
 function rStory(cv,tm){
   const s=STORYLER[iST];
